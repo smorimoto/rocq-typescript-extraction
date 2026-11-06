@@ -1,0 +1,8 @@
+; The theory whose libraries KeySig and KeyImpl separate-keys uses: a
+; module type and a module that implements it, each in a file of its own.
+; It is a directory of its own because the extraction of separate-keys
+; claims every directory under it.
+
+(rocq.theory
+ (name KeyLibs)
+ (theories TypeScriptExtraction))

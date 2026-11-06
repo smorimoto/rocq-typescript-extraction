@@ -1,0 +1,47 @@
+(rocq.extraction
+ (prelude SeparateUnary)
+ (extracted_files separate-unary.ts datatypes.ts nat.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-unary.expected.ts separate-unary.ts)
+   (diff datatypes.expected.ts datatypes.ts)
+   (diff nat.expected.ts nat.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-unary.ts}
+   %{dep:datatypes.ts}
+   %{dep:nat.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-unary.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-unary.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts}))))

@@ -1,0 +1,36 @@
+(library
+ (name typescript_extraction_plugin)
+ (public_name rocq-typescript-extraction.backend)
+ (synopsis "TypeScript backend for Rocq extraction")
+ (preprocess
+  (per_module
+   ((pps ppx_jane ppx_js_style -check-doc-comments)
+    import
+    ts_alias
+    ts_anf
+    ts_env
+    ts_expr
+    ts_extract
+    ts_infer
+    ts_kernel
+    ts_known
+    ts_match
+    ts_modpath_key
+    ts_names
+    ts_primitives
+    ts_print
+    ts_repr
+    ts_sig
+    ts_type
+    typescript)
+   ((pps ppx_jane)
+    g_typescript_extraction)))
+ (libraries
+  base
+  stdio
+  zarith
+  rocq-runtime.vernac
+  rocq-runtime.plugins.extraction))
+
+(rocq.pp
+ (modules g_typescript_extraction))

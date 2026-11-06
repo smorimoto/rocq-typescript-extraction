@@ -1,0 +1,4 @@
+(rocq.theory
+ (name CompCertTests)
+ (modules Programs)
+ (theories compcert Flocq Stdlib))

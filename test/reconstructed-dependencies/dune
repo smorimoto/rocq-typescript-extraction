@@ -1,0 +1,52 @@
+(rocq.extraction
+ (prelude Monolithic)
+ (extracted_files monolithic.ts)
+ (theories TypeScriptExtraction DependencyLibs))
+
+(rocq.extraction
+ (prelude Separate)
+ (extracted_files payloads.ts datatypes.ts)
+ (theories TypeScriptExtraction DependencyLibs))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff monolithic.expected.ts monolithic.ts)
+   (diff payloads.expected.ts payloads.ts)
+   (diff datatypes.expected.ts datatypes.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:monolithic.ts}
+   %{dep:payloads.ts}
+   %{dep:datatypes.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:monolithic.ts}
+    %{dep:payloads.ts}
+    %{dep:datatypes.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:monolithic.ts}
+    %{dep:payloads.ts}
+    %{dep:datatypes.ts}))))

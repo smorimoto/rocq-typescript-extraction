@@ -1,0 +1,51 @@
+; Types mapped by Extract Inductive to the name of a generated type of
+; their own library, in the theory Ranges of ../ranges: span is Bounds,
+; the interface of the record bounds, and wrapped is Cell<$1>, the
+; interface of cell. A file that uses them refers to the types through
+; the import, as $Spans.Bounds, so spans.ts exports them. cell is asked
+; for in the command, since extraction does not read the code of a
+; directive. The root tsc run typechecks the files.
+
+(rocq.extraction
+ (prelude SeparateMapped)
+ (extracted_files separate-mapped.ts spans.ts)
+ (theories TypeScriptExtraction Ranges))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-mapped.expected.ts separate-mapped.ts)
+   (diff spans.expected.ts spans.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-mapped.ts}
+   %{dep:spans.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-mapped.ts}
+    %{dep:spans.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-mapped.ts}
+    %{dep:spans.ts}))))

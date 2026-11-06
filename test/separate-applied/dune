@@ -1,0 +1,66 @@
+; A module type applied to another parameter crosses files: the functor
+; of order-tac.ts, whose second parameter is declared with a module type
+; of order-sig.ts applied to the first, is applied in the body of a
+; functor of separate-applied.ts and at its top level. The theory
+; AppliedLibs, in ../applied-libs, holds the two libraries.
+
+(rocq.extraction
+ (prelude SeparateApplied)
+ (extracted_files
+  separate-applied.ts
+  order-tac.ts
+  order-sig.ts
+  datatypes.ts
+  nat.ts)
+ (theories TypeScriptExtraction AppliedLibs))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-applied.expected.ts separate-applied.ts)
+   (diff order-tac.expected.ts order-tac.ts)
+   (diff order-sig.expected.ts order-sig.ts)
+   (diff datatypes.expected.ts datatypes.ts)
+   (diff nat.expected.ts nat.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-applied.ts}
+   %{dep:order-tac.ts}
+   %{dep:order-sig.ts}
+   %{dep:datatypes.ts}
+   %{dep:nat.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-applied.ts}
+    %{dep:order-tac.ts}
+    %{dep:order-sig.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-applied.ts}
+    %{dep:order-tac.ts}
+    %{dep:order-sig.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts}))))

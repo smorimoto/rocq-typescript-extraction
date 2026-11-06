@@ -1,0 +1,2094 @@
+(rocq.extraction
+ (prelude Absurd)
+ (extracted_files absurd.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff absurd.expected.ts absurd.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:absurd.ts})))
+
+(rocq.extraction
+ (prelude AliasedApplications)
+ (extracted_files aliased-applications.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff aliased-applications.expected.ts aliased-applications.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:aliased-applications.ts})))
+
+(rocq.extraction
+ (prelude Aliases)
+ (extracted_files aliases.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff aliases.expected.ts aliases.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:aliases.ts})))
+
+(rocq.extraction
+ (prelude Applications)
+ (extracted_files applications.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff applications.expected.ts applications.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:applications.ts})))
+
+(rocq.extraction
+ (prelude AppliedModuleType)
+ (extracted_files applied-module-type.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff applied-module-type.expected.ts applied-module-type.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:applied-module-type.ts})))
+
+(rocq.extraction
+ (prelude AppliedThrough)
+ (extracted_files applied-through.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff applied-through.expected.ts applied-through.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:applied-through.ts})))
+
+(rocq.extraction
+ (prelude AppliedToAlias)
+ (extracted_files applied-to-alias.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff applied-to-alias.expected.ts applied-to-alias.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:applied-to-alias.ts})))
+
+(rocq.extraction
+ (prelude Arrays)
+ (extracted_files arrays.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff arrays.expected.ts arrays.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:arrays.ts})))
+
+(rocq.extraction
+ (prelude Axioms)
+ (extracted_files axioms.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff axioms.expected.ts axioms.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:axioms.ts})))
+
+(rocq.extraction
+ (prelude BigIntAccumulators)
+ (extracted_files big-int-accumulators.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff big-int-accumulators.expected.ts big-int-accumulators.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:big-int-accumulators.ts})))
+
+(rocq.extraction
+ (prelude BigIntNumber)
+ (extracted_files big-int-number.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff big-int-number.expected.ts big-int-number.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:big-int-number.ts})))
+
+(rocq.extraction
+ (prelude BigIntPreset)
+ (extracted_files big-int-preset.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff big-int-preset.expected.ts big-int-preset.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:big-int-preset.ts})))
+
+(rocq.extraction
+ (prelude BigLoops)
+ (extracted_files big-loops.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff big-loops.expected.ts big-loops.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:big-loops.ts})))
+
+(rocq.extraction
+ (prelude BigNats)
+ (extracted_files big-nats.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff big-nats.expected.ts big-nats.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:big-nats.ts})))
+
+(rocq.extraction
+ (prelude Bodies)
+ (extracted_files bodies.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff bodies.expected.ts bodies.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:bodies.ts})))
+
+(rocq.extraction
+ (prelude BodyDirectives)
+ (extracted_files body-directives.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff body-directives.expected.ts body-directives.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:body-directives.ts})))
+
+(rocq.extraction
+ (prelude BodyStatements)
+ (extracted_files body-statements.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff body-statements.expected.ts body-statements.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:body-statements.ts})))
+
+(rocq.extraction
+ (prelude Booleans)
+ (extracted_files booleans.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff booleans.expected.ts booleans.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:booleans.ts})))
+
+(rocq.extraction
+ (prelude Casts)
+ (extracted_files casts.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff casts.expected.ts casts.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:casts.ts})))
+
+(rocq.extraction
+ (prelude CoinductiveInclude)
+ (extracted_files coinductive-include.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff coinductive-include.expected.ts coinductive-include.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:coinductive-include.ts})))
+
+(rocq.extraction
+ (prelude ComplexRecursion)
+ (extracted_files complex-recursion.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff complex-recursion.expected.ts complex-recursion.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:complex-recursion.ts})))
+
+(rocq.extraction
+ (prelude ConstructorScope)
+ (extracted_files constructor-scope.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff constructor-scope.expected.ts constructor-scope.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:constructor-scope.ts})))
+
+(rocq.extraction
+ (prelude Constructors)
+ (extracted_files constructors.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff constructors.expected.ts constructors.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:constructors.ts})))
+
+(rocq.extraction
+ (prelude CurriedCalls)
+ (extracted_files curried-calls.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff curried-calls.expected.ts curried-calls.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:curried-calls.ts})))
+
+(rocq.extraction
+ (prelude CurriedTypeFamily)
+ (extracted_files curried-type-family.ts)
+ (theories TypeScriptExtraction Stdlib))
+
+(rule
+ (alias runtest)
+ (action
+  (diff curried-type-family.expected.ts curried-type-family.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:curried-type-family.ts})))
+
+(rocq.extraction
+ (prelude Currying)
+ (extracted_files currying.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff currying.expected.ts currying.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:currying.ts})))
+
+(rocq.extraction
+ (prelude Customs)
+ (extracted_files customs.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff customs.expected.ts customs.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:customs.ts})))
+
+(rocq.extraction
+ (prelude Dependent)
+ (extracted_files dependent.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff dependent.expected.ts dependent.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:dependent.ts})))
+
+(rocq.extraction
+ (prelude Enclosing)
+ (extracted_files enclosing.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff enclosing.expected.ts enclosing.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:enclosing.ts})))
+
+(rocq.extraction
+ (prelude Erased)
+ (extracted_files erased.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff erased.expected.ts erased.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:erased.ts})))
+
+(rocq.extraction
+ (prelude EvaluationOrder)
+ (extracted_files evaluation-order.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff evaluation-order.expected.ts evaluation-order.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:evaluation-order.ts})))
+
+(rocq.extraction
+ (prelude ExportedApplication)
+ (extracted_files exported-application.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff exported-application.expected.ts exported-application.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:exported-application.ts})))
+
+(rocq.extraction
+ (prelude Exports)
+ (extracted_files exports.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff exports.expected.ts exports.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:exports.ts})))
+
+(rocq.extraction
+ (prelude FieldClash)
+ (extracted_files field-clash.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff field-clash.expected.ts field-clash.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:field-clash.ts})))
+
+(rocq.extraction
+ (prelude Floats)
+ (extracted_files floats.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff floats.expected.ts floats.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:floats.ts})))
+
+(rocq.extraction
+ (prelude Forests)
+ (extracted_files forests.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff forests.expected.ts forests.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:forests.ts})))
+
+(rocq.extraction
+ (prelude FunctorAsModule)
+ (extracted_files functor-as-module.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff functor-as-module.expected.ts functor-as-module.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:functor-as-module.ts})))
+
+(rocq.extraction
+ (prelude FunctorDep)
+ (extracted_files functor-dep.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff functor-dep.expected.ts functor-dep.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:functor-dep.ts})))
+
+(rocq.extraction
+ (prelude FunctorParamT)
+ (extracted_files functor-param-t.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff functor-param-t.expected.ts functor-param-t.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:functor-param-t.ts})))
+
+(rocq.extraction
+ (prelude FunctorSignatureResult)
+ (extracted_files functor-signature-result.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff functor-signature-result.expected.ts functor-signature-result.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:functor-signature-result.ts})))
+
+(rocq.extraction
+ (prelude FunctorialModuleType)
+ (extracted_files functorial-module-type.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff functorial-module-type.expected.ts functorial-module-type.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:functorial-module-type.ts})))
+
+(rocq.extraction
+ (prelude FunctorialTypeApplied)
+ (extracted_files functorial-type-applied.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff functorial-type-applied.expected.ts functorial-type-applied.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:functorial-type-applied.ts})))
+
+(rocq.extraction
+ (prelude Functors)
+ (extracted_files functors.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff functors.expected.ts functors.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:functors.ts})))
+
+(rocq.extraction
+ (prelude GapAgain)
+ (extracted_files gap-again.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff gap-again.expected.ts gap-again.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:gap-again.ts})))
+
+(rocq.extraction
+ (prelude Handlers)
+ (extracted_files handlers.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff handlers.expected.ts handlers.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:handlers.ts})))
+
+(rocq.extraction
+ (prelude HigherKinded)
+ (extracted_files higher-kinded.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff higher-kinded.expected.ts higher-kinded.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:higher-kinded.ts})))
+
+(rocq.extraction
+ (prelude HigherOrder)
+ (extracted_files higher-order.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff higher-order.expected.ts higher-order.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:higher-order.ts})))
+
+(rocq.extraction
+ (prelude Hoisted)
+ (extracted_files hoisted.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff hoisted.expected.ts hoisted.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:hoisted.ts})))
+
+(rocq.extraction
+ (prelude IgnoredElement)
+ (extracted_files ignored-element.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff ignored-element.expected.ts ignored-element.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:ignored-element.ts})))
+
+(rocq.extraction
+ (prelude InductiveResult)
+ (extracted_files inductive-result.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff inductive-result.expected.ts inductive-result.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:inductive-result.ts})))
+
+(rocq.extraction
+ (prelude InheritedConstants)
+ (extracted_files inherited-constants.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff inherited-constants.expected.ts inherited-constants.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:inherited-constants.ts})))
+
+(rocq.extraction
+ (prelude InlineMatches)
+ (extracted_files inline-matches.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff inline-matches.expected.ts inline-matches.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:inline-matches.ts})))
+
+(rocq.extraction
+ (prelude InlineSignature)
+ (extracted_files inline-signature.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff inline-signature.expected.ts inline-signature.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:inline-signature.ts})))
+
+(rocq.extraction
+ (prelude InlineStatements)
+ (extracted_files inline-statements.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff inline-statements.expected.ts inline-statements.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:inline-statements.ts})))
+
+(rocq.extraction
+ (prelude InsertionSort)
+ (extracted_files insertion-sort.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff insertion-sort.expected.ts insertion-sort.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:insertion-sort.ts})))
+
+(rocq.extraction
+ (prelude Int63)
+ (extracted_files int63.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff int63.expected.ts int63.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:int63.ts})))
+
+(rocq.extraction
+ (prelude KnownCustom)
+ (extracted_files known-custom.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff known-custom.expected.ts known-custom.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:known-custom.ts})))
+
+(rocq.extraction
+ (prelude Layout)
+ (extracted_files layout.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff layout.expected.ts layout.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:layout.ts})))
+
+(rocq.extraction
+ (prelude LeftOut)
+ (extracted_files left-out.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff left-out.expected.ts left-out.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:left-out.ts})))
+
+(rocq.extraction
+ (prelude LetEdges)
+ (extracted_files let-edges.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff let-edges.expected.ts let-edges.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:let-edges.ts})))
+
+(rocq.extraction
+ (prelude LetPoly)
+ (extracted_files let-poly.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff let-poly.expected.ts let-poly.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:let-poly.ts})))
+
+(rocq.extraction
+ (prelude Lets)
+ (extracted_files lets.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff lets.expected.ts lets.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:lets.ts})))
+
+(rocq.extraction
+ (prelude Lifting)
+ (extracted_files lifting.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff lifting.expected.ts lifting.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:lifting.ts})))
+
+(rocq.extraction
+ (prelude Lists)
+ (extracted_files lists.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff lists.expected.ts lists.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:lists.ts})))
+
+(rocq.extraction
+ (prelude LocalCofix)
+ (extracted_files local-cofix.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff local-cofix.expected.ts local-cofix.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:local-cofix.ts})))
+
+(rocq.extraction
+ (prelude Loops)
+ (extracted_files loops.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff loops.expected.ts loops.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:loops.ts})))
+
+(rocq.extraction
+ (prelude MappedTypes)
+ (extracted_files mapped-types.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff mapped-types.expected.ts mapped-types.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:mapped-types.ts})))
+
+(rocq.extraction
+ (prelude MemberCtorClash)
+ (extracted_files member-ctor-clash.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff member-ctor-clash.expected.ts member-ctor-clash.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:member-ctor-clash.ts})))
+
+(rocq.extraction
+ (prelude MemberCtorClashPoly)
+ (extracted_files member-ctor-clash-poly.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff member-ctor-clash-poly.expected.ts member-ctor-clash-poly.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:member-ctor-clash-poly.ts})))
+
+(rocq.extraction
+ (prelude MethodMember)
+ (extracted_files method-member.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff method-member.expected.ts method-member.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:method-member.ts})))
+
+(rocq.extraction
+ (prelude MethodThroughApplication)
+ (extracted_files method-through-application.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff method-through-application.expected.ts method-through-application.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:method-through-application.ts})))
+
+(rocq.extraction
+ (prelude Modules)
+ (extracted_files modules.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff modules.expected.ts modules.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:modules.ts})))
+
+(rocq.extraction
+ (prelude Monoid)
+ (extracted_files monoid.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff monoid.expected.ts monoid.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:monoid.ts})))
+
+(rocq.extraction
+ (prelude Naming)
+ (extracted_files naming.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff naming.expected.ts naming.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:naming.ts})))
+
+(rocq.extraction
+ (prelude Narrowing)
+ (extracted_files narrowing.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff narrowing.expected.ts narrowing.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:narrowing.ts})))
+
+(rocq.extraction
+ (prelude NarrowingShapes)
+ (extracted_files narrowing-shapes.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff narrowing-shapes.expected.ts narrowing-shapes.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:narrowing-shapes.ts})))
+
+(rocq.extraction
+ (prelude NatPrimitives)
+ (extracted_files nat-primitives.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff nat-primitives.expected.ts nat-primitives.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:nat-primitives.ts})))
+
+(rocq.extraction
+ (prelude NatPrimitivesReference)
+ (extracted_files nat-primitives-reference.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff nat-primitives-reference.expected.ts nat-primitives-reference.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:nat-primitives-reference.ts})))
+
+(rocq.extraction
+ (prelude Nested)
+ (extracted_files nested.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff nested.expected.ts nested.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:nested.ts})))
+
+(rocq.extraction
+ (prelude NestedAlias)
+ (extracted_files nested-alias.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff nested-alias.expected.ts nested-alias.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:nested-alias.ts})))
+
+(rocq.extraction
+ (prelude NestedCheckedAlias)
+ (extracted_files nested-checked-alias.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff nested-checked-alias.expected.ts nested-checked-alias.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:nested-checked-alias.ts})))
+
+(rocq.extraction
+ (prelude NestedConstructorInference)
+ (extracted_files nested-constructor-inference.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff nested-constructor-inference.expected.ts nested-constructor-inference.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:nested-constructor-inference.ts})))
+
+(rocq.extraction
+ (prelude NestedMod)
+ (extracted_files nested-mod.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff nested-mod.expected.ts nested-mod.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:nested-mod.ts})))
+
+(rocq.extraction
+ (prelude NestedTypeDependencies)
+ (extracted_files nested-type-dependencies.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff nested-type-dependencies.expected.ts nested-type-dependencies.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:nested-type-dependencies.ts})))
+
+(rocq.extraction
+ (prelude NumberAccumulators)
+ (extracted_files number-accumulators.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff number-accumulators.expected.ts number-accumulators.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:number-accumulators.ts})))
+
+(rocq.extraction
+ (prelude NumberBigInt)
+ (extracted_files number-big-int.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff number-big-int.expected.ts number-big-int.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:number-big-int.ts})))
+
+(rocq.extraction
+ (prelude NumberPreset)
+ (extracted_files number-preset.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff number-preset.expected.ts number-preset.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:number-preset.ts})))
+
+(rocq.extraction
+ (prelude NumericConstants)
+ (extracted_files numeric-constants.ts)
+ (theories TypeScriptExtraction Stdlib))
+
+(rule
+ (alias runtest)
+ (action
+  (diff numeric-constants.expected.ts numeric-constants.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:numeric-constants.ts})))
+
+(rocq.extraction
+ (prelude NumericConstantsNumber)
+ (extracted_files numeric-constants-number.ts)
+ (theories TypeScriptExtraction Stdlib))
+
+(rule
+ (alias runtest)
+ (action
+  (diff numeric-constants-number.expected.ts numeric-constants-number.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:numeric-constants-number.ts})))
+
+(rocq.extraction
+ (prelude OrderTactics)
+ (extracted_files order-tactics.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff order-tactics.expected.ts order-tactics.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:order-tactics.ts})))
+
+(rocq.extraction
+ (prelude PartialApplicationCaptures)
+ (extracted_files partial-application-captures.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff partial-application-captures.expected.ts partial-application-captures.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:partial-application-captures.ts})))
+
+(rocq.extraction
+ (prelude PeanoLoops)
+ (extracted_files peano-loops.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff peano-loops.expected.ts peano-loops.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:peano-loops.ts})))
+
+(rocq.extraction
+ (prelude Placed)
+ (extracted_files placed.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff placed.expected.ts placed.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:placed.ts})))
+
+(rocq.extraction
+ (prelude PlainNest)
+ (extracted_files plain-nest.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff plain-nest.expected.ts plain-nest.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:plain-nest.ts})))
+
+(rocq.extraction
+ (prelude PrimitiveTypes)
+ (extracted_files primitive-types.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff primitive-types.expected.ts primitive-types.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:primitive-types.ts})))
+
+(rocq.extraction
+ (prelude Primitives)
+ (extracted_files primitives.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff primitives.expected.ts primitives.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:primitives.ts})))
+
+(rocq.extraction
+ (prelude RankTwo)
+ (extracted_files rank-two.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff rank-two.expected.ts rank-two.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:rank-two.ts})))
+
+(rocq.extraction
+ (prelude Realisers)
+ (extracted_files realisers.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff realisers.expected.ts realisers.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:realisers.ts})))
+
+(rocq.extraction
+ (prelude RecoveredAlias)
+ (extracted_files recovered-alias.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff recovered-alias.expected.ts recovered-alias.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:recovered-alias.ts})))
+
+(rocq.extraction
+ (prelude Sample)
+ (extracted_files sample.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff sample.expected.ts sample.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:sample.ts})))
+
+(rocq.extraction
+ (prelude Sealed)
+ (extracted_files sealed.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff sealed.expected.ts sealed.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:sealed.ts})))
+
+(rocq.extraction
+ (prelude SealedParamAlias)
+ (extracted_files sealed-param-alias.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff sealed-param-alias.expected.ts sealed-param-alias.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:sealed-param-alias.ts})))
+
+(rocq.extraction
+ (prelude SealedSolvers)
+ (extracted_files sealed-solvers.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff sealed-solvers.expected.ts sealed-solvers.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:sealed-solvers.ts})))
+
+(rocq.extraction
+ (prelude Shadow)
+ (extracted_files shadow.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff shadow.expected.ts shadow.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:shadow.ts})))
+
+(rocq.extraction
+ (prelude ShapeNames)
+ (extracted_files shape-names.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff shape-names.expected.ts shape-names.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:shape-names.ts})))
+
+(rocq.extraction
+ (prelude ShortCircuit)
+ (extracted_files short-circuit.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff short-circuit.expected.ts short-circuit.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:short-circuit.ts})))
+
+(rocq.extraction
+ (prelude SignatureRename)
+ (extracted_files signature-rename.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff signature-rename.expected.ts signature-rename.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:signature-rename.ts})))
+
+(rocq.extraction
+ (prelude Signatures)
+ (extracted_files signatures.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff signatures.expected.ts signatures.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:signatures.ts})))
+
+(rocq.extraction
+ (prelude Stack)
+ (extracted_files stack.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff stack.expected.ts stack.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:stack.ts})))
+
+(rocq.extraction
+ (prelude StackPeano)
+ (extracted_files stack-peano.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff stack-peano.expected.ts stack-peano.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:stack-peano.ts})))
+
+(rocq.extraction
+ (prelude Statements)
+ (extracted_files statements.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff statements.expected.ts statements.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:statements.ts})))
+
+(rocq.extraction
+ (prelude Streams)
+ (extracted_files streams.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff streams.expected.ts streams.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:streams.ts})))
+
+(rocq.extraction
+ (prelude Strings)
+ (extracted_files strings.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff strings.expected.ts strings.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:strings.ts})))
+
+(rocq.extraction
+ (prelude ThreeWay)
+ (extracted_files three-way.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff three-way.expected.ts three-way.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:three-way.ts})))
+
+(rocq.extraction
+ (prelude TypeExports)
+ (extracted_files type-exports.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff type-exports.expected.ts type-exports.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:type-exports.ts})))
+
+(rocq.extraction
+ (prelude TypeFixpoint)
+ (extracted_files type-fixpoint.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff type-fixpoint.expected.ts type-fixpoint.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:type-fixpoint.ts})))
+
+(rocq.extraction
+ (prelude UnaryLocalMixed)
+ (extracted_files unary-local-mixed.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff unary-local-mixed.expected.ts unary-local-mixed.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:unary-local-mixed.ts})))
+
+(rocq.extraction
+ (prelude UnaryMixed)
+ (extracted_files unary-mixed.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff unary-mixed.expected.ts unary-mixed.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:unary-mixed.ts})))
+
+(rocq.extraction
+ (prelude UnaryOrder)
+ (extracted_files unary-order.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff unary-order.expected.ts unary-order.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:unary-order.ts})))
+
+(rocq.extraction
+ (prelude Unknown)
+ (extracted_files unknown.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff unknown.expected.ts unknown.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:unknown.ts})))
+
+(rocq.extraction
+ (prelude Unliftable)
+ (extracted_files unliftable.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff unliftable.expected.ts unliftable.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:unliftable.ts})))
+
+(rocq.extraction
+ (prelude With)
+ (extracted_files with.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff with.expected.ts with.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:no_assertions.sh} %{dep:with.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../oxlint.config.ts}
+    --deny-warnings
+    %{dep:absurd.ts}
+    %{dep:aliased-applications.ts}
+    %{dep:aliases.ts}
+    %{dep:applications.ts}
+    %{dep:applied-module-type.ts}
+    %{dep:applied-through.ts}
+    %{dep:applied-to-alias.ts}
+    %{dep:arrays.ts}
+    %{dep:axioms.ts}
+    %{dep:big-int-accumulators.ts}
+    %{dep:big-int-number.ts}
+    %{dep:big-int-preset.ts}
+    %{dep:big-loops.ts}
+    %{dep:big-nats.ts}
+    %{dep:bodies.ts}
+    %{dep:body-directives.ts}
+    %{dep:body-statements.ts}
+    %{dep:booleans.ts}
+    %{dep:casts.ts}
+    %{dep:coinductive-include.ts}
+    %{dep:complex-recursion.ts}
+    %{dep:constructor-scope.ts}
+    %{dep:constructors.ts}
+    %{dep:curried-calls.ts}
+    %{dep:curried-type-family.ts}
+    %{dep:currying.ts}
+    %{dep:customs.ts}
+    %{dep:dependent.ts}
+    %{dep:enclosing.ts}
+    %{dep:erased.ts}
+    %{dep:evaluation-order.ts}
+    %{dep:exported-application.ts}
+    %{dep:exports.ts}
+    %{dep:field-clash.ts}
+    %{dep:floats.ts}
+    %{dep:forests.ts}
+    %{dep:functor-as-module.ts}
+    %{dep:functor-dep.ts}
+    %{dep:functor-param-t.ts}
+    %{dep:functor-signature-result.ts}
+    %{dep:functorial-module-type.ts}
+    %{dep:functorial-type-applied.ts}
+    %{dep:functors.ts}
+    %{dep:gap-again.ts}
+    %{dep:handlers.ts}
+    %{dep:higher-kinded.ts}
+    %{dep:higher-order.ts}
+    %{dep:hoisted.ts}
+    %{dep:ignored-element.ts}
+    %{dep:inductive-result.ts}
+    %{dep:inherited-constants.ts}
+    %{dep:inline-matches.ts}
+    %{dep:inline-signature.ts}
+    %{dep:inline-statements.ts}
+    %{dep:insertion-sort.ts}
+    %{dep:int63.ts}
+    %{dep:known-custom.ts}
+    %{dep:layout.ts}
+    %{dep:left-out.ts}
+    %{dep:let-edges.ts}
+    %{dep:let-poly.ts}
+    %{dep:lets.ts}
+    %{dep:lifting.ts}
+    %{dep:lists.ts}
+    %{dep:local-cofix.ts}
+    %{dep:loops.ts}
+    %{dep:mapped-types.ts}
+    %{dep:member-ctor-clash.ts}
+    %{dep:member-ctor-clash-poly.ts}
+    %{dep:method-member.ts}
+    %{dep:method-through-application.ts}
+    %{dep:modules.ts}
+    %{dep:monoid.ts}
+    %{dep:naming.ts}
+    %{dep:narrowing.ts}
+    %{dep:narrowing-shapes.ts}
+    %{dep:nat-primitives.ts}
+    %{dep:nat-primitives-reference.ts}
+    %{dep:nested.ts}
+    %{dep:nested-alias.ts}
+    %{dep:nested-checked-alias.ts}
+    %{dep:nested-constructor-inference.ts}
+    %{dep:nested-mod.ts}
+    %{dep:nested-type-dependencies.ts}
+    %{dep:number-accumulators.ts}
+    %{dep:number-big-int.ts}
+    %{dep:number-preset.ts}
+    %{dep:numeric-constants.ts}
+    %{dep:numeric-constants-number.ts}
+    %{dep:order-tactics.ts}
+    %{dep:partial-application-captures.ts}
+    %{dep:peano-loops.ts}
+    %{dep:placed.ts}
+    %{dep:plain-nest.ts}
+    %{dep:primitive-types.ts}
+    %{dep:primitives.ts}
+    %{dep:rank-two.ts}
+    %{dep:realisers.ts}
+    %{dep:recovered-alias.ts}
+    %{dep:sample.ts}
+    %{dep:sealed.ts}
+    %{dep:sealed-param-alias.ts}
+    %{dep:sealed-solvers.ts}
+    %{dep:shadow.ts}
+    %{dep:shape-names.ts}
+    %{dep:short-circuit.ts}
+    %{dep:signature-rename.ts}
+    %{dep:signatures.ts}
+    %{dep:stack.ts}
+    %{dep:stack-peano.ts}
+    %{dep:statements.ts}
+    %{dep:streams.ts}
+    %{dep:strings.ts}
+    %{dep:three-way.ts}
+    %{dep:type-exports.ts}
+    %{dep:type-fixpoint.ts}
+    %{dep:unary-local-mixed.ts}
+    %{dep:unary-mixed.ts}
+    %{dep:unary-order.ts}
+    %{dep:unknown.ts}
+    %{dep:unliftable.ts}
+    %{dep:with.ts}
+   )
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../oxfmt.config.ts}
+    --check
+    %{dep:absurd.ts}
+    %{dep:aliased-applications.ts}
+    %{dep:aliases.ts}
+    %{dep:applications.ts}
+    %{dep:applied-module-type.ts}
+    %{dep:applied-through.ts}
+    %{dep:applied-to-alias.ts}
+    %{dep:arrays.ts}
+    %{dep:axioms.ts}
+    %{dep:big-int-accumulators.ts}
+    %{dep:big-int-number.ts}
+    %{dep:big-int-preset.ts}
+    %{dep:big-loops.ts}
+    %{dep:big-nats.ts}
+    %{dep:bodies.ts}
+    %{dep:body-directives.ts}
+    %{dep:body-statements.ts}
+    %{dep:booleans.ts}
+    %{dep:casts.ts}
+    %{dep:coinductive-include.ts}
+    %{dep:complex-recursion.ts}
+    %{dep:constructor-scope.ts}
+    %{dep:constructors.ts}
+    %{dep:curried-calls.ts}
+    %{dep:curried-type-family.ts}
+    %{dep:currying.ts}
+    %{dep:customs.ts}
+    %{dep:dependent.ts}
+    %{dep:enclosing.ts}
+    %{dep:erased.ts}
+    %{dep:evaluation-order.ts}
+    %{dep:exported-application.ts}
+    %{dep:exports.ts}
+    %{dep:field-clash.ts}
+    %{dep:floats.ts}
+    %{dep:forests.ts}
+    %{dep:functor-as-module.ts}
+    %{dep:functor-dep.ts}
+    %{dep:functor-param-t.ts}
+    %{dep:functor-signature-result.ts}
+    %{dep:functorial-module-type.ts}
+    %{dep:functorial-type-applied.ts}
+    %{dep:functors.ts}
+    %{dep:gap-again.ts}
+    %{dep:handlers.ts}
+    %{dep:higher-kinded.ts}
+    %{dep:higher-order.ts}
+    %{dep:hoisted.ts}
+    %{dep:ignored-element.ts}
+    %{dep:inductive-result.ts}
+    %{dep:inherited-constants.ts}
+    %{dep:inline-matches.ts}
+    %{dep:inline-signature.ts}
+    %{dep:inline-statements.ts}
+    %{dep:insertion-sort.ts}
+    %{dep:int63.ts}
+    %{dep:known-custom.ts}
+    %{dep:layout.ts}
+    %{dep:left-out.ts}
+    %{dep:let-edges.ts}
+    %{dep:let-poly.ts}
+    %{dep:lets.ts}
+    %{dep:lifting.ts}
+    %{dep:lists.ts}
+    %{dep:local-cofix.ts}
+    %{dep:loops.ts}
+    %{dep:mapped-types.ts}
+    %{dep:member-ctor-clash.ts}
+    %{dep:member-ctor-clash-poly.ts}
+    %{dep:method-member.ts}
+    %{dep:method-through-application.ts}
+    %{dep:modules.ts}
+    %{dep:monoid.ts}
+    %{dep:naming.ts}
+    %{dep:narrowing.ts}
+    %{dep:narrowing-shapes.ts}
+    %{dep:nat-primitives.ts}
+    %{dep:nat-primitives-reference.ts}
+    %{dep:nested.ts}
+    %{dep:nested-alias.ts}
+    %{dep:nested-checked-alias.ts}
+    %{dep:nested-constructor-inference.ts}
+    %{dep:nested-mod.ts}
+    %{dep:nested-type-dependencies.ts}
+    %{dep:number-accumulators.ts}
+    %{dep:number-big-int.ts}
+    %{dep:number-preset.ts}
+    %{dep:numeric-constants.ts}
+    %{dep:numeric-constants-number.ts}
+    %{dep:order-tactics.ts}
+    %{dep:partial-application-captures.ts}
+    %{dep:peano-loops.ts}
+    %{dep:placed.ts}
+    %{dep:plain-nest.ts}
+    %{dep:primitive-types.ts}
+    %{dep:primitives.ts}
+    %{dep:rank-two.ts}
+    %{dep:realisers.ts}
+    %{dep:recovered-alias.ts}
+    %{dep:sample.ts}
+    %{dep:sealed.ts}
+    %{dep:sealed-param-alias.ts}
+    %{dep:sealed-solvers.ts}
+    %{dep:shadow.ts}
+    %{dep:shape-names.ts}
+    %{dep:short-circuit.ts}
+    %{dep:signature-rename.ts}
+    %{dep:signatures.ts}
+    %{dep:stack.ts}
+    %{dep:stack-peano.ts}
+    %{dep:statements.ts}
+    %{dep:streams.ts}
+    %{dep:strings.ts}
+    %{dep:three-way.ts}
+    %{dep:type-exports.ts}
+    %{dep:type-fixpoint.ts}
+    %{dep:unary-local-mixed.ts}
+    %{dep:unary-mixed.ts}
+    %{dep:unary-order.ts}
+    %{dep:unknown.ts}
+    %{dep:unliftable.ts}
+    %{dep:with.ts}
+   ))))

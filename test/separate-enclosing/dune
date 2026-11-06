@@ -1,0 +1,50 @@
+; An application, in this file, of a functor defined in another file as a
+; parameter of the functor around it.
+
+(rocq.extraction
+ (prelude SeparateEnclosing)
+ (extracted_files separate-enclosing.ts enclosing.ts datatypes.ts)
+ (theories TypeScriptExtraction FixLibs))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-enclosing.expected.ts separate-enclosing.ts)
+   (diff enclosing.expected.ts enclosing.ts)
+   (diff datatypes.expected.ts datatypes.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-enclosing.ts}
+   %{dep:enclosing.ts}
+   %{dep:datatypes.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-enclosing.ts}
+    %{dep:enclosing.ts}
+    %{dep:datatypes.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-enclosing.ts}
+    %{dep:enclosing.ts}
+    %{dep:datatypes.ts}))))

@@ -1,0 +1,7 @@
+(rocq.theory
+ (name TypeScriptExtraction)
+ (package rocq-typescript-extraction)
+ (synopsis "TypeScript extraction for Rocq")
+ (plugins
+  rocq-typescript-extraction.plugin
+  rocq-typescript-extraction.backend))

@@ -1,0 +1,181 @@
+; Negative tests. Each file ends in a Fail command, which succeeds only when
+; the extraction command fails, so building the theory checks that every
+; unsupported input is rejected.
+
+(rocq.theory
+ (name TypeScriptExtractionErrors)
+ (modules
+  (:standard
+   \
+   AmbiguousMention
+   CurriedTypeVariance
+   Existential
+   FunctorAsFunctor
+   Lost
+   LostModule
+   InsideModuleType
+   MatchDirective
+   ModuleType))
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (deps
+  (glob_files *.vo))
+ (action (progn)))
+
+; A file compiled in test mode prints the message that Fail caught, which
+; Redirect writes to a .out file, compared with its golden, so the test
+; pins the message and not only the failure.
+
+(rocq.extraction
+ (prelude ModuleType)
+ (extracted_files ModuleType.out)
+ (flags
+  (:standard -test-mode))
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff ModuleType.expected.out ModuleType.out)))
+
+(rocq.extraction
+ (prelude FunctorAsFunctor)
+ (extracted_files FunctorAsFunctor.out)
+ (flags
+  (:standard -test-mode))
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff FunctorAsFunctor.expected.out FunctorAsFunctor.out)))
+
+(rocq.extraction
+ (prelude AmbiguousMention)
+ (extracted_files AmbiguousMention.out)
+ (flags
+  (:standard -test-mode))
+ (theories TypeScriptExtraction Shapes))
+
+(rule
+ (alias runtest)
+ (action
+  (diff AmbiguousMention.expected.out AmbiguousMention.out)))
+
+(rocq.extraction
+ (prelude InsideModuleType)
+ (extracted_files InsideModuleType.out)
+ (flags
+  (:standard -test-mode))
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff InsideModuleType.expected.out InsideModuleType.out)))
+
+(rocq.extraction
+ (prelude MatchDirective)
+ (extracted_files
+  MatchDirective1.out
+  MatchDirective2.out
+  MatchDirective3.out
+  MatchDirective4.out
+  MatchDirective5.out
+  MatchDirective6.out
+  MatchDirective7.out)
+ (flags
+  (:standard -test-mode))
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff MatchDirective1.expected.out MatchDirective1.out)
+   (diff MatchDirective2.expected.out MatchDirective2.out)
+   (diff MatchDirective3.expected.out MatchDirective3.out)
+   (diff MatchDirective4.expected.out MatchDirective4.out)
+   (diff MatchDirective5.expected.out MatchDirective5.out)
+   (diff MatchDirective6.expected.out MatchDirective6.out)
+   (diff MatchDirective7.expected.out MatchDirective7.out))))
+
+(rocq.extraction
+ (prelude Existential)
+ (extracted_files Existential.out RecordResult.out)
+ (flags
+  (:standard -test-mode))
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff Existential.expected.out Existential.out)))
+
+(rule
+ (alias runtest)
+ (action
+  (diff RecordResult.expected.out RecordResult.out)))
+
+(rocq.extraction
+ (prelude Lost)
+ (extracted_files Lost.out LostAlias.out)
+ (flags
+  (:standard -test-mode))
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff Lost.expected.out Lost.out)))
+
+(rule
+ (alias runtest)
+ (action
+  (diff LostAlias.expected.out LostAlias.out)))
+
+(rocq.extraction
+ (prelude LostModule)
+ (extracted_files LostModule.out)
+ (flags
+  (:standard -test-mode))
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff LostModule.expected.out LostModule.out)))
+
+(rocq.extraction
+ (prelude CurriedTypeVariance)
+ (extracted_files
+  PositiveCurriedType.out
+  NestedCurriedType.out
+  ChangingCurriedType.out
+  AlternatingCurriedType.out
+  IndirectNegativeCurriedType.out
+  InlineNegativeCurriedType.out
+  NaturalNegativeCurriedType.out)
+ (flags
+  (:standard -test-mode))
+ (theories TypeScriptExtraction Stdlib))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff PositiveCurriedType.expected.out PositiveCurriedType.out)
+   (diff NestedCurriedType.expected.out NestedCurriedType.out)
+   (diff ChangingCurriedType.expected.out ChangingCurriedType.out)
+   (diff AlternatingCurriedType.expected.out AlternatingCurriedType.out)
+   (diff
+    IndirectNegativeCurriedType.expected.out
+    IndirectNegativeCurriedType.out)
+   (diff
+    InlineNegativeCurriedType.expected.out
+    InlineNegativeCurriedType.out)
+   (diff
+    NaturalNegativeCurriedType.expected.out
+    NaturalNegativeCurriedType.out))))

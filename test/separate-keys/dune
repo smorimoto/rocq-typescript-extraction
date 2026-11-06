@@ -1,0 +1,67 @@
+; A module type, the module that implements it, and the functor over it
+; cross files: the consumer applies its functor over the module type of
+; key-sig.ts to the module of key-impl.ts, whose empty beside a
+; constructor Empty and whose set0 beside a set would key the module
+; apart from the module type if a file chose its own keys. The theory
+; KeyLibs, in ../key-libs, holds the two libraries.
+
+(rocq.extraction
+ (prelude SeparateKeys)
+ (extracted_files
+  separate-keys.ts
+  key-impl.ts
+  key-sig.ts
+  datatypes.ts
+  nat.ts)
+ (theories TypeScriptExtraction KeyLibs))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-keys.expected.ts separate-keys.ts)
+   (diff key-impl.expected.ts key-impl.ts)
+   (diff key-sig.expected.ts key-sig.ts)
+   (diff datatypes.expected.ts datatypes.ts)
+   (diff nat.expected.ts nat.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-keys.ts}
+   %{dep:key-impl.ts}
+   %{dep:key-sig.ts}
+   %{dep:datatypes.ts}
+   %{dep:nat.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-keys.ts}
+    %{dep:key-impl.ts}
+    %{dep:key-sig.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-keys.ts}
+    %{dep:key-impl.ts}
+    %{dep:key-sig.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts}))))

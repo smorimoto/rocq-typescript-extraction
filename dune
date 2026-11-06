@@ -1,0 +1,7 @@
+(dirs :standard \ node_modules)
+
+(env
+ (_
+  (rocq
+   (flags
+    (:standard -output-directory .)))))

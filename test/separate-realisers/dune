@@ -1,0 +1,53 @@
+; A constructor and the match function of a module type of another file,
+; Box.box of the theory Containers in ../containers, are realisers that
+; nothing in their own file refers to. The file that builds and matches a
+; box reaches them through the module object, so boxes.ts declares them
+; and exports the object.
+
+(rocq.extraction
+ (prelude SeparateRealisers)
+ (extracted_files separate-realisers.ts boxes.ts datatypes.ts)
+ (theories TypeScriptExtraction Containers))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-realisers.expected.ts separate-realisers.ts)
+   (diff boxes.expected.ts boxes.ts)
+   (diff datatypes.expected.ts datatypes.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-realisers.ts}
+   %{dep:boxes.ts}
+   %{dep:datatypes.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-realisers.ts}
+    %{dep:boxes.ts}
+    %{dep:datatypes.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-realisers.ts}
+    %{dep:boxes.ts}
+    %{dep:datatypes.ts}))))

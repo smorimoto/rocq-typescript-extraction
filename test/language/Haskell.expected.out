@@ -1,0 +1,5 @@
+step :: Nat -> Nat
+step n =
+  S n
+
+

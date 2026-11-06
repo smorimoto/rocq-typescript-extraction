@@ -1,0 +1,89 @@
+(rocq.extraction
+ (prelude Typing)
+ (extracted_files typing.ts reference.ts)
+ (theories TypeScriptExtraction CompCertTests compcert Flocq Stdlib))
+
+(rocq.extraction
+ (prelude MemoryModel)
+ (extracted_files memory.ts)
+ (theories TypeScriptExtraction CompCertTests compcert Flocq Stdlib))
+
+(rocq.extraction
+ (prelude Reference)
+ (extracted_files reference.ml reference.mli)
+ (theories CompCertTests compcert Flocq Stdlib))
+
+(executable
+ (name oracle)
+ (preprocess
+  (per_module
+   ((pps ppx_js_style -check-doc-comments)
+    Oracle)))
+ (modules Oracle Reference)
+ ; Standard OCaml extraction emits unused binders and partial matches.
+ (flags :standard -w -a))
+
+(rule
+ (target reference.out)
+ (action
+  (with-stdout-to
+   %{target}
+   (run ./oracle.exe))))
+
+(rule
+ (alias runtest)
+ (deps ../../oxlint.config.ts)
+ (action
+  (progn
+   (run sh %{dep:../no_assertions.sh} %{dep:typing.ts})
+   (run sh %{dep:../no_assertions.sh} %{dep:memory.ts})
+   (run sh %{dep:../no_assertions.sh} %{dep:reference.ts})
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:generated.oxlint.ts}
+    --deny-warnings
+    %{dep:typing.ts}
+    %{dep:memory.ts}
+    %{dep:reference.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:typing.ts}
+    %{dep:memory.ts}
+    %{dep:reference.ts}))))
+
+(rule
+ (deps
+  gen-dune.ts
+  ../../submodules/compcert/LICENSE
+  (glob_files ../../submodules/compcert/lib/*.v)
+  (glob_files ../../submodules/compcert/common/*.v)
+  (glob_files ../../submodules/compcert/cfrontend/*.v)
+  (glob_files ../../submodules/compcert/x86/*.v)
+  (glob_files ../../submodules/compcert/x86_64/*.v)
+  (glob_files_rec ../../submodules/compcert/flocq/*.v))
+ (action
+  (with-stdout-to
+   compcert.dune.gen
+   (run bun gen-dune.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (diff ../../submodules/compcert.dune compcert.dune.gen)))
+
+(cram
+ (applies_to reference)
+ (deps
+  reference-observations.ts
+  reference.ts
+  typing.ts
+  support.ts
+  reference.out))

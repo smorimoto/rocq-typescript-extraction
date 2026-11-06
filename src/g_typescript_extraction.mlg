@@ -1,0 +1,39 @@
+DECLARE PLUGIN "rocq-typescript-extraction.backend"
+
+{
+
+open Procq.Prim
+open Stdarg
+open Ts_extract
+
+let pr_selector { Ts_match.test; args } =
+  Pp.(
+    str "["
+    ++ (match test with
+        | None -> str "_"
+        | Some test -> qs test)
+    ++ prlist (fun arg -> spc () ++ qs arg) args
+    ++ str "]")
+
+}
+
+VERNAC COMMAND EXTEND TypeScriptExtraction CLASSIFIED AS QUERY STATE opaque_access
+| [ "TypeScript" "Extraction" global(q) ] -> { simple_extraction q }
+| [ "TypeScript" "Recursive" "Extraction" ne_global_list(qs) ] -> { full_extraction None qs }
+| [ "TypeScript" "Extraction" string(file) ne_global_list(qs) ] -> { full_extraction (Some file) qs }
+END
+
+VERNAC COMMAND EXTEND TypeScriptSeparateExtraction CLASSIFIED AS QUERY STATE opaque_access
+| [ "TypeScript" "Separate" "Extraction" ne_global_list(qs) ] -> { separate_extraction qs }
+END
+
+VERNAC ARGUMENT EXTEND ts_selector
+  PRINTED BY { pr_selector }
+| [ "[" "_" string_list(args) "]" ] -> { { Ts_match.test = None; args } }
+| [ "[" string(test) string_list(args) "]" ] -> { { Ts_match.test = Some test; args } }
+END
+
+VERNAC COMMAND EXTEND TypeScriptExtractMatch CLASSIFIED AS SIDEFF
+| [ "TypeScript" "Extract" "Match" global(q) "=>" ne_ts_selector_list(selectors) ] ->
+  { Ts_match.extract_match q selectors }
+END

@@ -1,0 +1,8 @@
+; The theory whose library separate-naming imports, named so that its
+; import alias would contain a word the presets reject. It is a directory
+; of its own because the extraction of separate-naming claims every
+; directory under it.
+
+(rocq.theory
+ (name NamingLibs)
+ (theories TypeScriptExtraction))

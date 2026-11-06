@@ -1,0 +1,3 @@
+File "./MatchDirective.v", line 13, characters 57-61:
+The command has indeed failed with message:
+TypeScript Extract Match for unit gives a test for its one constructor, which no match tests, so its selector is written with _.

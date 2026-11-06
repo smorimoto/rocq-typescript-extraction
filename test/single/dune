@@ -1,0 +1,56 @@
+; TypeScript Extraction qualid prints one declaration to the standard
+; output. Redirect captures each print in a .out file, compared with its
+; golden. The prints of tree and mirror form a module on their own, which
+; is typechecked and run like the other goldens.
+
+(rocq.extraction
+ (prelude Single)
+ (extracted_files Tree.out Mirror.out Add.out)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff Tree.expected.out Tree.out)
+   (diff Mirror.expected.out Mirror.out)
+   (diff Add.expected.out Add.out))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:Tree.out}
+   %{dep:Mirror.out}
+   %{dep:Add.out})))
+
+(rule
+ (with-stdout-to
+  single.ts
+  (progn
+   (cat Tree.out)
+   (echo "\n")
+   (cat Mirror.out))))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:single.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:single.ts}))))

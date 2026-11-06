@@ -1,0 +1,3 @@
+File "./CurriedTypeVariance.v", line 84, characters 0-102:
+The command has indeed failed with message:
+TypeScript extraction cannot type Dune_Extraction_CurriedTypeVariance.CurriedTypeVariance.keep_natural: extraction lost a type in it that the kernel does not give, and TypeScript has no type for it without unknown.

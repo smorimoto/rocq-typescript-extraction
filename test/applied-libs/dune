@@ -1,0 +1,8 @@
+; The theory whose libraries OrderSig and OrderTac separate-applied uses:
+; module types applied to a parameter, and a functor over them. It is a
+; directory of its own because the extraction of separate-applied claims
+; every directory under it.
+
+(rocq.theory
+ (name AppliedLibs)
+ (theories TypeScriptExtraction))

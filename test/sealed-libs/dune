@@ -1,0 +1,9 @@
+; The theory whose libraries SolverSig and Solvers separate-sealed uses:
+; the module types of a lattice and a solver, and two solvers sealed with
+; the second, one of them applying the other to the alias of its
+; parameter. It is a directory of its own because the extraction of
+; separate-sealed claims every directory under it.
+
+(rocq.theory
+ (name SealedLibs)
+ (theories TypeScriptExtraction))

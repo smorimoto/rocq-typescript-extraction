@@ -1,0 +1,3 @@
+File "./MatchDirective.v", line 29, characters 0-68:
+The command has indeed failed with message:
+TypeScript Extract Match for option needs Extract Inductive option, which maps the type the tests read.

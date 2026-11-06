@@ -1,0 +1,56 @@
+; A file that refers to another one in type positions only imports it as
+; types: separate-types.ts names Nat and List of datatypes.ts and PArray
+; of prim-array.ts in its signatures, and binds map of list-def.ts, so
+; list-def.ts alone is a value import.
+
+(rocq.extraction
+ (prelude SeparateTypes)
+ (extracted_files separate-types.ts datatypes.ts list-def.ts prim-array.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-types.expected.ts separate-types.ts)
+   (diff datatypes.expected.ts datatypes.ts)
+   (diff list-def.expected.ts list-def.ts)
+   (diff prim-array.expected.ts prim-array.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-types.ts}
+   %{dep:datatypes.ts}
+   %{dep:list-def.ts}
+   %{dep:prim-array.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-types.ts}
+    %{dep:datatypes.ts}
+    %{dep:list-def.ts}
+    %{dep:prim-array.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-types.ts}
+    %{dep:datatypes.ts}
+    %{dep:list-def.ts}
+    %{dep:prim-array.ts}))))

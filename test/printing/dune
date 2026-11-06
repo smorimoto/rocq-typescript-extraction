@@ -1,0 +1,19 @@
+(copy_files# ../../src/ts_print.{ml,mli})
+
+(copy_files# ../../src/import.ml)
+
+(library
+ (name printing_cases)
+ (wrapped false)
+ (modules import ts_print printing_cases)
+ (libraries base stdio)
+ (preprocess
+  (pps ppx_jane ppx_js_style -check-doc-comments)))
+
+(library
+ (name printing_tests)
+ (modules printing)
+ (libraries base stdio printing_cases)
+ (inline_tests)
+ (preprocess
+  (pps ppx_expect ppx_js_style -check-doc-comments)))

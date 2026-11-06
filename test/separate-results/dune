@@ -1,0 +1,53 @@
+; Type lambdas of a functor signature's result across files: the consumer
+; applies a functor-typed parameter whose signature, in result-sigs.ts,
+; leaves an abstract type in its result, and applies its functor to the
+; implementations of result-sigs.ts. The theory ThroughLibs, in
+; ../through-libs, holds the library.
+
+(rocq.extraction
+ (prelude SeparateResults)
+ (extracted_files separate-results.ts result-sigs.ts datatypes.ts)
+ (theories TypeScriptExtraction ThroughLibs))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-results.expected.ts separate-results.ts)
+   (diff result-sigs.expected.ts result-sigs.ts)
+   (diff datatypes.expected.ts datatypes.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-results.ts}
+   %{dep:result-sigs.ts}
+   %{dep:datatypes.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-results.ts}
+    %{dep:result-sigs.ts}
+    %{dep:datatypes.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-results.ts}
+    %{dep:result-sigs.ts}
+    %{dep:datatypes.ts}))))

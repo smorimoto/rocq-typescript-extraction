@@ -1,0 +1,26 @@
+(rocq.extraction
+ (prelude Programs)
+ (extracted_files primitives.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run sh %{dep:../../test/no_assertions.sh} %{dep:primitives.ts})
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:primitives.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:primitives.ts}))))

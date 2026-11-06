@@ -1,0 +1,7 @@
+; The theory whose module Figure separate-aliases aliases. It is a directory
+; of its own because the extraction of separate-aliases claims every
+; directory under it.
+
+(rocq.theory
+ (name Figures)
+ (theories TypeScriptExtraction))

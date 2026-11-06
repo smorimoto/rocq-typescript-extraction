@@ -1,0 +1,7 @@
+; The theory whose libraries Pair and PairExt separate-prefix uses from a
+; third file. It is a directory of its own because the extraction of
+; separate-prefix claims every directory under it.
+
+(rocq.theory
+ (name PairLibs)
+ (theories TypeScriptExtraction))

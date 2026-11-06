@@ -1,0 +1,52 @@
+; TypeScript Separate Extraction run from inside the open modules M and N,
+; which the environment closes as they stand, so separate-inside.ts holds
+; M with what it declares so far, and imports s and add from the files of
+; the Corelib libraries that define them.
+
+(rocq.extraction
+ (prelude SeparateInside)
+ (extracted_files separate-inside.ts datatypes.ts nat.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-inside.expected.ts separate-inside.ts)
+   (diff datatypes.expected.ts datatypes.ts)
+   (diff nat.expected.ts nat.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-inside.ts}
+   %{dep:datatypes.ts}
+   %{dep:nat.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-inside.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-inside.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts}))))

@@ -1,0 +1,75 @@
+(rocq.extraction
+ (prelude Reference)
+ (extracted_files reference.ts)
+ (theories TypeScriptExtraction BinNumsOps))
+
+(rocq.extraction
+ (prelude AsNumber)
+ (extracted_files as-number.ts)
+ (theories TypeScriptExtraction BinNumsOps))
+
+(rocq.extraction
+ (prelude AsBigInt)
+ (extracted_files as-big-int.ts)
+ (theories TypeScriptExtraction BinNumsOps))
+
+(rocq.extraction
+ (prelude NatAsBigInt)
+ (extracted_files nat-as-big-int.ts)
+ (theories TypeScriptExtraction BinNumsOps))
+
+(rocq.extraction
+ (prelude BinNumsAsBigInt)
+ (extracted_files bin-nums-as-big-int.ts)
+ (theories TypeScriptExtraction BinNumsOps))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff reference.expected.ts reference.ts)
+   (diff as-number.expected.ts as-number.ts)
+   (diff as-big-int.expected.ts as-big-int.ts)
+   (diff nat-as-big-int.expected.ts nat-as-big-int.ts)
+   (diff bin-nums-as-big-int.expected.ts bin-nums-as-big-int.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:reference.ts}
+   %{dep:as-number.ts}
+   %{dep:as-big-int.ts}
+   %{dep:nat-as-big-int.ts}
+   %{dep:bin-nums-as-big-int.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:reference.ts}
+    %{dep:as-number.ts}
+    %{dep:as-big-int.ts}
+    %{dep:nat-as-big-int.ts}
+    %{dep:bin-nums-as-big-int.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:reference.ts}
+    %{dep:as-number.ts}
+    %{dep:as-big-int.ts}
+    %{dep:nat-as-big-int.ts}
+    %{dep:bin-nums-as-big-int.ts}))))

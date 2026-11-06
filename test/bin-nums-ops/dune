@@ -1,0 +1,4 @@
+; A theory and an extraction cannot share a directory.
+
+(rocq.theory
+ (name BinNumsOps))

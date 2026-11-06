@@ -1,0 +1,35 @@
+(rocq.extraction
+ (prelude Programs)
+ (extracted_files integers.ts)
+ (theories TypeScriptExtraction Stdlib))
+
+(rule
+ (alias runtest)
+ (action
+  (diff integers.expected.ts integers.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:../no_assertions.sh} %{dep:integers.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:integers.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:integers.ts}))))

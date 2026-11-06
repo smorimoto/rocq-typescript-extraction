@@ -1,0 +1,7 @@
+(library
+ (name unification_tests)
+ (modules unification)
+ (libraries base stdio rocq-typescript-extraction.backend)
+ (inline_tests)
+ (preprocess
+  (pps ppx_jane ppx_js_style -check-doc-comments)))

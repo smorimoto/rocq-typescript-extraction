@@ -1,0 +1,8 @@
+(library
+ (name typescript_extraction_loader)
+ (preprocess
+  (pps ppx_js_style -check-doc-comments))
+ (public_name rocq-typescript-extraction.plugin)
+ (synopsis
+  "Load TypeScript extraction without changing Rocq's backtrace setting")
+ (libraries rocq-runtime.vernac))

@@ -1,0 +1,52 @@
+; The developments of ../theories extracted under the Number preset. The
+; generated files are checked like the test goldens, without a golden,
+; since the benchmark measures them rather than their text.
+
+(rocq.extraction
+ (prelude Programs)
+ (extracted_files sorts.ts bst.ts fib.ts pow.ts even-odd.ts integers.ts)
+ (theories TypeScriptExtraction Bench Stdlib))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../../test/no_assertions.sh}
+   %{dep:sorts.ts}
+   %{dep:bst.ts}
+   %{dep:fib.ts}
+   %{dep:pow.ts}
+   %{dep:even-odd.ts}
+   %{dep:integers.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:sorts.ts}
+    %{dep:bst.ts}
+    %{dep:fib.ts}
+    %{dep:pow.ts}
+    %{dep:even-odd.ts}
+    %{dep:integers.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:sorts.ts}
+    %{dep:bst.ts}
+    %{dep:fib.ts}
+    %{dep:pow.ts}
+    %{dep:even-odd.ts}
+    %{dep:integers.ts}))))

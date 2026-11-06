@@ -1,0 +1,46 @@
+; A match on a constant of another file is not reduced, since its import
+; keeps the declared type, and a match on a constant of the file is.
+
+(rocq.extraction
+ (prelude SeparateKnown)
+ (extracted_files separate-known.ts origin.ts)
+ (theories TypeScriptExtraction KnownLibs))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-known.expected.ts separate-known.ts)
+   (diff origin.expected.ts origin.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-known.ts}
+   %{dep:origin.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-known.ts}
+    %{dep:origin.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-known.ts}
+    %{dep:origin.ts}))))

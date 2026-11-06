@@ -1,0 +1,56 @@
+; Functors defined as a module across files: the consumer applies the
+; functors of as-module.ts defined as a module and as their parameter,
+; and defines one of its own as a module of outer.ts. The theory
+; ThroughLibs, in ../through-libs, holds the libraries.
+
+(rocq.extraction
+ (prelude SeparateAsModule)
+ (extracted_files separate-as-module.ts as-module.ts outer.ts datatypes.ts)
+ (theories TypeScriptExtraction ThroughLibs))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-as-module.expected.ts separate-as-module.ts)
+   (diff as-module.expected.ts as-module.ts)
+   (diff outer.expected.ts outer.ts)
+   (diff datatypes.expected.ts datatypes.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-as-module.ts}
+   %{dep:as-module.ts}
+   %{dep:outer.ts}
+   %{dep:datatypes.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-as-module.ts}
+    %{dep:as-module.ts}
+    %{dep:outer.ts}
+    %{dep:datatypes.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-as-module.ts}
+    %{dep:as-module.ts}
+    %{dep:outer.ts}
+    %{dep:datatypes.ts}))))

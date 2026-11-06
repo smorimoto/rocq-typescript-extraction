@@ -1,0 +1,3 @@
+File "./AmbiguousMention.v", line 12, characters 0-69:
+The command has indeed failed with message:
+The TypeScript type of route mentions Point, which names both Grid.point and Points.point, generated in different files. Rename one of them, or extract to a single file.

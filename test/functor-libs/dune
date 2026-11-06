@@ -1,0 +1,9 @@
+; The theory whose libraries Sig, Fun, and App separate-functors uses: a
+; module type and a module, a functor and a functor signature, and an
+; application, each in a file of its own. It is a directory of its own
+; because the extraction of separate-functors claims every directory under
+; it.
+
+(rocq.theory
+ (name FunctorLibs)
+ (theories TypeScriptExtraction))

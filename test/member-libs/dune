@@ -1,0 +1,9 @@
+; The theory whose libraries Sorts and Nests separate-members uses: an
+; application whose members are named like methods of built-ins, and a
+; functor whose body aliases a module nested in an application. It is a
+; directory of its own because the extraction of separate-members claims
+; every directory under it.
+
+(rocq.theory
+ (name MemberLibs)
+ (theories TypeScriptExtraction))

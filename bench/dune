@@ -1,0 +1,13 @@
+; Mitata runs the copies of these files under _build/default/bench,
+; next to the programs dune extracts. The alias builds the hand-written
+; files and the extracted ones. `bun run bench` builds the alias and
+; then runs them with Bun.
+
+(alias
+ (name bench)
+ (deps
+  (glob_files *.ts)
+  (glob_files fiat-crypto/extracted/*.ts)
+  (glob_files runtime/*.ts)
+  (glob_files bigint/*.ts)
+  (glob_files number/*.ts)))

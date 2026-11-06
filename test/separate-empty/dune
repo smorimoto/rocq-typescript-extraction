@@ -1,0 +1,42 @@
+; Separate extraction under the Number preset from a library of which
+; nothing remains. twice and pick use nat and bool as types only, which
+; map to number and boolean, so no realiser of Datatypes is declared and
+; the backend writes no datatypes.ts, where an empty file would fail
+; unicorn's no-empty-file and oxfmt --check. The stanza lists only the
+; file that exists.
+
+(rocq.extraction
+ (prelude SeparateEmpty)
+ (extracted_files separate-empty.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff separate-empty.expected.ts separate-empty.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:../no_assertions.sh} %{dep:separate-empty.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-empty.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-empty.ts}))))

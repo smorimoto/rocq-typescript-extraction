@@ -1,0 +1,8 @@
+; The theory that separate-modules binds Pair.map, Pair.reduce, and
+; Pair.sort from. It is a directory
+; of its own because the extraction of separate-modules claims every
+; directory under it.
+
+(rocq.theory
+ (name Tuples)
+ (theories TypeScriptExtraction))

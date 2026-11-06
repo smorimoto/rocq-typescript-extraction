@@ -1,0 +1,91 @@
+const __readCell = <T>(cells: readonly (readonly [T])[], index: number): T => {
+  const cell = cells[index];
+
+  if (cell === undefined) {
+    throw new Error("Invalid continuation stack access");
+  }
+
+  return cell[0];
+};
+
+const __writeCell = <T>(cells: [T][], index: number, value: T): void => {
+  const cell = cells[index];
+
+  if (cell === undefined) {
+    cells[index] = [value];
+  } else {
+    cell[0] = value;
+  }
+};
+
+export const mirror = <A>(t: Tree<A>): Tree<A> => {
+  const saved: [Tree<A>][] = [];
+  let top = 0;
+  const saved0: [A][] = [];
+  let top0 = 0;
+  const frames: [number][] = [];
+  let depth = 0;
+  let t0 = t;
+
+  for (;;) {
+    let returned: Tree<A>;
+
+    switch (t0.tag) {
+      case "Leaf": {
+        returned = leaf;
+        break;
+      }
+
+      case "Node": {
+        __writeCell(frames, depth, 0);
+        depth += 1;
+        __writeCell(saved, top, t0.l);
+        top += 1;
+        __writeCell(saved0, top0, t0.x);
+        top0 += 1;
+        t0 = t0.r;
+        continue;
+      }
+
+      default: {
+        returned = t0 satisfies never;
+      }
+    }
+
+    let resuming = true;
+
+    while (resuming) {
+      if (depth === 0) {
+        return returned;
+      }
+
+      depth -= 1;
+
+      switch (__readCell(frames, depth)) {
+        case 0: {
+          top0 -= 1;
+          const x: A = __readCell(saved0, top0);
+          top -= 1;
+          const l: Tree<A> = __readCell(saved, top);
+          __writeCell(frames, depth, 1);
+          depth += 1;
+          __writeCell(saved, top, returned);
+          top += 1;
+          __writeCell(saved0, top0, x);
+          top0 += 1;
+          t0 = l;
+          resuming = false;
+          continue;
+        }
+
+        default: {
+          top0 -= 1;
+          const x: A = __readCell(saved0, top0);
+          top -= 1;
+          const returned0: Tree<A> = __readCell(saved, top);
+          returned = node(returned0, x, returned);
+        }
+      }
+    }
+  }
+};

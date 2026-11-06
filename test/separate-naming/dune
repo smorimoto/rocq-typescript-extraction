@@ -1,0 +1,50 @@
+; The import alias of a library whose name holds a word the presets reject
+; takes the replacement that every identifier takes.
+
+(rocq.extraction
+ (prelude SeparateNaming)
+ (extracted_files separate-naming.ts shapes.ts datatypes.ts)
+ (theories TypeScriptExtraction NamingLibs))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-naming.expected.ts separate-naming.ts)
+   (diff shapes.expected.ts shapes.ts)
+   (diff datatypes.expected.ts datatypes.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-naming.ts}
+   %{dep:shapes.ts}
+   %{dep:datatypes.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-naming.ts}
+    %{dep:shapes.ts}
+    %{dep:datatypes.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-naming.ts}
+    %{dep:shapes.ts}
+    %{dep:datatypes.ts}))))

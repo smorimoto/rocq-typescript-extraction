@@ -1,0 +1,15 @@
+; The theory whose libraries the separate-through, separate-as-module,
+; separate-aliased, separate-kinds, separate-results, and
+; separate-dependent tests use: Outer, with functors with functors in
+; their bodies, their applications, and a functor signature that declares
+; a functor, AsModule, with functors defined as a module and as their
+; parameter, Aliased, with an application and a functor with aliases in
+; its body, Kinds, with a module type whose abstract type takes a
+; parameter, ResultSigs, with a functor signature whose result leaves an
+; abstract type, and Dependent, with a functor body member and a module
+; type specification of a dependent type. It is a directory of its own
+; because the extraction of a test claims every directory under it.
+
+(rocq.theory
+ (name ThroughLibs)
+ (theories TypeScriptExtraction))

@@ -1,0 +1,7 @@
+; The theory whose module Box separate-realisers builds and matches from
+; another file. It is a directory of its own because the extraction of
+; separate-realisers claims every directory under it.
+
+(rocq.theory
+ (name Containers)
+ (theories TypeScriptExtraction))

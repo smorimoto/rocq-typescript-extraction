@@ -1,0 +1,5 @@
+; Definitions the separate enclosing test applies from another file.
+
+(rocq.theory
+ (name FixLibs)
+ (theories TypeScriptExtraction))

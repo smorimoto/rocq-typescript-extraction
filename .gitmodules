@@ -1,0 +1,6 @@
+[submodule "submodules/compcert"]
+	path = submodules/compcert
+	url = https://github.com/AbsInt/CompCert.git
+[submodule "submodules/fiat-crypto"]
+	path = submodules/fiat-crypto
+	url = https://github.com/mit-plv/fiat-crypto.git

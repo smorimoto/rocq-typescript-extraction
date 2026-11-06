@@ -1,0 +1,86 @@
+; Compare marked documentation examples with their source or generated output.
+
+(rocq.extraction
+ (prelude Tree)
+ (extracted_files tree.ts)
+ (theories TypeScriptExtraction))
+
+(rocq.extraction
+ (prelude Point)
+ (extracted_files point.ts)
+ (theories TypeScriptExtraction))
+
+(rocq.extraction
+ (prelude Loop)
+ (extracted_files loop.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (diff tree.expected.ts tree.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (diff point.expected.ts point.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (diff loop.expected.ts loop.ts)))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../sample_blocks.sh}
+   %{dep:../../README.md}
+   Tree.v
+   %{dep:Tree.v})))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../sample_blocks.sh}
+   %{dep:../../docs/encoding.md}
+   point.ts
+   %{dep:point.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:tree.ts}
+   %{dep:point.ts}
+   %{dep:loop.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:tree.ts}
+    %{dep:point.ts}
+    %{dep:loop.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:tree.ts}
+    %{dep:point.ts}
+    %{dep:loop.ts}))))

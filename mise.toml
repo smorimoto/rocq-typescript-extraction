@@ -1,0 +1,8 @@
+[tools]
+bun = "1.4.4"
+direnv = "2.38.2"
+jactionlint = "2.4.0"
+node = "26"
+opam = "2.6.1"
+shellcheck = "0.11.0"
+shfmt = "3.14.1"

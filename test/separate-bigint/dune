@@ -1,0 +1,51 @@
+(rocq.extraction
+ (prelude SeparateBigInt)
+ (extracted_files separate-big-int.ts api.ts datatypes.ts nat.ts)
+ (theories TypeScriptExtraction BigIntLibs))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-big-int.expected.ts separate-big-int.ts)
+   (diff api.expected.ts api.ts)
+   (diff datatypes.expected.ts datatypes.ts)
+   (diff nat.expected.ts nat.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-big-int.ts}
+   %{dep:api.ts}
+   %{dep:datatypes.ts}
+   %{dep:nat.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-big-int.ts}
+    %{dep:api.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-big-int.ts}
+    %{dep:api.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts}))))

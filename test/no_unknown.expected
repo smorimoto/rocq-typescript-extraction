@@ -1,0 +1,10 @@
+functor-param-t.expected.ts 2
+functor-signature-result.expected.ts 2
+higher-kinded.expected.ts 3
+ignored-element.expected.ts 2
+inductive-result.expected.ts 2
+inline-signature.expected.ts 2
+member-ctor-clash-poly.expected.ts 2
+separate-keys/key-sig.expected.ts 2
+separate-kinds/kinds.expected.ts 2
+separate-results/result-sigs.expected.ts 2

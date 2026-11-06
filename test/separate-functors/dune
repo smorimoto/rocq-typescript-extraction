@@ -1,0 +1,73 @@
+; Module types, functors, functor signatures, and applications cross
+; files through imports: the consumer applies the functor of fun.ts to a
+; module of its own and to the module of sig.ts, passes that functor to a
+; functor of its own over the functor signature of fun.ts, and reads the
+; members and the types of the application of app.ts, binding the one
+; named like a method. The theory FunctorLibs, in ../functor-libs, holds
+; the three libraries.
+
+(rocq.extraction
+ (prelude SeparateFunctors)
+ (extracted_files
+  separate-functors.ts
+  app.ts
+  fun.ts
+  sig.ts
+  datatypes.ts
+  nat.ts)
+ (theories TypeScriptExtraction FunctorLibs))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-functors.expected.ts separate-functors.ts)
+   (diff app.expected.ts app.ts)
+   (diff fun.expected.ts fun.ts)
+   (diff sig.expected.ts sig.ts)
+   (diff datatypes.expected.ts datatypes.ts)
+   (diff nat.expected.ts nat.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-functors.ts}
+   %{dep:app.ts}
+   %{dep:fun.ts}
+   %{dep:sig.ts}
+   %{dep:datatypes.ts}
+   %{dep:nat.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-functors.ts}
+    %{dep:app.ts}
+    %{dep:fun.ts}
+    %{dep:sig.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-functors.ts}
+    %{dep:app.ts}
+    %{dep:fun.ts}
+    %{dep:sig.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts}))))

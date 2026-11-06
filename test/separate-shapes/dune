@@ -1,0 +1,63 @@
+; Types mapped by Extract Inductive and Extract Constant to code that
+; mentions a generated type, in the theory Shapes of ../shapes: segment is
+; readonly [Point, Point] in its own library, points.ts, and outline and
+; polyline are readonly Point[] in paths.ts, where Point is not declared.
+; Each file writes the Point that the code mentions through the import of
+; points.ts, as $Points.Point, and points.ts exports it. The root tsc run
+; typechecks the files.
+
+(rocq.extraction
+ (prelude SeparateShapes)
+ (extracted_files separate-shapes.ts points.ts paths.ts datatypes.ts nat.ts)
+ (theories TypeScriptExtraction Shapes))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-shapes.expected.ts separate-shapes.ts)
+   (diff points.expected.ts points.ts)
+   (diff paths.expected.ts paths.ts)
+   (diff datatypes.expected.ts datatypes.ts)
+   (diff nat.expected.ts nat.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-shapes.ts}
+   %{dep:points.ts}
+   %{dep:paths.ts}
+   %{dep:datatypes.ts}
+   %{dep:nat.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-shapes.ts}
+    %{dep:points.ts}
+    %{dep:paths.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-shapes.ts}
+    %{dep:points.ts}
+    %{dep:paths.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts}))))

@@ -1,0 +1,3 @@
+File "./MatchDirective.v", line 21, characters 0-69:
+The command has indeed failed with message:
+TypeScript Extract Match for nat gives 2 expressions for the arguments of S, but extraction keeps 1.

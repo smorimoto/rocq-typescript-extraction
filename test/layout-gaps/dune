@@ -1,0 +1,37 @@
+(executable
+ (name layout_gaps)
+ (preprocess
+  (pps ppx_jane ppx_js_style -check-doc-comments))
+ (modules layout_gaps)
+ (libraries base stdio printing_cases))
+
+(rule
+ (with-stdout-to
+  layout-gaps.ts
+  (run %{exe:layout_gaps.exe})))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:../no_assertions.sh} %{dep:layout-gaps.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:layout-gaps.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:layout-gaps.ts}))))

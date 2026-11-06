@@ -1,0 +1,54 @@
+; The outer functor of another file, whose nested functor hoists a
+; function, applied in this file.
+
+(rocq.extraction
+ (prelude SeparatePlain)
+ (extracted_files separate-plain.ts plain-nest.ts datatypes.ts nat.ts)
+ (theories TypeScriptExtraction FixLibs))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-plain.expected.ts separate-plain.ts)
+   (diff plain-nest.expected.ts plain-nest.ts)
+   (diff datatypes.expected.ts datatypes.ts)
+   (diff nat.expected.ts nat.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-plain.ts}
+   %{dep:plain-nest.ts}
+   %{dep:datatypes.ts}
+   %{dep:nat.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-plain.ts}
+    %{dep:plain-nest.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-plain.ts}
+    %{dep:plain-nest.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts}))))

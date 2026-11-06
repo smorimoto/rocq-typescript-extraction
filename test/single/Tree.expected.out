@@ -1,0 +1,21 @@
+export interface Leaf {
+  readonly tag: "Leaf";
+}
+
+export interface Node<A> {
+  readonly tag: "Node";
+  readonly l: Tree<A>;
+  readonly x: A;
+  readonly r: Tree<A>;
+}
+
+export type Tree<A> = Leaf | Node<A>;
+
+export const leaf: Leaf = { tag: "Leaf" };
+
+export const node = <A>(l: Tree<A>, x: A, r: Tree<A>): Tree<A> => ({
+  l,
+  r,
+  tag: "Node",
+  x,
+});

@@ -1,0 +1,50 @@
+; An application, in this file, of a functor of another file defined as a
+; module of the same body.
+
+(rocq.extraction
+ (prelude SeparateNested)
+ (extracted_files separate-nested.ts nested-mod.ts datatypes.ts)
+ (theories TypeScriptExtraction FixLibs))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-nested.expected.ts separate-nested.ts)
+   (diff nested-mod.expected.ts nested-mod.ts)
+   (diff datatypes.expected.ts datatypes.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-nested.ts}
+   %{dep:nested-mod.ts}
+   %{dep:datatypes.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-nested.ts}
+    %{dep:nested-mod.ts}
+    %{dep:datatypes.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-nested.ts}
+    %{dep:nested-mod.ts}
+    %{dep:datatypes.ts}))))

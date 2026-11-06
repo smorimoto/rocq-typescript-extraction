@@ -1,0 +1,55 @@
+; Separate extraction under the Number preset. The constants that declare
+; the constructors and match functions of nat and prod are in
+; datatypes.ts, where the types are, Nat.add is in nat.ts, and
+; separate-number.ts imports them. Those of Box are module members,
+; private to the file and properties of the module object, those of
+; Box.label among them, since asking for Box asks for its types. Nothing
+; builds or matches a prod, so matchProd is not declared.
+
+(rocq.extraction
+ (prelude SeparateNumber)
+ (extracted_files separate-number.ts datatypes.ts nat.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-number.expected.ts separate-number.ts)
+   (diff datatypes.expected.ts datatypes.ts)
+   (diff nat.expected.ts nat.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-number.ts}
+   %{dep:datatypes.ts}
+   %{dep:nat.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-number.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-number.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts}))))

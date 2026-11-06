@@ -1,0 +1,22 @@
+; The output is not named .ts, so the root tsconfig.json skips it.
+
+(copy_files# ../../src/ts_print.{ml,mli})
+
+(copy_files# ../../src/import.ml)
+
+(executable
+ (name random_programs)
+ (preprocess
+  (pps ppx_jane ppx_js_style -check-doc-comments))
+ (modules import ts_print random_programs)
+ (libraries base stdio base_quickcheck unix))
+
+(rule
+ (with-stdout-to
+  random_programs.out
+  (run %{exe:random_programs.exe} 1500)))
+
+(rule
+ (alias runtest)
+ (action
+  (run %{exe:random_programs.exe} 1500 --check %{dep:../../oxfmt.config.ts})))

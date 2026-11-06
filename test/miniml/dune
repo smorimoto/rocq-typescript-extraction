@@ -1,0 +1,52 @@
+(library
+ (name tuple_cases)
+ (modules tuple_cases)
+ (preprocess
+  (pps ppx_js_style -check-doc-comments))
+ (libraries base stdio rocq-typescript-extraction.backend))
+
+(library
+ (name tuple_tests)
+ (modules tuple_tests)
+ (libraries base stdio tuple_cases)
+ (inline_tests)
+ (preprocess
+  (pps ppx_jane ppx_js_style -check-doc-comments)))
+
+(executable
+ (name tuples)
+ (modules tuples)
+ (preprocess
+  (pps ppx_js_style -check-doc-comments))
+ (libraries stdio tuple_cases))
+
+(rule
+ (with-stdout-to
+  tuples.ts
+  (run %{exe:tuples.exe})))
+
+(rule
+ (alias runtest)
+ (action
+  (run sh %{dep:../no_assertions.sh} %{dep:tuples.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:tuples.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:tuples.ts}))))

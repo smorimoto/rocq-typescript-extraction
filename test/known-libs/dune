@@ -1,0 +1,7 @@
+; The theory whose constant separate-known matches on from another file. It
+; is a directory of its own because the extraction of separate-known claims
+; every directory under it.
+
+(rocq.theory
+ (name KnownLibs)
+ (theories TypeScriptExtraction))

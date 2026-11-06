@@ -1,0 +1,60 @@
+; A value in a module of another file whose name a rule of the presets
+; reads as a method of a built-in when called through an object, Pair.map,
+; Pair.reduce, and Pair.sort here, is bound at the top of the file that
+; calls it, as a top-level value of another file is, so that the call does
+; not go through the module object. The theory Tuples, in ../tuples, holds
+; the file it is bound from, whose sort compares with Nat.leb of nat.ts.
+; total refers to Pairs before Nat, and the imports are still written in
+; the order Oxfmt sorts them.
+
+(rocq.extraction
+ (prelude SeparateModules)
+ (extracted_files separate-modules.ts pairs.ts datatypes.ts nat.ts)
+ (theories TypeScriptExtraction Tuples))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-modules.expected.ts separate-modules.ts)
+   (diff pairs.expected.ts pairs.ts)
+   (diff datatypes.expected.ts datatypes.ts)
+   (diff nat.expected.ts nat.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-modules.ts}
+   %{dep:pairs.ts}
+   %{dep:datatypes.ts}
+   %{dep:nat.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-modules.ts}
+    %{dep:pairs.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-modules.ts}
+    %{dep:pairs.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts}))))

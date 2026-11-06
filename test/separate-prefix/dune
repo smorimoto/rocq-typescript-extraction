@@ -1,0 +1,57 @@
+; Two libraries of the theory PairLibs, in ../pair-libs, whose file names
+; are a prefix and its extension across a hyphen, pair.ts and pair-ext.ts,
+; both imported by the same file. Oxfmt's sortImports compares the whole
+; specifier, where the hyphen sorts before the dot of .ts, so
+; ./pair-ext.ts goes before ./pair.ts.
+
+(rocq.extraction
+ (prelude SeparatePrefix)
+ (extracted_files separate-prefix.ts pair.ts pair-ext.ts datatypes.ts)
+ (theories TypeScriptExtraction PairLibs))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-prefix.expected.ts separate-prefix.ts)
+   (diff pair.expected.ts pair.ts)
+   (diff pair-ext.expected.ts pair-ext.ts)
+   (diff datatypes.expected.ts datatypes.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-prefix.ts}
+   %{dep:pair.ts}
+   %{dep:pair-ext.ts}
+   %{dep:datatypes.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-prefix.ts}
+    %{dep:pair.ts}
+    %{dep:pair-ext.ts}
+    %{dep:datatypes.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-prefix.ts}
+    %{dep:pair.ts}
+    %{dep:pair-ext.ts}
+    %{dep:datatypes.ts}))))

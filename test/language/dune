@@ -1,0 +1,58 @@
+; Each TypeScript command extracts under Extraction Language OCaml, whose
+; MiniML holds the object of Counter, and restores the language set
+; before it, Haskell here, so the Extraction after them prints Haskell.
+
+(rocq.extraction
+ (prelude Language)
+ (extracted_files
+  counter.ts
+  Counter.out
+  language.ts
+  datatypes.ts
+  Haskell.out)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff counter.expected.ts counter.ts)
+   (diff Counter.expected.out Counter.out)
+   (diff language.expected.ts language.ts)
+   (diff datatypes.expected.ts datatypes.ts)
+   (diff Haskell.expected.out Haskell.out))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:counter.ts}
+   %{dep:language.ts}
+   %{dep:datatypes.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:counter.ts}
+    %{dep:language.ts}
+    %{dep:datatypes.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:counter.ts}
+    %{dep:language.ts}
+    %{dep:datatypes.ts}))))

@@ -1,0 +1,48 @@
+; The realisers of the primitive arrays, used through the alias PA of
+; PrimArray. The code of make names length as the key of an object
+; literal, which is not a reference to PrimArray.length, so the file that
+; uses make binds nothing of that name.
+
+(rocq.extraction
+ (prelude SeparatePrimitives)
+ (extracted_files separate-primitives.ts prim-array.ts)
+ (theories TypeScriptExtraction))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-primitives.expected.ts separate-primitives.ts)
+   (diff prim-array.expected.ts prim-array.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-primitives.ts}
+   %{dep:prim-array.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-primitives.ts}
+    %{dep:prim-array.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-primitives.ts}
+    %{dep:prim-array.ts}))))

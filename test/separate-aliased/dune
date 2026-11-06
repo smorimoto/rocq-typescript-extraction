@@ -1,0 +1,56 @@
+; Aliases across files: the consumer aliases an application of aliased.ts
+; and that alias, applies a functor of aliased.ts with aliases in its body,
+; and declares a functor whose body aliases modules of aliased.ts. The
+; theory ThroughLibs, in ../through-libs, holds the library.
+
+(rocq.extraction
+ (prelude SeparateAliased)
+ (extracted_files separate-aliased.ts aliased.ts datatypes.ts nat.ts)
+ (theories TypeScriptExtraction ThroughLibs))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-aliased.expected.ts separate-aliased.ts)
+   (diff aliased.expected.ts aliased.ts)
+   (diff datatypes.expected.ts datatypes.ts)
+   (diff nat.expected.ts nat.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-aliased.ts}
+   %{dep:aliased.ts}
+   %{dep:datatypes.ts}
+   %{dep:nat.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-aliased.ts}
+    %{dep:aliased.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-aliased.ts}
+    %{dep:aliased.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts}))))

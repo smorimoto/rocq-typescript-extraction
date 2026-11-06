@@ -1,0 +1,7 @@
+; The theory whose mapped types separate-shapes uses from another file. It
+; is a directory of its own because the extraction of separate-shapes
+; claims every directory under it.
+
+(rocq.theory
+ (name Shapes)
+ (theories TypeScriptExtraction))

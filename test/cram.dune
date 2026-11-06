@@ -1,0 +1,1241 @@
+(cram
+ (applies_to aliased-applications)
+ (alias output-tests)
+ (deps
+  aliased-applications.cases.ts
+  aliased-applications.ts
+  observe.ts))
+
+(cram
+ (applies_to aliases)
+ (alias output-tests)
+ (deps
+  aliases.cases.ts
+  aliases.ts
+  observe.ts))
+
+(cram
+ (applies_to applications)
+ (alias output-tests)
+ (deps
+  applications.cases.ts
+  applications.ts
+  observe.ts))
+
+(cram
+ (applies_to applied-module-type)
+ (alias output-tests)
+ (deps
+  applied-module-type.cases.ts
+  applied-module-type.ts
+  observe.ts))
+
+(cram
+ (applies_to applied-through)
+ (alias output-tests)
+ (deps
+  applied-through.cases.ts
+  applied-through.ts
+  observe.ts))
+
+(cram
+ (applies_to applied-to-alias)
+ (alias output-tests)
+ (deps
+  applied-to-alias.cases.ts
+  applied-to-alias.ts
+  observe.ts))
+
+(cram
+ (applies_to arrays)
+ (alias output-tests)
+ (deps
+  arrays.cases.ts
+  arrays.ts
+  observe.ts))
+
+(cram
+ (applies_to big-int-accumulators)
+ (alias output-tests)
+ (deps
+  big-int-accumulators.cases.ts
+  big-int-accumulators.ts
+  number-accumulators.ts
+  observe.ts
+  support.ts))
+
+(cram
+ (applies_to big-int-preset)
+ (alias output-tests)
+ (deps
+  big-int-preset.cases.ts
+  big-int-preset.ts
+  observe.ts))
+
+(cram
+ (applies_to big-nats)
+ (alias output-tests)
+ (deps
+  big-nats.cases.ts
+  big-nats.ts
+  observe.ts))
+
+(cram
+ (applies_to bodies)
+ (alias output-tests)
+ (deps
+  bodies.cases.ts
+  bodies.ts
+  observe.ts))
+
+(cram
+ (applies_to body-directives)
+ (alias output-tests)
+ (deps
+  body-directives.cases.ts
+  body-directives.ts
+  observe.ts))
+
+(cram
+ (applies_to body-statements)
+ (alias output-tests)
+ (deps
+  body-statements.cases.ts
+  body-statements.ts
+  observe.ts))
+
+(cram
+ (applies_to booleans)
+ (alias output-tests)
+ (deps
+  booleans.cases.ts
+  booleans.ts
+  observe.ts))
+
+(cram
+ (applies_to casts)
+ (alias output-tests)
+ (deps
+  casts.cases.ts
+  casts.ts
+  observe.ts))
+
+(cram
+ (applies_to coinductive-include)
+ (alias output-tests)
+ (deps
+  coinductive-include.cases.ts
+  coinductive-include.ts
+  observe.ts))
+
+(cram
+ (applies_to constructor-scope)
+ (alias output-tests)
+ (deps
+  constructor-scope.cases.ts
+  constructor-scope.ts
+  observe.ts))
+
+(cram
+ (applies_to constructors)
+ (alias output-tests)
+ (deps
+  constructors.cases.ts
+  constructors.ts
+  observe.ts))
+
+(cram
+ (applies_to curried-calls)
+ (alias output-tests)
+ (deps
+  curried-calls.cases.ts
+  curried-calls.ts
+  observe.ts))
+
+(cram
+ (applies_to curried-type-family)
+ (alias output-tests)
+ (deps
+  curried-type-family.cases.ts
+  curried-type-family.ts
+  observe.ts))
+
+(cram
+ (applies_to currying)
+ (alias output-tests)
+ (deps
+  currying.cases.ts
+  currying.ts
+  observe.ts
+  support.ts))
+
+(cram
+ (applies_to customs)
+ (alias output-tests)
+ (deps
+  customs.cases.ts
+  customs.ts
+  observe.ts
+  support.ts))
+
+(cram
+ (applies_to dependent)
+ (alias output-tests)
+ (deps
+  dependent.cases.ts
+  dependent.ts
+  observe.ts))
+
+(cram
+ (applies_to erased)
+ (alias output-tests)
+ (deps
+  erased.cases.ts
+  erased.ts
+  observe.ts
+  support.ts))
+
+(cram
+ (applies_to evaluation-order)
+ (alias output-tests)
+ (deps
+  evaluation-order.cases.ts
+  evaluation-order.ts
+  observe.ts
+  support.ts))
+
+(cram
+ (applies_to exported-application)
+ (alias output-tests)
+ (deps
+  exported-application.cases.ts
+  exported-application.ts
+  observe.ts))
+
+(cram
+ (applies_to exports)
+ (alias output-tests)
+ (deps
+  exports.cases.ts
+  exports.ts
+  observe.ts))
+
+(cram
+ (applies_to field-clash)
+ (alias output-tests)
+ (deps
+  field-clash.cases.ts
+  field-clash.ts
+  observe.ts))
+
+(cram
+ (applies_to floats)
+ (alias output-tests)
+ (deps
+  floats.cases.ts
+  floats.ts
+  observe.ts))
+
+(cram
+ (applies_to forests)
+ (alias output-tests)
+ (deps
+  forests.cases.ts
+  forests.ts
+  observe.ts))
+
+(cram
+ (applies_to functor-as-module)
+ (alias output-tests)
+ (deps
+  functor-as-module.cases.ts
+  functor-as-module.ts
+  observe.ts))
+
+(cram
+ (applies_to functor-dep)
+ (alias output-tests)
+ (deps
+  functor-dep.cases.ts
+  functor-dep.ts
+  observe.ts))
+
+(cram
+ (applies_to functor-param-t)
+ (alias output-tests)
+ (deps
+  functor-param-t.cases.ts
+  functor-param-t.ts
+  observe.ts))
+
+(cram
+ (applies_to functor-signature-result)
+ (alias output-tests)
+ (deps
+  functor-signature-result.cases.ts
+  functor-signature-result.ts
+  observe.ts))
+
+(cram
+ (applies_to functorial-module-type)
+ (alias output-tests)
+ (deps
+  functorial-module-type.cases.ts
+  functorial-module-type.ts
+  observe.ts))
+
+(cram
+ (applies_to functorial-type-applied)
+ (alias output-tests)
+ (deps
+  functorial-type-applied.cases.ts
+  functorial-type-applied.ts
+  observe.ts))
+
+(cram
+ (applies_to functors)
+ (alias output-tests)
+ (deps
+  functors.cases.ts
+  functors.ts
+  observe.ts
+  support.ts))
+
+(cram
+ (applies_to handlers)
+ (alias output-tests)
+ (deps
+  handlers.cases.ts
+  handlers.ts
+  observe.ts
+  support.ts))
+
+(cram
+ (applies_to higher-kinded)
+ (alias output-tests)
+ (deps
+  higher-kinded.cases.ts
+  higher-kinded.ts
+  observe.ts))
+
+(cram
+ (applies_to higher-order)
+ (alias output-tests)
+ (deps
+  higher-order.cases.ts
+  higher-order.ts
+  observe.ts))
+
+(cram
+ (applies_to hoisted)
+ (alias output-tests)
+ (deps
+  hoisted.cases.ts
+  hoisted.ts
+  observe.ts))
+
+(cram
+ (applies_to ignored-element)
+ (alias output-tests)
+ (deps
+  ignored-element.cases.ts
+  ignored-element.ts
+  observe.ts))
+
+(cram
+ (applies_to inductive-result)
+ (alias output-tests)
+ (deps
+  inductive-result.cases.ts
+  inductive-result.ts
+  observe.ts))
+
+(cram
+ (applies_to inherited-constants)
+ (alias output-tests)
+ (deps
+  inherited-constants.cases.ts
+  inherited-constants.ts
+  observe.ts))
+
+(cram
+ (applies_to inline-matches)
+ (alias output-tests)
+ (deps
+  inline-matches.cases.ts
+  inline-matches.ts
+  observe.ts))
+
+(cram
+ (applies_to inline-signature)
+ (alias output-tests)
+ (deps
+  inline-signature.cases.ts
+  inline-signature.ts
+  observe.ts))
+
+(cram
+ (applies_to inline-statements)
+ (alias output-tests)
+ (deps
+  inline-statements.cases.ts
+  inline-statements.ts
+  observe.ts))
+
+(cram
+ (applies_to int63)
+ (alias output-tests)
+ (deps
+  int63.cases.ts
+  int63.ts
+  observe.ts))
+
+(cram
+ (applies_to known-custom)
+ (alias output-tests)
+ (deps
+  known-custom.cases.ts
+  known-custom.ts
+  observe.ts
+  support.ts))
+
+(cram
+ (applies_to layout)
+ (alias output-tests)
+ (deps
+  layout.cases.ts
+  layout.ts
+  observe.ts
+  support.ts))
+
+(cram
+ (applies_to left-out)
+ (alias output-tests)
+ (deps
+  left-out.cases.ts
+  left-out.ts
+  observe.ts))
+
+(cram
+ (applies_to let-poly)
+ (alias output-tests)
+ (deps
+  let-poly.cases.ts
+  let-poly.ts
+  observe.ts
+  support.ts))
+
+(cram
+ (applies_to lets)
+ (alias output-tests)
+ (deps
+  lets.cases.ts
+  lets.ts
+  observe.ts
+  support.ts))
+
+(cram
+ (applies_to lifting)
+ (alias output-tests)
+ (deps
+  lifting.cases.ts
+  lifting.ts
+  observe.ts))
+
+(cram
+ (applies_to lists)
+ (alias output-tests)
+ (deps
+  lists.cases.ts
+  lists.ts
+  observe.ts
+  support.ts))
+
+(cram
+ (applies_to local-cofix)
+ (alias output-tests)
+ (deps
+  local-cofix.cases.ts
+  local-cofix.ts
+  observe.ts
+  support.ts))
+
+(cram
+ (applies_to loops)
+ (alias output-tests)
+ (deps
+  loops.cases.ts
+  loops.ts
+  observe.ts))
+
+(cram
+ (applies_to mapped-types)
+ (alias output-tests)
+ (deps
+  mapped-types.cases.ts
+  mapped-types.ts
+  observe.ts
+  separate-shapes/datatypes.ts
+  separate-shapes/nat.ts
+  separate-shapes/paths.ts
+  separate-shapes/points.ts
+  separate-shapes/separate-shapes.ts))
+
+(cram
+ (applies_to member-ctor-clash-poly)
+ (alias output-tests)
+ (deps
+  member-ctor-clash-poly.cases.ts
+  member-ctor-clash-poly.ts
+  observe.ts))
+
+(cram
+ (applies_to member-ctor-clash)
+ (alias output-tests)
+ (deps
+  member-ctor-clash.cases.ts
+  member-ctor-clash.ts
+  observe.ts))
+
+(cram
+ (applies_to method-member)
+ (alias output-tests)
+ (deps
+  method-member.cases.ts
+  method-member.ts
+  observe.ts
+  support.ts))
+
+(cram
+ (applies_to method-through-application)
+ (alias output-tests)
+ (deps
+  method-through-application.cases.ts
+  method-through-application.ts
+  observe.ts
+  support.ts))
+
+(cram
+ (applies_to modules)
+ (alias output-tests)
+ (deps
+  modules.cases.ts
+  modules.ts
+  observe.ts
+  support.ts))
+
+(cram
+ (applies_to monoid)
+ (alias output-tests)
+ (deps
+  monoid.cases.ts
+  monoid.ts
+  observe.ts))
+
+(cram
+ (applies_to naming)
+ (alias output-tests)
+ (deps
+  naming.cases.ts
+  naming.ts
+  observe.ts
+  support.ts))
+
+(cram
+ (applies_to narrowing-shapes)
+ (alias output-tests)
+ (deps
+  narrowing-shapes.cases.ts
+  narrowing-shapes.ts
+  observe.ts))
+
+(cram
+ (applies_to narrowing)
+ (alias output-tests)
+ (deps
+  narrowing.cases.ts
+  narrowing.ts
+  observe.ts
+  support.ts))
+
+(cram
+ (applies_to nat-primitives)
+ (alias output-tests)
+ (deps
+  nat-primitives.cases.ts
+  nat-primitives.ts
+  observe.ts))
+
+(cram
+ (applies_to nested-alias)
+ (alias output-tests)
+ (deps
+  nested-alias.cases.ts
+  nested-alias.ts
+  observe.ts
+  support.ts))
+
+(cram
+ (applies_to nested-checked-alias)
+ (alias output-tests)
+ (deps
+  nested-checked-alias.cases.ts
+  nested-checked-alias.ts
+  observe.ts))
+
+(cram
+ (applies_to nested-constructor-inference)
+ (alias output-tests)
+ (deps
+  nested-constructor-inference.cases.ts
+  nested-constructor-inference.ts
+  observe.ts))
+
+(cram
+ (applies_to nested-type-dependencies)
+ (alias output-tests)
+ (deps
+  nested-type-dependencies.cases.ts
+  nested-type-dependencies.ts
+  observe.ts))
+
+(cram
+ (applies_to nested)
+ (alias output-tests)
+ (deps
+  nested.cases.ts
+  nested.ts
+  observe.ts))
+
+(cram
+ (applies_to number-preset)
+ (alias output-tests)
+ (deps
+  number-preset.cases.ts
+  number-preset.ts
+  observe.ts))
+
+(cram
+ (applies_to numeric-constants)
+ (alias output-tests)
+ (deps
+  numeric-constants-number.ts
+  numeric-constants.cases.ts
+  numeric-constants.ts
+  observe.ts))
+
+(cram
+ (applies_to order-tactics)
+ (alias output-tests)
+ (deps
+  observe.ts
+  order-tactics.cases.ts
+  order-tactics.ts))
+
+(cram
+ (applies_to partial-application-captures)
+ (alias output-tests)
+ (deps
+  observe.ts
+  partial-application-captures.cases.ts
+  partial-application-captures.ts))
+
+(cram
+ (applies_to placed)
+ (alias output-tests)
+ (deps
+  observe.ts
+  placed.cases.ts
+  placed.ts
+  separate-placed/datatypes.ts
+  separate-placed/placed.ts
+  separate-placed/separate-placed.ts))
+
+(cram
+ (applies_to plain-nest)
+ (alias output-tests)
+ (deps
+  observe.ts
+  plain-nest.cases.ts
+  plain-nest.ts
+  separate-plain/datatypes.ts
+  separate-plain/nat.ts
+  separate-plain/plain-nest.ts
+  separate-plain/separate-plain.ts))
+
+(cram
+ (applies_to presets)
+ (alias output-tests)
+ (deps
+  big-int-number.ts
+  number-big-int.ts
+  observe.ts
+  presets.cases.ts))
+
+(cram
+ (applies_to primitive-types)
+ (alias output-tests)
+ (deps
+  observe.ts
+  primitive-types.cases.ts
+  primitive-types.ts))
+
+(cram
+ (applies_to primitives)
+ (alias output-tests)
+ (deps
+  observe.ts
+  primitives.cases.ts
+  primitives.ts))
+
+(cram
+ (applies_to rank-two)
+ (alias output-tests)
+ (deps
+  observe.ts
+  rank-two.cases.ts
+  rank-two.ts))
+
+(cram
+ (applies_to realisers)
+ (alias output-tests)
+ (deps
+  observe.ts
+  realisers.cases.ts
+  realisers.ts))
+
+(cram
+ (applies_to recovered-alias)
+ (alias output-tests)
+ (deps
+  observe.ts
+  recovered-alias.cases.ts
+  recovered-alias.ts))
+
+(cram
+ (applies_to runtime-bench)
+ (alias output-tests)
+ (deps
+  ../bench/runtime.support.ts
+  ../bench/runtime/primitives.ts
+  observe.ts
+  runtime-bench.cases.ts))
+
+(cram
+ (applies_to sample)
+ (alias output-tests)
+ (deps
+  observe.ts
+  sample.cases.ts
+  sample.ts
+  support.ts))
+
+(cram
+ (applies_to sealed-param-alias)
+ (alias output-tests)
+ (deps
+  observe.ts
+  sealed-param-alias.cases.ts
+  sealed-param-alias.ts))
+
+(cram
+ (applies_to sealed-solvers)
+ (alias output-tests)
+ (deps
+  observe.ts
+  sealed-solvers.cases.ts
+  sealed-solvers.ts
+  separate-sealed/datatypes.ts
+  separate-sealed/nat.ts
+  separate-sealed/separate-sealed.ts
+  separate-sealed/solver-sig.ts
+  separate-sealed/solvers.ts))
+
+(cram
+ (applies_to sealed)
+ (alias output-tests)
+ (deps
+  observe.ts
+  sealed.cases.ts
+  sealed.ts))
+
+(cram
+ (applies_to shadow)
+ (alias output-tests)
+ (deps
+  observe.ts
+  shadow.cases.ts
+  shadow.ts))
+
+(cram
+ (applies_to shape-names)
+ (alias output-tests)
+ (deps
+  observe.ts
+  shape-names.cases.ts
+  shape-names.ts
+  support.ts))
+
+(cram
+ (applies_to short-circuit)
+ (alias output-tests)
+ (deps
+  observe.ts
+  short-circuit.cases.ts
+  short-circuit.ts))
+
+(cram
+ (applies_to signature-rename)
+ (alias output-tests)
+ (deps
+  observe.ts
+  signature-rename.cases.ts
+  signature-rename.ts
+  support.ts))
+
+(cram
+ (applies_to signatures)
+ (alias output-tests)
+ (deps
+  observe.ts
+  signatures.cases.ts
+  signatures.ts))
+
+(cram
+ (applies_to statements)
+ (alias output-tests)
+ (deps
+  observe.ts
+  statements.cases.ts
+  statements.ts
+  support.ts))
+
+(cram
+ (applies_to streams)
+ (alias output-tests)
+ (deps
+  observe.ts
+  streams.cases.ts
+  streams.ts
+  support.ts))
+
+(cram
+ (applies_to strings)
+ (alias output-tests)
+ (deps
+  observe.ts
+  strings.cases.ts
+  strings.ts))
+
+(cram
+ (applies_to three-way)
+ (alias output-tests)
+ (deps
+  observe.ts
+  three-way.cases.ts
+  three-way.ts))
+
+(cram
+ (applies_to type-exports)
+ (alias output-tests)
+ (deps
+  observe.ts
+  support.ts
+  type-exports.cases.ts
+  type-exports.ts))
+
+(cram
+ (applies_to type-fixpoint)
+ (alias output-tests)
+ (deps
+  observe.ts
+  type-fixpoint.cases.ts
+  type-fixpoint.ts))
+
+(cram
+ (applies_to unknown)
+ (alias output-tests)
+ (deps
+  observe.ts
+  support.ts
+  unknown.cases.ts
+  unknown.ts))
+
+(cram
+ (applies_to unliftable)
+ (alias output-tests)
+ (deps
+  observe.ts
+  unliftable.cases.ts
+  unliftable.ts))
+
+(cram
+ (applies_to with)
+ (alias output-tests)
+ (deps
+  observe.ts
+  with.cases.ts
+  with.ts))
+
+(subdir bin-nums
+ (cram
+  (applies_to bin-nums)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   as-number.ts
+   bin-nums.cases.ts
+   reference.ts)))
+
+(subdir compcert
+ (cram
+  (applies_to memory)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   memory.cases.ts
+   memory.ts
+   support.ts
+   typing.ts))
+
+ (cram
+  (applies_to typing)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   support.ts
+   typing.cases.ts
+   typing.ts)))
+
+(subdir docs
+ (cram
+  (applies_to loop)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   loop.cases.ts
+   loop.ts))
+
+ (cram
+  (applies_to point)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   point.cases.ts
+   point.ts))
+
+ (cram
+  (applies_to tree)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   tree.cases.ts
+   tree.ts)))
+
+(subdir miniml
+ (cram
+  (applies_to tuples)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   tuples.cases.ts
+   tuples.ts)))
+
+(subdir monolithic-mentions
+ (cram
+  (applies_to monolithic-mentions)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   monolithic-mentions.cases.ts
+   monolithic-mentions.ts)))
+
+(subdir reconstructed-dependencies
+ (cram
+  (applies_to dependencies)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   datatypes.ts
+   dependencies.cases.ts
+   monolithic.ts
+   payloads.ts)))
+
+(subdir separate-aliases
+ (cram
+  (applies_to separate-aliases)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   datatypes.ts
+   nat.ts
+   plane.ts
+   separate-aliases.cases.ts
+   separate-aliases.ts)))
+
+(subdir separate-applied
+ (cram
+  (applies_to separate-applied)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   datatypes.ts
+   nat.ts
+   order-sig.ts
+   order-tac.ts
+   separate-applied.cases.ts
+   separate-applied.ts)))
+
+(subdir separate-as-module
+ (cram
+  (applies_to separate-as-module)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   as-module.ts
+   datatypes.ts
+   outer.ts
+   separate-as-module.cases.ts
+   separate-as-module.ts)))
+
+(subdir separate-bigint
+ (cram
+  (applies_to separate-big-int)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   api.ts
+   datatypes.ts
+   nat.ts
+   separate-big-int.cases.ts
+   separate-big-int.ts)))
+
+(subdir separate-dependent
+ (cram
+  (applies_to separate-dependent)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   datatypes.ts
+   dependent.ts
+   separate-dependent.cases.ts
+   separate-dependent.ts)))
+
+(subdir separate-empty
+ (cram
+  (applies_to separate-empty)
+  (alias output-tests)
+  (deps
+   %{bin:rocq}
+   (package rocq-typescript-extraction)
+   (glob_files ../../theories/*.vo)
+   SeparateEmpty.v
+   ../observe.ts
+   separate-empty.cases.ts
+   separate-empty.ts)))
+
+(subdir separate-functors
+ (cram
+  (applies_to separate-functors)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   app.ts
+   datatypes.ts
+   fun.ts
+   nat.ts
+   separate-functors.cases.ts
+   separate-functors.ts
+   sig.ts)))
+
+(subdir separate-inside
+ (cram
+  (applies_to separate-inside)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   datatypes.ts
+   nat.ts
+   separate-inside.cases.ts
+   separate-inside.ts)))
+
+(subdir separate-keys
+ (cram
+  (applies_to separate-keys)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   datatypes.ts
+   key-impl.ts
+   key-sig.ts
+   nat.ts
+   separate-keys.cases.ts
+   separate-keys.ts)))
+
+(subdir separate-kinds
+ (cram
+  (applies_to separate-kinds)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   datatypes.ts
+   kinds.ts
+   nat.ts
+   separate-kinds.cases.ts
+   separate-kinds.ts)))
+
+(subdir separate-known
+ (cram
+  (applies_to separate-known)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   origin.ts
+   separate-known.cases.ts
+   separate-known.ts)))
+
+(subdir separate-members
+ (cram
+  (applies_to separate-members)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   ../support.ts
+   datatypes.ts
+   nests.ts
+   separate-members.cases.ts
+   separate-members.ts
+   sorts.ts)))
+
+(subdir separate-mentions
+ (cram
+  (applies_to separate-mentions)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   boxes.ts
+   points.ts
+   separate-mentions.cases.ts
+   separate-mentions.ts)))
+
+(subdir separate-modules
+ (cram
+  (applies_to separate-modules)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   datatypes.ts
+   nat.ts
+   pairs.ts
+   separate-modules.cases.ts
+   separate-modules.ts)))
+
+(subdir separate-naming
+ (cram
+  (applies_to separate-naming)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   datatypes.ts
+   separate-naming.cases.ts
+   separate-naming.ts
+   shapes.ts)))
+
+(subdir separate-number
+ (cram
+  (applies_to separate-number)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   datatypes.ts
+   nat.ts
+   separate-number.cases.ts
+   separate-number.ts)))
+
+(subdir separate-prefix
+ (cram
+  (applies_to separate-prefix)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   datatypes.ts
+   pair-ext.ts
+   pair.ts
+   separate-prefix.cases.ts
+   separate-prefix.ts)))
+
+(subdir separate-primitives
+ (cram
+  (applies_to separate-primitives)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   prim-array.ts
+   separate-primitives.cases.ts
+   separate-primitives.ts)))
+
+(subdir separate-realisers
+ (cram
+  (applies_to separate-realisers)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   boxes.ts
+   datatypes.ts
+   separate-realisers.cases.ts
+   separate-realisers.ts)))
+
+(subdir separate-results
+ (cram
+  (applies_to separate-results)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   datatypes.ts
+   result-sigs.ts
+   separate-results.cases.ts
+   separate-results.ts)))
+
+(subdir separate-through
+ (cram
+  (applies_to separate-through)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   datatypes.ts
+   outer.ts
+   separate-through.cases.ts
+   separate-through.ts)))
+
+(subdir separate-types
+ (cram
+  (applies_to separate-types)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   ../support.ts
+   datatypes.ts
+   list-def.ts
+   prim-array.ts
+   separate-types.cases.ts
+   separate-types.ts)))
+
+(subdir separate
+ (cram
+  (applies_to separate)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   datatypes.ts
+   list-def.ts
+   separate.cases.ts
+   separate.ts)))
+
+(subdir single
+ (cram
+  (applies_to single)
+  (alias output-tests)
+  (deps
+   ../observe.ts
+   single.cases.ts
+   single.ts)))

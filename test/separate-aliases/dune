@@ -1,0 +1,55 @@
+; An alias of a module of another file, Figure of ../figures, is the object
+; of that module through the import of its file, and declares one alias of
+; each of its types.
+
+(rocq.extraction
+ (prelude SeparateAliases)
+ (extracted_files separate-aliases.ts plane.ts datatypes.ts nat.ts)
+ (theories TypeScriptExtraction Figures))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-aliases.expected.ts separate-aliases.ts)
+   (diff plane.expected.ts plane.ts)
+   (diff datatypes.expected.ts datatypes.ts)
+   (diff nat.expected.ts nat.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-aliases.ts}
+   %{dep:plane.ts}
+   %{dep:datatypes.ts}
+   %{dep:nat.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-aliases.ts}
+    %{dep:plane.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-aliases.ts}
+    %{dep:plane.ts}
+    %{dep:datatypes.ts}
+    %{dep:nat.ts}))))

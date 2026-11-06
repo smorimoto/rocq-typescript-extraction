@@ -1,0 +1,7 @@
+; The theory whose mapped type code separate-mentions and
+; monolithic-mentions extract. Point and origin live here, and the
+; directives in Boxes mention them.
+
+(rocq.theory
+ (name Mentions)
+ (theories TypeScriptExtraction))

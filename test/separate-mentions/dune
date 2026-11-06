@@ -1,0 +1,51 @@
+; Mapped type code that mentions Point and origin of mentions/Points.
+; The qualifier rewrites references only, and a constructor string the
+; same way. typeof origin is a type position, so points.ts is a type import.
+
+(rocq.extraction
+ (prelude SeparateMentions)
+ (extracted_files separate-mentions.ts boxes.ts points.ts)
+ (theories TypeScriptExtraction Mentions))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (diff separate-mentions.expected.ts separate-mentions.ts)
+   (diff boxes.expected.ts boxes.ts)
+   (diff points.expected.ts points.ts))))
+
+(rule
+ (alias runtest)
+ (action
+  (run
+   sh
+   %{dep:../no_assertions.sh}
+   %{dep:separate-mentions.ts}
+   %{dep:boxes.ts}
+   %{dep:points.ts})))
+
+(rule
+ (alias runtest)
+ (action
+  (progn
+   (run
+    bunx
+    --no-install
+    oxlint
+    --config
+    %{dep:../../oxlint.config.ts}
+    --deny-warnings
+    %{dep:separate-mentions.ts}
+    %{dep:boxes.ts}
+    %{dep:points.ts})
+   (run
+    bunx
+    --no-install
+    oxfmt
+    --config
+    %{dep:../../oxfmt.config.ts}
+    --check
+    %{dep:separate-mentions.ts}
+    %{dep:boxes.ts}
+    %{dep:points.ts}))))
