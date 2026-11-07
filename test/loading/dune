@@ -1,6 +1,13 @@
 (rocq.extraction
- (prelude Backtrace)
- (extracted_files backtrace-enabled.out backtrace-disabled.out)
+ (prelude Default)
+ (extracted_files backtrace-default.out debug-default.out)
+ (flags
+  (:standard -test-mode))
+ (theories TypeScriptExtraction))
+
+(rocq.extraction
+ (prelude Enabled)
+ (extracted_files backtrace-enabled.out)
  (flags
   (:standard -test-mode))
  (theories TypeScriptExtraction))
@@ -12,4 +19,5 @@
    sh
    %{dep:backtrace.sh}
    %{dep:backtrace-enabled.out}
-   %{dep:backtrace-disabled.out})))
+   %{dep:backtrace-default.out}
+   %{dep:debug-default.out})))
