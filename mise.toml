@@ -1,7 +1,7 @@
 [tools]
 bun = "1.4.4"
 direnv = "2.38.2"
-jactionlint = "2.4.0"
+jactionlint = "2.5.0"
 node = "26"
 opam = "2.6.1"
 shellcheck = "0.11.0"

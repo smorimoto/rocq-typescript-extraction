@@ -34,7 +34,7 @@ jobs:
           ocaml-compiler: 5
 
       - name: Set-up tools with mise
-        uses: jdx/mise-action@6612f0ef07ed2a736cd1e00a94a065522dd41195 # v5.2.5
+        uses: jdx/mise-action@b44d12e7d0d8ee7461bb893e1b1993500433185b # v5.2.7
 
       - name: Install opam dependencies
         run: opam install . --deps-only --with-test
@@ -59,7 +59,7 @@ jobs:
           persist-credentials: false
 
       - name: Set-up tools with mise
-        uses: jdx/mise-action@6612f0ef07ed2a736cd1e00a94a065522dd41195 # v5.2.5
+        uses: jdx/mise-action@b44d12e7d0d8ee7461bb893e1b1993500433185b # v5.2.7
 
       - name: Install npm dependencies
         run: bun install --frozen-lockfile --ignore-scripts
