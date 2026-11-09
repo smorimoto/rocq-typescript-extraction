@@ -37,7 +37,7 @@ Constructor fields can depend on an earlier enumeration field. The generated uni
 
 ## Inductive types
 
-Ordinary inductive types become discriminated unions with a `tag` property. For example, the [README tree](../README.md#usage) becomes `Tree<A> = Leaf | Node<A>`. Use `t.tag` to narrow it, `leaf` for the constant constructor, and `node(left, value, right)` to construct a node.
+Ordinary inductive types become discriminated unions with a `tag` property. For example, the [getting started tree](getting-started.md#usage) becomes `Tree<A> = Leaf | Node<A>`. Use `t.tag` to narrow it, `leaf` for the constant constructor, and `node(left, value, right)` to construct a node.
 
 Constructor interfaces remain available when a consumer needs a narrower type. A constant constructor has its own interface type, so `leaf` can be used in any `Tree<A>`. Other constructors return the union, using `never` for type parameters not mentioned by their arguments. A single-constructor type returns its interface.
 

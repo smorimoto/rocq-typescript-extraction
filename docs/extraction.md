@@ -1,6 +1,6 @@
 # Extraction guide
 
-Start with the [README example](../README.md#usage) to generate and import a TypeScript module. This guide covers extraction options; the [TypeScript reference](encoding.md) describes the generated API.
+Start with the [getting started example](getting-started.md#usage) to generate and import a TypeScript module. This guide covers extraction options; the [TypeScript reference](encoding.md) describes the generated API.
 
 ## Commands
 
