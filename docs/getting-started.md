@@ -9,7 +9,7 @@ git submodule update --init --recursive --depth 1
 opam install .
 ```
 
-This installs the plugin and its Rocq theories. Rocq 9.3 or later is required. For a development checkout, see `CONTRIBUTING.md` in the repository.
+This installs the plugin and its Rocq theories. Rocq 9.3 or later is required. For a development checkout, see [Contributing](https://github.com/smorimoto/rocq-typescript-extraction/blob/main/CONTRIBUTING.md).
 
 ## Usage
 
