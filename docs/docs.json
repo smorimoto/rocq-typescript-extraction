@@ -9,7 +9,7 @@
     "groups": [
       {
         "group": "Guide",
-        "pages": ["extraction", "encoding"]
+        "pages": ["getting-started", "extraction", "encoding"]
       }
     ]
   }

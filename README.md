@@ -4,56 +4,9 @@ A Rocq plugin that extracts Rocq definitions to TypeScript ES modules.
 
 Experimental. Supports inductive types, records, recursive functions, modules, and functors. Generated code uses erasable TypeScript syntax and is checked with strict TypeScript settings. See the [limitations](docs/encoding.md#limitations) before using it in a project.
 
-## Install from source
-
-From a checkout of this repository, in an opam switch with OCaml 5.1 or later:
-
-```sh
-git submodule update --init --recursive --depth 1
-opam install .
-```
-
-This installs the plugin and its Rocq theories. Rocq 9.3 or later is required. For a development checkout, see [Contributing](CONTRIBUTING.md).
-
-## Usage
-
-Save this as `Tree.v`:
-
-<!-- sample: Tree.v -->
-
-```coq
-From TypeScriptExtraction Require Import Number.
-
-Inductive tree (A : Type) := Leaf | Node (l : tree A) (x : A) (r : tree A).
-Arguments Leaf {A}.
-Arguments Node {A}.
-
-Fixpoint size {A} (t : tree A) : nat :=
-  match t with Leaf => 0 | Node l _ r => S (size l + size r) end.
-
-TypeScript Extraction "tree.ts" size.
-```
-
-Compile it to generate `tree.ts`:
-
-```sh
-opam exec -- rocq compile Tree.v
-```
-
-Import the generated function, type, and constructors from TypeScript:
-
-```ts
-import type { Tree } from "./tree.ts";
-import { leaf, node, size } from "./tree.ts";
-
-const t: Tree<string> = node(leaf, "a", node(leaf, "b", leaf));
-size(t); // 2
-```
-
-The `Number` preset maps standard integers (`nat`, `positive`, `N`, and `Z`) to JavaScript `number`. Use `From TypeScriptExtraction Require Import BigInt.` instead for exact `bigint` arithmetic. In either preset, callers must respect Rocq's input domains: for example, a `nat` must be a nonnegative integer.
-
 ## Documentation
 
+- [Getting started](docs/getting-started.md): installation and a first extraction.
 - [Extraction guide](docs/extraction.md): commands, presets, and custom mappings.
 - [TypeScript reference](docs/encoding.md): generated APIs, data representations, and limitations.
 - [Contributing](CONTRIBUTING.md): development setup, tests, and benchmarks.

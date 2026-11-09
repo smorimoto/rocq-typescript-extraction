@@ -36,7 +36,7 @@
   (run
    sh
    %{dep:../sample_blocks.sh}
-   %{dep:../../README.md}
+   %{dep:../../docs/getting-started.md}
    Tree.v
    %{dep:Tree.v})))
 
