@@ -2,7 +2,8 @@
   "$schema": "https://context7.com/schema/docs7.json",
   "name": "Rocq TypeScript Extraction",
   "colors": {
-    "primary": "#3178C6"
+    "primary": "#260085",
+    "light": "#FD530B"
   },
   "navigation": {
     "groups": [
