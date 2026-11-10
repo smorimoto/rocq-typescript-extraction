@@ -39,8 +39,7 @@
    (run sh %{dep:../no_assertions.sh} %{dep:memory.ts})
    (run sh %{dep:../no_assertions.sh} %{dep:reference.ts})
    (run
-    bunx
-    --no-install
+    bun
     oxlint
     --config
     %{dep:generated.oxlint.ts}
@@ -49,8 +48,7 @@
     %{dep:memory.ts}
     %{dep:reference.ts})
    (run
-    bunx
-    --no-install
+    bun
     oxfmt
     --config
     %{dep:../../oxfmt.config.ts}

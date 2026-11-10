@@ -45,8 +45,7 @@ cat <<'STANZA'
  (action
   (progn
    (run
-    bunx
-    --no-install
+    bun
     oxlint
     --config
     %{dep:../oxlint.config.ts}
@@ -58,8 +57,7 @@ done
 cat <<'STANZA'
    )
    (run
-    bunx
-    --no-install
+    bun
     oxfmt
     --config
     %{dep:../oxfmt.config.ts}

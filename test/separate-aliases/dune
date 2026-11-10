@@ -32,8 +32,7 @@
  (action
   (progn
    (run
-    bunx
-    --no-install
+    bun
     oxlint
     --config
     %{dep:../../oxlint.config.ts}
@@ -43,8 +42,7 @@
     %{dep:datatypes.ts}
     %{dep:nat.ts})
    (run
-    bunx
-    --no-install
+    bun
     oxfmt
     --config
     %{dep:../../oxfmt.config.ts}

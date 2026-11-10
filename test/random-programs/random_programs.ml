@@ -1078,14 +1078,8 @@ let with_formatter config f =
           In_channel.with_file input ~f:(fun input ->
             Out_channel.with_file output ~f:(fun output ->
               Unix.create_process
-                "bunx"
-                [| "bunx"
-                 ; "--no-install"
-                 ; "oxfmt"
-                 ; "--config"
-                 ; config
-                 ; "--stdin-filepath=program.ts"
-                |]
+                "bun"
+                [| "bun"; "oxfmt"; "--config"; config; "--stdin-filepath=program.ts" |]
                 (Unix.descr_of_in_channel input)
                 (Unix.descr_of_out_channel output)
                 Unix.stderr))

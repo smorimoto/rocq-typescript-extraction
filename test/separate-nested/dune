@@ -29,8 +29,7 @@
  (action
   (progn
    (run
-    bunx
-    --no-install
+    bun
     oxlint
     --config
     %{dep:../../oxlint.config.ts}
@@ -39,8 +38,7 @@
     %{dep:nested-mod.ts}
     %{dep:datatypes.ts})
    (run
-    bunx
-    --no-install
+    bun
     oxfmt
     --config
     %{dep:../../oxfmt.config.ts}
