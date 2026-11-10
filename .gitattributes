@@ -1,0 +1,5 @@
+# opam builds the package from the tag archive, which has no submodule
+# contents, and these directories do not build without them.
+/bench export-ignore
+/submodules export-ignore
+/test export-ignore
