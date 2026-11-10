@@ -105,7 +105,7 @@ Name collisions and reserved identifiers receive numeric suffixes, so inspect th
 
 ## Limitations
 
-The backend is experimental. Strict TypeScript checking does not establish that an extracted program preserves every property proved in Rocq. In particular, custom mappings are trusted and callers must respect the original input domains.
+Strict TypeScript checking does not establish that an extracted program preserves every property proved in Rocq. In particular, custom mappings are trusted and callers must respect the original input domains.
 
 ### Recursion
 

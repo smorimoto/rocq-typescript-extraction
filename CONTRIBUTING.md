@@ -72,17 +72,11 @@ See the [benchmark guide](bench/README.md) for workloads, measurement boundaries
 
 ## Releases
 
-[Changesets](https://github.com/changesets/changesets) collects the changes for each release, and [opam-publish](https://github.com/ocaml-opam/opam-publish) submits the release to [opam-repository](https://github.com/ocaml/opam-repository). The release version is in the `VERSION` file. Read the version from that file and from nowhere else. Changesets can only bump `version` in `package.json`, so the Release workflow copies each new version from there into `VERSION`. opam-publish takes the opam version from the release tag, so `dune-project` and the opam file carry no version.
+[Changesets](https://github.com/changesets/changesets) collects the changes for each release, and [opam-publish](https://github.com/ocaml-opam/opam-publish) submits the release to [opam-repository](https://github.com/ocaml/opam-repository). The release version is the `version` field in `package.json`. opam-publish takes the opam version from the release tag, so `dune-project` and the opam file carry no version.
 
-When a pull request changes what users see, add a changeset to it:
+Follow the [Changesets guide](https://github.com/changesets/changesets/blob/main/docs/intro-to-using-changesets.md).
 
-```sh
-bun changeset
-```
-
-The command asks for the bump (patch, minor, or major) and a summary, then writes a Markdown file in `.changeset/`. Commit that file with the change. The summary becomes the entry in `CHANGELOG.md`.
-
-On each push to `main`, the [Release workflow](.github/workflows/release.yml) gathers the changesets into a pull request titled `chore(release): version packages`. That pull request removes the changeset files, bumps `VERSION` and `version` in `package.json`, and writes `CHANGELOG.md`. Never edit those three by hand. The pull request comes from `github-actions`, so GitHub holds its CI runs until you select **Approve workflows to run** on the pull request.
+On each push to `main`, the [Release workflow](.github/workflows/release.yml) gathers the changesets into a pull request titled `chore(release): version packages`. That pull request removes the changeset files, bumps `version` in `package.json`, and writes `CHANGELOG.md`. Do not edit the release version or changelog by hand. The pull request comes from `github-actions`, so GitHub holds its CI runs until you select **Approve workflows to run** on the pull request.
 
 To release, merge that pull request. The workflow then tags `vX.Y.Z`, creates the GitHub release, and runs opam-publish, which opens a pull request on `ocaml/opam-repository`. Users can install the release with opam after the opam-repository maintainers merge that pull request.
 

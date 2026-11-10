@@ -2,7 +2,7 @@
 
 A Rocq plugin that extracts Rocq definitions to TypeScript ES modules.
 
-Experimental. Supports inductive types, records, recursive functions, modules, and functors. Generated code uses erasable TypeScript syntax and is checked with strict TypeScript settings. See the [limitations](docs/encoding.md#limitations) before using it in a project.
+Supports inductive types, records, recursive functions, modules, and functors. Generated code uses erasable TypeScript syntax and is checked with strict TypeScript settings. See the [limitations](docs/encoding.md#limitations) before using it in a project.
 
 ## Documentation
 
