@@ -1,0 +1,42 @@
+version: 2
+updates:
+  - package-ecosystem: bun
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: chore(deps)
+    groups:
+      changesets:
+        patterns:
+          - "@changesets/*"
+      oxc:
+        patterns:
+          - oxfmt
+          - oxlint
+    ignore:
+      - dependency-name: "@types/bun"
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: chore(deps)
+    groups:
+      ocaml:
+        patterns:
+          - "ocaml/setup-ocaml*"
+
+  - package-ecosystem: gitsubmodule
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: chore(deps)
