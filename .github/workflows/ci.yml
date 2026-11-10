@@ -120,24 +120,26 @@ jobs:
       - name: Check the OCaml formatting
         uses: ocaml/setup-ocaml/lint-fmt@ff66428f72b64472e749b22e0ad4dded4b2ddca6 # v3.9.1
 
-  lint-opam:
-    name: Lint the opam metadata
-    runs-on: ubuntu-26.04
-    timeout-minutes: 30
-    steps:
-      - name: Checkout tree
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-          submodules: recursive
-
-      - name: Set-up OCaml 5
-        uses: ocaml/setup-ocaml@ff66428f72b64472e749b22e0ad4dded4b2ddca6 # v3.9.1
-        with:
-          ocaml-compiler: 5
-
-      - name: Install opam dependencies
-        run: opam install . --deps-only --with-test
-
-      - name: Lint the opam metadata
-        uses: ocaml/setup-ocaml/lint-opam@ff66428f72b64472e749b22e0ad4dded4b2ddca6 # v3.9.1
+  # Disabled until opam-dune-lint supports `(lang dune 3.24)`: its 0.6 release
+  # requires dune below 3.21 and cannot read dune-project.
+  # lint-opam:
+  #   name: Lint the opam metadata
+  #   runs-on: ubuntu-26.04
+  #   timeout-minutes: 30
+  #   steps:
+  #     - name: Checkout tree
+  #       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+  #       with:
+  #         persist-credentials: false
+  #         submodules: recursive
+  #
+  #     - name: Set-up OCaml 5
+  #       uses: ocaml/setup-ocaml@ff66428f72b64472e749b22e0ad4dded4b2ddca6 # v3.9.1
+  #       with:
+  #         ocaml-compiler: 5
+  #
+  #     - name: Install opam dependencies
+  #       run: opam install . --deps-only --with-test
+  #
+  #     - name: Lint the opam metadata
+  #       uses: ocaml/setup-ocaml/lint-opam@ff66428f72b64472e749b22e0ad4dded4b2ddca6 # v3.9.1
