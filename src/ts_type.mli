@@ -110,7 +110,7 @@ val same : meta -> meta -> bool
 
 (** [bind m t] binds the unbound meta [m] to [t].
 
-    @raise CErrors.Anomaly if [m] is bound. *)
+    Raises [CErrors.Anomaly] if [m] is bound. *)
 val bind : meta -> t -> unit
 
 (** [instantiate vars tys t] is [t] where [Var i], for the [k]th [i] of

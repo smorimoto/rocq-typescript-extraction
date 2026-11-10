@@ -222,10 +222,10 @@ val ty : scope -> Ts_infer.ty -> Ts_print.ty
     as [nightWeightOf] for [nightWeight], which the value calls with the
     scrutinee, so the call binds it.
 
-    @raise CErrors.UserError
-      if [e] holds a primitive array literal and an [Extract] directive
-      maps [PrimArray.array], since the literal is the [PArray<A>] of the
-      backend. *)
+    Raises [CErrors.UserError]
+    if [e] holds a primitive array literal and an [Extract] directive
+    maps [PrimArray.array], since the literal is the [PArray<A>] of the
+    backend. *)
 val toplevel : scope -> Ts_infer.expr -> Ts_print.expr
 
 (** [func scope ~tparams ~self ~fix body] is the optional annotation and
@@ -244,7 +244,7 @@ val toplevel : scope -> Ts_infer.expr -> Ts_print.expr
     An eligible unary comparison is a helper factory applied to that
     original arrow, with its function type kept as the annotation.
 
-    @raise CErrors.Anomaly if [body] is not a [Lambda]. *)
+    Raises [CErrors.Anomaly] if [body] is not a [Lambda]. *)
 val func
   :  scope
   -> tparams:Ts_print.tparam list

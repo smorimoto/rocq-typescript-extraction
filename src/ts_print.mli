@@ -396,9 +396,9 @@ val is_atom : string -> bool
     {!Code} of [code] with the text of [s], a variable or a property
     path, in place of each [$0].
 
-    @raise Invalid_argument
-      if [code] is not {!hole} and [s] is not a variable or a property
-      path. *)
+    Raises [Invalid_argument]
+    if [code] is not {!hole} and [s] is not a variable or a property
+    path. *)
 val with_scrutinee : string -> expr -> expr
 
 (** [hole] is [$0], which stands for the scrutinee in the code of a

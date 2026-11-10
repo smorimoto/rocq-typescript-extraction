@@ -65,17 +65,17 @@ type ctor =
     declaration that its environment does not hold, as one of a synthetic
     structure, gets none.
 
-    @raise CErrors.UserError
-      for a function whose result is a record with a field of sort Type
-      that its body does not give before it runs, and for a constant
-      whose values of such a record give a field different types, or
-      none that is known before it runs, since TypeScript has no type for
-      them without [unknown].
-    @raise CErrors.Anomaly
-      if a signature does not erase to the MiniML type of its term.
-      Erasure takes each lifted parameter to its bound, a conditional or a
-      union to [Tunknown], and an application of a type function over
-      terms to its arguments of ML. *)
+    Raises [CErrors.UserError]
+    for a function whose result is a record with a field of sort Type
+    that its body does not give before it runs, and for a constant
+    whose values of such a record give a field different types, or
+    none that is known before it runs, since TypeScript has no type for
+    them without [unknown].
+    Raises [CErrors.Anomaly]
+    if a signature does not erase to the MiniML type of its term.
+    Erasure takes each lifted parameter to its bound, a conditional or a
+    union to [Tunknown], and an application of a type function over
+    terms to its arguments of ML. *)
 val create : Common.State.t -> Miniml.ml_structure -> t
 
 (** [term kernel r] is the signature of the term [r], over the type

@@ -74,17 +74,17 @@ val create : Common.State.t -> Ts_sig.t -> Miniml.ml_structure -> t
 
 (** [term env r] is what [env] knows about the term [r].
 
-    @raise CErrors.Anomaly if [env] has no term [r]. *)
+    Raises [CErrors.Anomaly] if [env] has no term [r]. *)
 val term : t -> Miniml.global -> term
 
 (** [ind env r] is what [env] knows about the inductive type [r].
 
-    @raise CErrors.Anomaly if [env] has no inductive type [r]. *)
+    Raises [CErrors.Anomaly] if [env] has no inductive type [r]. *)
 val ind : t -> Miniml.global -> ind
 
 (** [ctor env r] is what [env] knows about the constructor [r].
 
-    @raise CErrors.Anomaly if [env] has no constructor [r]. *)
+    Raises [CErrors.Anomaly] if [env] has no constructor [r]. *)
 val ctor : t -> Miniml.global -> ctor
 
 (** [signature env c] is the signature that {!Ts_kernel.val-ctor} reads for

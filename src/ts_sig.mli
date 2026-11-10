@@ -75,7 +75,8 @@ val create : Miniml.ml_structure -> t
     with, under a constraint of its own. A functor signature has no
     member, since the members of a functor are reached by applying it.
 
-    @raise CErrors.UserError if [mt] names a module type that is not in the structure. *)
+    Raises [CErrors.UserError] if [mt] names a module type that is not in the structure.
+*)
 val resolve : t -> at:Names.ModPath.t -> Miniml.ml_module_type -> Miniml.ml_module_sig
 
 (** [origin t mt] is the path of the [MTsig] that [mt] resolves to, which
@@ -83,14 +84,14 @@ val resolve : t -> at:Names.ModPath.t -> Miniml.ml_module_type -> Miniml.ml_modu
     [MTwith], or the path of the functor signature that [mt] names, where
     its arrow type and the interface of its result are declared.
 
-    @raise CErrors.UserError as {!resolve}.
-    @raise CErrors.Anomaly if [mt] is an [MTfunsig], which has no path of its own. *)
+    Raises [CErrors.UserError] as {!resolve}.
+    Raises [CErrors.Anomaly] if [mt] is an [MTfunsig], which has no path of its own. *)
 val origin : t -> Miniml.ml_module_type -> Names.ModPath.t
 
 (** [functor_signature t mt] is the functor signature that [mt] is, or
     names through module types defined as others, if any.
 
-    @raise CErrors.UserError as {!resolve}. *)
+    Raises [CErrors.UserError] as {!resolve}. *)
 val functor_signature : t -> Miniml.ml_module_type -> signature_ option
 
 (** [parameter t id] is the module type that the functor parameter [id],

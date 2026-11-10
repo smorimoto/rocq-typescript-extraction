@@ -144,13 +144,13 @@ val is_reserved : string -> bool
     [Extract Inlined Constant], or [Extract Inductive] gives the term or
     constructor [r].
 
-    @raise CErrors.UserError if the code is not {!Ts_print.balanced}. *)
+    Raises [CErrors.UserError] if the code is not {!Ts_print.balanced}. *)
 val custom : Miniml.global -> string
 
 (** [custom_match p] is the match function that [Extract Inductive] gives
     packet [p], if it gives one.
 
-    @raise CErrors.UserError if the code is not {!Ts_print.balanced}. *)
+    Raises [CErrors.UserError] if the code is not {!Ts_print.balanced}. *)
 val custom_match : Miniml.ml_ind_packet -> string option
 
 (** [realisers p] is the code of [Extract Inductive] for packet [p]
@@ -312,16 +312,16 @@ val top_name : t -> Names.ModPath.t -> string
     For a functor [mp], it is the name of the interface of its result, as
     [FResult].
 
-    @raise CErrors.Anomaly if [mp] is neither a module type nor a functor of [names]. *)
+    Raises [CErrors.Anomaly] if [mp] is neither a module type nor a functor of [names]. *)
 val signature_name : t -> Names.ModPath.t -> string
 
 (** [result_name names mp] is the name of the interface of the result of
     the functor signature [mp], whose own name is the alias of its arrow
     type, as [FTResult] for [FT].
 
-    @raise CErrors.Anomaly
-      if [mp] is not a functor signature of [names] whose result is a
-      signature of its own. *)
+    Raises [CErrors.Anomaly]
+    if [mp] is not a functor signature of [names] whose result is a
+    signature of its own. *)
 val result_name : t -> Names.ModPath.t -> string
 
 (** [signature_ref names mp] is how a type refers to what
@@ -348,7 +348,7 @@ type aliased =
     structure order. There is one for each type of the module it stands
     for that has a declaration, through nested modules and aliases.
 
-    @raise CErrors.Anomaly if [mp] is not an alias of [names]. *)
+    Raises [CErrors.Anomaly] if [mp] is not an alias of [names]. *)
 val alias_types : t -> Names.ModPath.t -> aliased list
 
 (** {1 Types} *)
@@ -486,10 +486,10 @@ val hide : tvars -> int list -> tvars
     member prints the same. A reference to a type of another file records
     an import in [names].
 
-    @raise CErrors.UserError
-      if a placeholder is [$0] or names a type argument that [r] does not
-      have, or if the code names a type that the file of [r] does not
-      declare and more than one other file does.
+    Raises [CErrors.UserError]
+    if a placeholder is [$0] or names a type argument that [r] does not
+    have, or if the code names a type that the file of [r] does not
+    declare and more than one other file does.
     @raise Ts_type.Lost
       if [t] mentions a meta of a position that MiniML lost and nothing
       solved. *)
@@ -504,10 +504,10 @@ val ty : t -> tvars -> Ts_type.t -> Ts_print.ty
     [typeof] is written the same way when it names a top-level generated
     value, as [typeof $Shapes.origin]. It records the import in [names].
 
-    @raise CErrors.UserError
-      if an identifier names a type, or a [typeof] operand names a
-      top-level value, that the file of [r] does not declare and more
-      than one other file does. *)
+    Raises [CErrors.UserError]
+    if an identifier names a type, or a [typeof] operand names a
+    top-level value, that the file of [r] does not declare and more
+    than one other file does. *)
 val qualify_code : t -> Miniml.global -> params:string list -> string -> string
 
 (** [signature names tparams] is the names of the type parameters
