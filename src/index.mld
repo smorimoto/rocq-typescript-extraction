@@ -1,0 +1,8 @@
+{0 rocq-typescript-extraction}
+
+A Rocq plugin that extracts Rocq definitions to TypeScript ES modules. It is a
+backend over the MiniML intermediate language of Rocq's standard extraction
+plugin.
+
+The library [rocq-typescript-extraction.backend] holds the backend. Its entry
+point is {!Typescript_extraction_plugin}.

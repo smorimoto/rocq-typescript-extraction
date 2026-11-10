@@ -34,3 +34,6 @@
 
 (rocq.pp
  (modules g_typescript_extraction))
+
+(documentation
+ (package rocq-typescript-extraction))
