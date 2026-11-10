@@ -996,7 +996,7 @@ let string_literal s ~bytes =
   Buffer.contents b
 ;;
 
-(* unicorn's numeric-separators-style as Oxlint implements it: an integer
+(* unicorn's numeric-separators-style as Oxlint implements it. An integer
    part or an exponent of five digits or more takes an underscore every
    three digits from the right, and a fraction takes none. *)
 let grouped d =
@@ -1105,10 +1105,7 @@ let is_string_literal s =
 
 let is_template_literal s =
   String.is_prefix s ~prefix:"`"
-  &&
-  match template_end s 1 with
-  | Some (j, _) -> j = String.length s
-  | None -> false
+  && Option.exists (template_end s 1) ~f:(fun (j, _) -> j = String.length s)
 ;;
 
 let template_holes s =
@@ -1286,29 +1283,13 @@ let closing t i =
 ;;
 
 let split_top_level t =
-  let n = String.length t in
-  let finish start acc = List.rev (String.strip (String.drop_prefix t start) :: acc) in
-  let rec go depth start i acc =
-    if i >= n
-    then finish start acc
-    else (
-      match t.[i] with
-      | '"' | '\'' | '`' ->
-        (match literal_end t i with
-         | Some j -> go depth start j acc
-         | None -> finish start acc)
-      | '=' when i + 1 < n && Char.equal t.[i + 1] '>' -> go depth start (i + 2) acc
-      | '(' | '[' | '{' | '<' -> go (depth + 1) start (i + 1) acc
-      | ')' | ']' | '}' | '>' -> go (depth - 1) start (i + 1) acc
-      | ',' when depth = 0 ->
-        go
-          depth
-          (i + 1)
-          (i + 1)
-          (String.strip (String.sub t ~pos:start ~len:(i - start)) :: acc)
-      | _ -> go depth start (i + 1) acc)
+  let comma depth i = depth = 0 && Char.equal t.[i] ',' in
+  let rec go start acc =
+    match type_scan t ~from:start ~stop:comma with
+    | Some i -> go (i + 1) (String.strip (String.sub t ~pos:start ~len:(i - start)) :: acc)
+    | None -> List.rev (String.strip (String.drop_prefix t start) :: acc)
   in
-  if String.equal (String.strip t) "" then [] else go 0 0 0 []
+  if String.equal (String.strip t) "" then [] else go 0 []
 ;;
 
 let code_signature s =
@@ -1408,23 +1389,13 @@ let with_scrutinee code s =
     | Cell_read (e, i) -> [%string "%{string_of_helper Read_cell}(%{path e}, %{i})"]
     | _ -> invalid_arg "Ts_print.with_scrutinee: the scrutinee is a path"
   in
+  (* [path s] raises on a scrutinee that is not a path, so it runs only when
+     [code] has a hole. *)
   let substituted () =
-    let b = Buffer.create (String.length code) in
-    let n = String.length code
-    and k = String.length hole in
-    let rec go i =
-      if i >= n
-      then ()
-      else if i + k <= n && String.equal (String.sub code ~pos:i ~len:k) hole
-      then (
-        Buffer.add_string b (path s);
-        go (i + k))
-      else (
-        Buffer.add_char b code.[i];
-        go (i + 1))
-    in
-    go 0;
-    Code (Buffer.contents b)
+    Code
+      (if String.is_substring code ~substring:hole
+       then String.substr_replace_all code ~pattern:hole ~with_:(path s)
+       else code)
   in
   match String.chop_prefix code ~prefix:hole with
   | None -> substituted ()
@@ -1654,7 +1625,7 @@ let type_code_needs_parens code ~parent =
   | Type_argument | Other_type -> false
 ;;
 
-(* Prettier's [isSimpleType] and [shouldHugType] for our types. *)
+(* Prettier's [isSimpleType] and [shouldHugType] for the types of [ty]. *)
 let simple_type = function
   | Name (s, []) -> not (has_top_level_arrow s)
   | Raw [ Verbatim s ] -> is_path s
@@ -2071,10 +2042,7 @@ let is_arrow e = equal_kind (kind e) Arrow_function
 
 let block_bodied = function
   | Arrow (_, _, _, Block _) -> true
-  | Code s ->
-    (match code_arrow s with
-     | Some (_, body) -> Char.equal body.[0] '{'
-     | None -> false)
+  | Code s -> Option.exists (code_arrow s) ~f:(fun (_, body) -> Char.equal body.[0] '{')
   | _ -> false
 ;;
 
@@ -2231,9 +2199,7 @@ let chain_must_break ls printed_groups =
       | Head _ | Access _ | Element _ -> None)
   in
   let last_group_breaks =
-    (match List.last_exn ls with
-     | Invoke _ -> true
-     | Head _ | Access _ | Element _ -> false)
+    is_invoke (List.last_exn ls)
     && will_break (List.last_exn printed_groups)
     && List.exists (List.drop_last_exn calls) ~f:(List.exists ~f:is_arrow)
   in
@@ -2628,10 +2594,8 @@ and arrow_chain ~parent ~args tps ps result body =
   in
   let initial_indent =
     is_callee
-    ||
-    match args.assignment with
-    | Some layout -> not (equal_assignment layout Break_after_operator)
-    | None -> false
+    || Option.exists args.assignment ~f:(fun layout ->
+      not (equal_assignment layout Break_after_operator))
   in
   let signatures = chain_signatures links ~args ~initial_indent in
   let id = fresh_id () in
@@ -3171,7 +3135,7 @@ let keyword_at s i word =
   let n = String.length s in
   i >= 0
   && i + k <= n
-  && String.equal (String.sub s ~pos:i ~len:k) word
+  && String.is_substring_at s ~pos:i ~substring:word
   && (i = 0 || not (is_ident_char s.[i - 1]))
   && (i + k = n || not (is_ident_char s.[i + k]))
 ;;
@@ -3343,10 +3307,9 @@ let code_binders s =
         let k = blank_end s j in
         if String.equal word "infer"
         then (
-          match ident_at s (skip_gap s j) with
-          | Some l ->
-            let k = skip_gap s j in
-            go l (String.sub s ~pos:k ~len:(l - k) :: acc)
+          let k = skip_gap s j in
+          match ident_at s k with
+          | Some l -> go l (String.sub s ~pos:k ~len:(l - k) :: acc)
           | None -> go j acc)
         else if
           (String.equal word "const" || String.equal word "let" || String.equal word "var")
@@ -3440,30 +3403,15 @@ let path_at s i j =
   String.sub s ~pos:i ~len:(j - i), members j
 ;;
 
-let find_sub s sub i =
-  let k = String.length sub in
-  let n = String.length s in
-  let rec go i =
-    if i + k > n
-    then None
-    else if String.equal (String.sub s ~pos:i ~len:k) sub
-    then Some i
-    else go (i + 1)
-  in
-  go i
-;;
-
 let rfind_sub s sub =
-  let k = String.length sub in
-  let n = String.length s in
   let rec go i =
     if i < 0
     then None
-    else if i + k <= n && String.equal (String.sub s ~pos:i ~len:k) sub
+    else if String.is_substring_at s ~pos:i ~substring:sub
     then Some i
     else go (i - 1)
   in
-  go (n - k)
+  go (String.length s - String.length sub)
 ;;
 
 let type_in_param p =
@@ -3479,7 +3427,7 @@ let rec locate_params s params i =
   match params with
   | [] -> []
   | p :: rest ->
-    (match find_sub s p i with
+    (match String.substr_index s ~pos:i ~pattern:p with
      | None -> locate_params s rest i
      | Some j ->
        let here =
@@ -3522,7 +3470,7 @@ let constraint_ranges signature tparams =
             let t = skip_gap p (k + 1) in
             let e = blank_start p ~floor:t (String.length p) in
             if t < e then acc := (t, e) :: !acc);
-          (match find_sub inner p 0 with
+          (match String.substr_index inner ~pattern:p with
            | None -> []
            | Some at -> List.map !acc ~f:(fun (a, b) -> 1 + at + a, 1 + at + b))
       in

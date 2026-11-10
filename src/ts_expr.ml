@@ -998,18 +998,13 @@ let calls_itself self ~arity head n ~local =
   &&
   match self, head with
   | Top r, I.Global (r', tys) -> is_global r r' && own_tparams tys
-  | Named v, I.Local (k, []) ->
-    (match local k with
-     | Some v' -> phys_equal v v'
-     | None -> false)
+  | Named v, I.Local (k, []) -> Option.exists (local k) ~f:(phys_equal v)
   | Top _, _ | Named _, _ -> false
 ;;
 
 let calls_loop scope head n =
-  match scope.loop with
-  | Some l ->
-    calls_itself l.self ~arity:l.arity head n ~local:(fun k -> Some (var scope k))
-  | None -> false
+  Option.exists scope.loop ~f:(fun l ->
+    calls_itself l.self ~arity:l.arity head n ~local:(fun k -> Some (var scope k)))
 ;;
 
 type seen =
@@ -1923,7 +1918,7 @@ and group_function scope defs =
         ( { Ts_anf.head = Ts_anf.Local (Array.length defs - j)
           ; arity = List.length bs
           ; result
-          ; accepts = (fun tys -> List.is_empty tys)
+          ; accepts = List.is_empty
           }
         , (bs, result, body) )
     | _ -> None
@@ -2342,10 +2337,10 @@ and machine_body scope ~params r =
               ~arities:(List.map bs ~f:(fun _ -> 0) @ List.map outer ~f:(fun v -> v.arity))
           in
           let sc, vars, consts =
-            List.fold
-              (List.mapi bs ~f:(fun p b -> p, b))
+            List.foldi
+              bs
               ~init:(sc, [], [])
-              ~f:(fun (sc, vars, consts) (p, (b : I.binder)) ->
+              ~f:(fun p (sc, vars, consts) (b : I.binder) ->
                 match List.nth_exn registers.(i) p with
                 | Dropped -> sc, value_var erased b.ty :: vars, consts
                 | Parameter -> sc, value_var (P.Var (param_name p)) b.ty :: vars, consts
@@ -2885,9 +2880,8 @@ let func scope ~tparams ~self ~fix e =
   let order =
     if List.is_empty tparams && List.length fix <= 1 && Table.Refmap'.is_empty scope.group
     then
-      Option.bind (unary_order scope.env ~self e) ~f:(fun order ->
-        let ind = (Ts_env.ctor scope.env order.shape.zero).ind in
-        Option.some_if (Ts_env.ind scope.env ind).optimise_unary order)
+      Option.filter (unary_order scope.env ~self e) ~f:(fun order ->
+        (Ts_env.ind scope.env (unary_input scope.env order)).optimise_unary)
     else None
   in
   match e with
@@ -2922,13 +2916,12 @@ let func scope ~tparams ~self ~fix e =
     let body =
       named_body scope' ~recursive:(Some recursive) bs params body ~plain:function_body
     in
-    let fallback =
-      named_arrow scope' tparams (List.filter_opt params) (Some (ty scope result)) body
-    in
+    let params = List.filter_opt params in
+    let result = ty scope result in
+    let fallback = named_arrow scope' tparams params (Some result) body in
     (match order with
      | Some order ->
-       ( Some (P.Fn { tparams; params = List.filter_opt params; result = ty scope result })
-       , cached_unary_order scope order fallback )
+       Some (P.Fn { tparams; params; result }), cached_unary_order scope order fallback
      | None -> None, fallback)
   | _ ->
     CErrors.anomaly (Pp.str "Ts_expr.func: the body of a function is a lambda chain.")

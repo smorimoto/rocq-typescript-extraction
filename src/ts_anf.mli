@@ -7,8 +7,8 @@
     branch functions of a match function, is a step of the machine. At
     the tail of the function it is a jump. Anywhere else, the machine
     pushes a frame and jumps, and the frame resumes with the rest of the
-    function, so that rest must be a part of the term: the body of a
-    [let] whose definition is the call, and the bodies of the [let]s
+    function, so that rest must be a part of the term. It is the body of
+    a [let] whose definition is the call, and the bodies of the [let]s
     whose definitions hold that [let], innermost first.
 
     {!normalise} gives the term that shape. A call in an operand of a
@@ -25,8 +25,8 @@
 
 open Extraction_plugin
 
-(** The type for how a term refers to a member: a global, or a local,
-    by its de Bruijn index at the root of the term. *)
+(** The type for how a term refers to a member, as a global, or as a
+    local by its de Bruijn index at the root of the term. *)
 type head =
   | Global of Miniml.global
   | Local of int
@@ -34,7 +34,7 @@ type head =
 (** The type for the members of a group. [result] is the type of a call
     with [arity] arguments. [accepts] holds of the instantiation of a
     reference to the member that keeps the group monomorphic, as its own
-    type parameters do; a call at another instantiation is not a step. *)
+    type parameters do. A call at another instantiation is not a step. *)
 type member =
   { head : head
   ; arity : int
@@ -60,9 +60,9 @@ val steps_at : Ts_env.t -> member list -> int -> Ts_infer.expr -> bool
     argument of it steps. *)
 val tails_only : Ts_env.t -> member list -> Ts_infer.expr -> bool
 
-(** [calls env members e] is the steps of [e], in order: the index of the
-    member each calls, the number of binders above it below the root, and
-    its arguments. *)
+(** [calls env members e] is the steps of [e], in order. Each step is the
+    index of the member it calls, the number of binders above it below
+    the root, and its arguments. *)
 val calls
   :  Ts_env.t
   -> member list
@@ -84,12 +84,12 @@ val normalise : Ts_env.t -> member list -> Ts_infer.expr -> Ts_infer.expr
 (** [lift_fixes env members lambdas] is the group of [members], whose
     lambdas are [lambdas], with one member more, when the body of a member
     is a local [fix] of one monomorphic function that calls a member, as
-    Stdlib's [merge] is through [merge_aux]: the function of the [fix],
-    which takes the parameters of the member that it reads, then its own,
-    and is the local [1] of a scope with one more local than the scope of
-    the group. Each call of the function is then a call of the new member
-    with those parameters first, and so is each reference to it, or the
-    group is [None]. *)
+    Stdlib's [merge] is through [merge_aux]. The new member is the
+    function of the [fix], which takes the parameters of the member that
+    it reads, then its own, and is the local [1] of a scope with one more
+    local than the scope of the group. Each call of the function is then
+    a call of the new member with those parameters first, and so is each
+    reference to it, or the group is [None]. *)
 val lift_fixes
   :  Ts_env.t
   -> member list

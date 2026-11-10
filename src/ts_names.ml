@@ -383,7 +383,7 @@ let permitted s =
   let lowered = String.lowercase s in
   let b = Buffer.create (String.length s) in
   let rec go i =
-    if i + 5 <= String.length s && String.equal (String.sub lowered ~pos:i ~len:5) "shape"
+    if String.is_substring_at lowered ~pos:i ~substring:"shape"
     then (
       Buffer.add_string b (if Char.equal s.[i] 'S' then "Form" else "form");
       go (i + 5))
@@ -548,12 +548,6 @@ type entry =
   | Members of ModPath.t * ml_module_sig
   | Instance of ModPath.t * ml_module_sig
 
-let rec functor_body = function
-  | MEfunctor (_, _, me) -> functor_body me
-  | MEstruct (mp, sel) -> Some (mp, sel)
-  | MEident _ | MEapply _ -> None
-;;
-
 let rec functor_parameters = function
   | MEfunctor (id, mt, me) -> (id, mt) :: functor_parameters me
   | MEstruct _ | MEident _ | MEapply _ -> []
@@ -565,7 +559,7 @@ let rec fold_decls sel ~init ~f =
     | SEdecl d -> f acc d
     | SEmodule { ml_mod_expr = MEstruct (_, sel); _ } -> fold_decls sel ~init:acc ~f
     | SEmodule { ml_mod_expr = MEfunctor _ as me; _ } ->
-      (match functor_body me with
+      (match Ts_alias.functor_body me with
        | Some (_, sel) -> fold_decls sel ~init:acc ~f
        | None -> acc)
     | SEmodule { ml_mod_expr = MEident _ | MEapply _; _ } | SEmodtype _ -> acc)
@@ -913,7 +907,7 @@ and name_element c lv parent (l, se) =
     c.signature_of <- ModPath.Map.add p (type_name c lv (n ^ "Result")) c.signature_of;
     List.iter (functor_parameters me) ~f:(inline_parameter c lv n);
     (match
-       ( functor_body me
+       ( Ts_alias.functor_body me
        , Ts_sig.functor_ c.module_types p
        , Ts_sig.functor_signature c.module_types ml_mod_type )
      with
@@ -1246,7 +1240,7 @@ let group_name names r =
     | Top -> None
   in
   match holder with
-  | Some l -> Some l
+  | Some _ -> holder
   | None ->
     Option.map (Refmap.find_opt r names.groups) ~f:(fun n ->
       String.concat ~sep:"$" (path names r @ [ n ]))
@@ -1665,9 +1659,8 @@ let rec ty names tvars = function
 
 and implicit_args names r =
   List.filter_map (Ts_sig.implicit names.sigs r) ~f:(fun g ->
-    match find names names.types g with
-    | None -> None
-    | Some _ -> Some (ty names erased (Ts_type.Glob (g, []))))
+    Option.map (find names names.types g) ~f:(fun (_ : string) ->
+      ty names erased (Ts_type.Glob (g, []))))
 ;;
 
 let signature names (tparams : Ts_type.tparam list) =

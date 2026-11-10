@@ -75,8 +75,11 @@ and tparam =
   ; bound : ty option
   }
 
+(** [equal_ty a b] is [true] if [a] and [b] are the same tree. The members
+    of a union are compared in order. *)
 val equal_ty : ty -> ty -> bool
 
+(** Types as hash table keys, compared as {!equal_ty} compares them. *)
 module Ty_key : Base.Hashtbl.Key.S with type t = ty
 
 (** [unbounded names] is a type parameter of each name, without a bound. *)
@@ -93,8 +96,10 @@ type helper =
       prefixes and retaining the original function as its fallback. *)
   | Fail (** [__fail(message): never], which throws an [Error]. *)
   | Lazy (** [__lazy(thunk)], a memoising thunk for coinductive values. *)
-  | Read_cell (** Checked read that distinguishes absent cells from stored [undefined]. *)
-  | Write_cell (** Write that reuses cells up to the column's high-water mark. *)
+  | Read_cell
+  (** A checked read that distinguishes absent cells from stored
+      [undefined]. *)
+  | Write_cell (** A write that reuses cells up to the column's high-water mark. *)
   | Magic
   (** [__magic<From, To>(e)], which is [e], of type [From], at type [To],
       unchecked. It is the one way the output changes the type of a
@@ -142,7 +147,7 @@ type expr =
   | Field of expr * string (** [e.f]. *)
   | Index of expr * int (** [e[k]], the read of element [k] of a tuple. *)
   | Cell_read of expr * string
-  (** Checked read of a singleton-cell column at the index in variable [i]. *)
+  (** A checked read of a singleton-cell column at the index in variable [i]. *)
   | Tuple of expr list
   (** [[a, b]], an array literal, broken one element per line with a
       trailing comma when it does not fit, except that elements that are
@@ -208,11 +213,13 @@ and stmt =
   (** [x = e;], or [[x] = t;] for an element [t[k]] of a tuple, with [k]
       holes before [x], as prefer-destructuring asks. *)
   | Cell_write of string * string * expr
-  (** Write to a singleton-cell column, reusing an existing cell when present. *)
+  (** A write to a singleton-cell column, which reuses an existing cell when
+      present. *)
   | Bump of string * int (** [x += n;], or [x -= n;] for a negative [n]. *)
   | Eval of expr
-  (** Evaluate an expression for its effects, using [void] for non-calls so
-      object literals cannot be parsed as statement blocks. *)
+  (** An expression evaluated for its effects, with [void] before one that
+      is not a call, so that an object literal is not parsed as a statement
+      block. *)
   | Return of expr
   | Break (** [break;], which ends a case that does not return. *)
   | Continue
@@ -236,7 +243,10 @@ and case =
   ; body : stmt list
   }
 
+(** [equal_expr a b] is [true] if [a] and [b] are the same tree. *)
 val equal_expr : expr -> expr -> bool
+
+(** [equal_stmt a b] is [true] if [a] and [b] are the same tree. *)
 val equal_stmt : stmt -> stmt -> bool
 
 (** The type for type declarations. *)
@@ -282,10 +292,11 @@ type value =
   ; value : expr
   }
 
-(** The type for the bindings that a declaration refers to: the identifier
-    at the root and the members read from it, as [("add", [])] for the call
-    [add(n, m)] and [("$Datatypes", ["M"; "x"])] for [$Datatypes.M.x] or for
-    the type [$Datatypes.Nat]. *)
+(** The type for the bindings that a declaration refers to. A binding is
+    the identifier at the root and the members read from it, as
+    [("add", [])] for the call [add(n, m)] and
+    [("$Datatypes", ["M"; "x"])] for [$Datatypes.M.x] or for the type
+    [$Datatypes.Nat]. *)
 type path = string * string list
 
 (** The type for top-level declarations. *)
@@ -323,10 +334,10 @@ type program =
   ; decls : top list
   }
 
-(** [reads d] is the paths that [d] refers to, as values and as types:
-    every {!Var} and the member chain on it, the name of every {!Name}
-    that is a path, in both lists every identifier of a {!Code}, and, as
-    types with the members read after it, every identifier of a
+(** [reads d] is the paths that [d] refers to, as values and as types.
+    They are every {!Var} and the member chain on it, the name of every
+    {!Name} that is a path, in both lists every identifier of a {!Code},
+    and, as types with the members read after it, every identifier of a
     {!Verbatim} or of a {!Name} that is not a path, so that
     [$Dep.Point] in type code is the path of [Point] through the import
     [$Dep]. An identifier of code counts when it is outside the string
@@ -340,16 +351,16 @@ type program =
     of a mapped type [[K in ...]]. The backend does not parse code. A
     shorthand property and a computed key are references. An identifier
     of type code, and an identifier in a type annotation of value code,
-    is a type. The operand of [typeof] is one of them: it is a type
+    is a type. The operand of [typeof] is one of them, since it is a type
     position, which a type import can name. Any other identifier of value
     code is both, since it may name either. *)
 val reads : decl -> path list * path list
 
-(** [signature v] is the type paths that a consumer of [v] sees: those of
-    its annotation, of the parameters and results of its arrow and of the
-    arrows it curries, or, when [v] is an unannotated {!Code}, every
-    identifier that {!reads} finds in it, since any of them may name a
-    type. *)
+(** [signature v] is the type paths that a consumer of [v] sees. They are
+    those of its annotation, of the parameters and results of its arrow
+    and of the arrows it curries, or, when [v] is an unannotated {!Code},
+    every identifier that {!reads} finds in it, since any of them may
+    name a type. *)
 val signature : value -> path list
 
 (** [code_identifier_spans s] is the start and end offsets in [s] of the
@@ -379,11 +390,11 @@ val code_parameters : string -> string list
 val is_atom : string -> bool
 
 (** [with_scrutinee code s] is the expression that the code [code] of a
-    selector of [TypeScript Extract Match] gives for the scrutinee [s]:
-    [s] itself when [code] is {!hole}, the element or property read when
-    it is [$0[k]] or [$0.f], a property path on, and otherwise {!Code} of
-    [code] with the text of [s], a variable or a property path, in place
-    of each [$0].
+    selector of [TypeScript Extract Match] gives for the scrutinee [s].
+    It is [s] itself when [code] is {!hole}, the element or property read
+    when it is [$0[k]] or [$0.f], a property path on, and otherwise
+    {!Code} of [code] with the text of [s], a variable or a property
+    path, in place of each [$0].
 
     @raise Invalid_argument
       if [code] is not {!hole} and [s] is not a variable or a property
@@ -394,7 +405,7 @@ val with_scrutinee : string -> expr -> expr
     selector of [TypeScript Extract Match]. *)
 val hole : string
 
-(** [negated e] is the negation of the test [e]: {!Not_equals} for
+(** [negated e] is the negation of the test [e]. It is {!Not_equals} for
     {!Equals} and the converse, the operand of a {!Not}, for {!Code}, [!x]
     for a variable or a path, [a !== b] for [a === b] and [a === b] for
     [a !== b] when that is the only operator at its top level, and [!(e)]

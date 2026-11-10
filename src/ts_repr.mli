@@ -33,7 +33,7 @@ type ctor =
   ; params : int list
     (** The type parameters of the inductive that the arguments use, in
         order, then the binders the constructor lifts, as
-        {!Ts_kernel.ctor} numbers them. The constructor's interface and
+        {!Ts_kernel.val-ctor} numbers them. The constructor's interface and
         function are generic over these only, so a constant constructor
         fits every instance. *)
   }
@@ -65,17 +65,20 @@ type t =
       printed. *)
   | Custom of custom (** [Extract Inductive]. *)
 
-(** [decide ~kernel ind i] is the representation of packet [i] of [ind].
-    The first rule that applies wins. A custom packet type gives [Custom],
-    [Singleton] gives [Erased], [Record] gives [Record], [Coinductive]
-    gives [Lazy], and anything else gives [Tagged]. The binder names of a
-    constructor [c] are read from the kernel's declaration of [kernel c],
-    which is [c] itself by default, and the constructor of the module type
-    or of the functor's body for one reached through a functor parameter
-    or an application, as {!Ts_sig.canon} gives it. [signature c] is the
-    signature that {!Ts_kernel.ctor} reads for the constructor [c], whose
-    argument types are then those of the signature. [scope] supplies the
-    environment of a constructor inside a module type or functor parameter.
+(** [decide ~kernel ~signature ~scope ind i] is the representation of
+    packet [i] of [ind]. The first rule that applies wins. A custom packet
+    type gives [Custom], [Singleton] gives [Erased], [Record] gives
+    [Record], [Coinductive] gives [Lazy], and anything else gives
+    [Tagged]. The binder names of a constructor [c] are read from the
+    kernel's declaration of [kernel c], which is [c] itself by default,
+    and the constructor of the module type or of the functor's body for
+    one reached through a functor parameter or an application, as
+    {!Ts_sig.canon} gives it. [signature c] is the signature that
+    {!Ts_kernel.val-ctor} reads for the constructor [c], whose argument types
+    are then those of the signature. [signature] defaults to giving none.
+    [scope] supplies the environment of a constructor inside a module type
+    or functor parameter. It defaults to supplying none, and the global
+    environment is then read.
 
     @raise CErrors.UserError
       if a [TypeScript Extract Match] directive is given for the type
@@ -90,9 +93,10 @@ val decide
   -> int
   -> t
 
-(** An ordinary monomorphic unary type with one nullary constructor and
-    one constructor whose sole field is the same type. Both constructors
-    are generated, with no custom realisations or lifted binders. *)
+(** The type for ordinary monomorphic unary types, with one nullary
+    constructor and one constructor whose sole field is the same type.
+    Both constructors are generated, with no custom realisations or lifted
+    binders. *)
 type unary =
   { zero : Miniml.global
   ; successor : Miniml.global
@@ -130,11 +134,16 @@ type declared =
         type. *)
   }
 
-(** [declare names ind i repr] is what packet [i] of [ind] declares under
-    [repr], with the names of [names] and the realisers that
-    {!Ts_names.realisers} finds. {!Typescript} decides which of them the
-    output keeps and exports. [freeze] shares and freezes eligible unary
-    constructors, preserving the existing constructor function types. *)
+(** [declare ~freeze ~signature ~fields names ind i repr] is what packet
+    [i] of [ind] declares under [repr], with the names of [names] and the
+    realisers that {!Ts_names.realisers} finds. {!Typescript} decides
+    which of them the output keeps and exports. [freeze] shares and
+    freezes eligible unary constructors, preserving the existing
+    constructor function types. It defaults to [false]. [signature c] is
+    the signature that {!Ts_kernel.val-ctor} reads for the constructor [c],
+    and [signature] defaults to giving none. [fields r] is
+    {!Ts_kernel.fields} of the record [r], and [fields] defaults to giving
+    none. *)
 val declare
   :  ?freeze:bool
   -> ?signature:(Miniml.global -> Ts_kernel.ctor option)
@@ -156,9 +165,10 @@ val declare
     [Record] it is an object literal. Under [Lazy] it is the cell
     [c<tyargs>(args)], which {!delay} suspends. Under [Custom] it is the
     constructor as {!Ts_names.value} refers to it, applied uncurried to
-    [args] when there are any. Closed binary integer constructor applications
-    using the preset realisers become literals; [number] folding stops
-    at the safe-integer bound so that runtime rounding is preserved.
+    [args] when there are any. Closed binary integer constructor
+    applications using the preset realisers become literals. [number]
+    folding stops at the safe-integer bound so that runtime rounding is
+    preserved.
 
     @raise CErrors.Anomaly if [repr] is [Erased]. *)
 val construct

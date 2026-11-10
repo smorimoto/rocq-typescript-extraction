@@ -5,8 +5,8 @@
     works on this type. Its ML fragment, type parameters, metas, globals,
     arrows, and the erased type, unifies as extraction's own unifier
     [Mlutil.mgu] does. A tuple and a union are the types of values that
-    MiniML has no type for. There is no type for a type that MiniML lost:
-    such a position is a meta, which reconstruction solves from the body
+    MiniML has no type for. There is no type for a type that MiniML lost.
+    Such a position is a meta, which reconstruction solves from the body
     of the declaration, or the declaration has no TypeScript type. *)
 
 open Extraction_plugin
@@ -33,8 +33,8 @@ type t =
       of the enumeration that bounds [on], in declaration order. The last
       arm is not tested. [on] is a [Var] in a signature and anything once
       instantiated. A constructor global as a type, [Glob (c, [])], is the
-      type of the values it builds: its interface, or its literal when
-      [Extract Inductive] realises it with one. *)
+      type of the values it builds, which is its interface, or its
+      literal when [Extract Inductive] realises it with one. *)
   | Forall of int list * t
   (** [<A>(_: A) => A], a generic function type over [Var i] for each [i]
       of the list, which no type outside it mentions. Its body is an
@@ -48,8 +48,8 @@ and meta
     solved where a type is printed. *)
 exception Lost
 
-(** The type for the type parameters of a signature: the binder a
-    parameter is named after, and the type that bounds it. A type
+(** The type for the type parameters of a signature. A parameter is the
+    binder it is named after, and the type that bounds it. A type
     parameter of ML has neither. *)
 type tparam =
   { hint : Names.Id.t option
@@ -152,11 +152,11 @@ val is_ctor : Miniml.global -> bool
     of first occurrence, or the one member. *)
 val union : t list -> t
 
-(** [reduce t ~unfold] is [t] as TypeScript reduces it at its head:
+(** [reduce t ~unfold] is [t] as TypeScript reduces it at its head.
     [unfold r args] is the definition of the type function [r] at [args],
-    if [r] is one, and is unfolded; a conditional whose [on] is one of its
-    constructors is that arm; one whose [on] is a type other than a
+    if [r] is one, and is unfolded. A conditional whose [on] is one of its
+    constructors is that arm. One whose [on] is a type other than a
     parameter or a meta is the union of its arms, as TypeScript
-    distributes a conditional over the enumeration that [on] is; and the
+    distributes a conditional over the enumeration that [on] is. The
     elements of a tuple are reduced. *)
 val reduce : t -> unfold:(Miniml.global -> t list -> t option) -> t

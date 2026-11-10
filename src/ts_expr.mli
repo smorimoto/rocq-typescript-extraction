@@ -18,15 +18,15 @@
     statement it is part of places. A [return] is pushed into its
     branches, and so is the binding of a [let], declared [let x: T;] and
     assigned in each branch, when the expression around the match copies
-    only atoms besides the match: it is a spine of calls, tuples, and
-    records whose other operands are variables, literals, or property
-    paths, so each branch gets one copy of the spine. Otherwise the match
-    assigns a variable [result], declared first, which the expression
-    reads, and so does every match of a statement but the last. A case
-    that assigns ends in [break], and a chain of tests that assigns has
-    an [else] for each test. The output is linear in each match, since a
-    context is copied once per branch and a context that is copied holds
-    no other match.
+    only atoms besides the match. Such an expression is a spine of calls,
+    tuples, and records whose other operands are variables, literals, or
+    property paths, so each branch gets one copy of the spine. Otherwise
+    the match assigns a variable [result], declared first, which the
+    expression reads, and so does every match of a statement but the
+    last. A case that assigns ends in [break], and a chain of tests that
+    assigns has an [else] for each test. The output is linear in each
+    match, since a context is copied once per branch and a context that
+    is copied holds no other match.
 
     A [let] whose definition is a local [fix] declares the group in place,
     and the body refers to the function the [fix] picks.
@@ -48,26 +48,26 @@
     first binds every such call to a [let], with the operands it reads and
     the matches and [let]s around it, so that the rest of the call is the
     body of that [let] and of the [let]s around it. The call pushes a
-    frame and continues: the number of its site, in [frames], when the
-    function has several, and each variable that the rest reads, on an
-    array of its type, [saved], with its index, [top], while [depth]
-    counts the frames. All arrays are local to the invocation, including
-    the array of sites. A callback that reenters the function uses its
-    own arrays, and an exception needs no shared-state cleanup. A variable
-    bound outside the function, and a parameter that every call passes
-    unchanged, which stays the parameter,
-    are not saved. A tail that is a value assigns [returned], and the code
-    after the body pops a frame and runs the rest of its site with
-    [returned] as the result of the call, which may call again, until no
-    frame is left. Two sites whose rests are the same code are one.
-    A single continuation shape that only applies the mapped bigint successor
-    or adds one saved bigint can use an exact accumulator instead of frames.
-    Only the preset's pure realiser code qualifies; number addition and
-    computations performed after the recursive call retain their order.
-    A body that builds a function, a lazy cell, a partial application,
-    or a branch of a match function reads a [const] copy of each [let] at
-    the top of each iteration, since what it builds would otherwise read
-    the [let] after the loop assigns it, which no-loop-func rejects.
+    frame and continues. A frame is the number of its site, in [frames],
+    when the function has several, and each variable that the rest reads,
+    on an array of its type, [saved], with its index, [top], while
+    [depth] counts the frames. All arrays are local to the invocation,
+    including the array of sites. A callback that reenters the function
+    uses its own arrays, and an exception needs no shared-state cleanup.
+    A variable bound outside the function, and a parameter that every
+    call passes unchanged, which stays the parameter, are not saved. A
+    tail that is a value assigns [returned], and the code after the body
+    pops a frame and runs the rest of its site with [returned] as the
+    result of the call, which may call again, until no frame is left. Two
+    sites whose rests are the same code are one. A single continuation
+    shape that only applies the mapped bigint successor or adds one saved
+    bigint can use an exact accumulator instead of frames. Only the
+    preset's pure realiser code qualifies. Number addition and
+    computations performed after the recursive call retain their order. A
+    body that builds a function, a lazy cell, a partial application, or a
+    branch of a match function reads a [const] copy of each [let] at the
+    top of each iteration, since what it builds would otherwise read the
+    [let] after the loop assigns it, which no-loop-func rejects.
 
     A function whose self calls are all at a tail, and whose body builds
     nothing over a copy, has no frames, and is the loop alone. A function
@@ -79,7 +79,7 @@
 
     A member of a mutually recursive group, top-level or local, that calls
     another member outside the functions it builds is the loop of the
-    whole group: a call of any member is a step. When the members take
+    whole group. A call of any member is then a step. When the members take
     parameters of the same types and return the same type, the loop keeps
     one set of copies, shared by position. In a group of two, a jump to
     the other member at the tail of the code is that member's body in
@@ -97,7 +97,7 @@
     A local [fix] of one monomorphic function that is the whole body of a
     member and calls the group, as Stdlib's [merge] is through
     [merge_aux], is a member of the group of its own, which
-    {!Ts_anf.lift_fixes} gives: it takes the parameters of the member that
+    {!Ts_anf.lift_fixes} gives. It takes the parameters of the member that
     it reads before its own, and the member calls it with them, so no
     arrow is declared for it.
 
@@ -143,12 +143,12 @@
     parameter is passed as an argument.
 
     A call of a global or a constructor writes its type arguments only
-    when TypeScript could not infer them: when a type variable of the
-    callee's declared type occurs in the type of no parameter that an
-    argument pins, as in [empty<Nat>()], or where the argument is an erased
-    value or a cast, whose type would not pin the variable. A missing
-    parameter of a partial application pins through the annotation of the
-    arrow that takes it.
+    when TypeScript could not infer them. That is when a type variable of
+    the callee's declared type occurs in the type of no parameter that an
+    argument pins, as in [empty<Nat>()], or where the argument is an
+    erased value or a cast, whose type would not pin the variable. A
+    missing parameter of a partial application pins through the
+    annotation of the arrow that takes it.
 
     Pattern variables are never bound. Each one is replaced by a field read
     of the scrutinee, such as [t.l] or [p.px], which is a variable or a
@@ -228,17 +228,18 @@ val ty : scope -> Ts_infer.ty -> Ts_print.ty
       backend. *)
 val toplevel : scope -> Ts_infer.expr -> Ts_print.expr
 
-(** [func scope ~tparams ~self body] is the optional annotation and value of the top-level
-    function [self] with the type parameters [tparams], over the variables
-    of [scope]. The typed body [body] is [Lambda (_, bs, result, b)], and
-    the arrow has one parameter per binder of [bs], the result type
-    [result], and the statements of [b], ending in [return], as an
-    expression when they are one [return], or the loop of its self calls
-    in [b]. [fix] pairs each function of the mutually recursive group of
-    [self], [self] included, with its typed body; it is [[]] when [self]
-    is in no group, or when the group holds a member that the machine
-    cannot take, one that is not a function or that the backend does not
-    define, and the loop then takes the self calls of [self] alone.
+(** [func scope ~tparams ~self ~fix body] is the optional annotation and
+    value of the top-level function [self] with the type parameters
+    [tparams], over the variables of [scope]. The typed body [body] is
+    [Lambda (_, bs, result, b)], and the arrow has one parameter per
+    binder of [bs], the result type [result], and the statements of [b],
+    ending in [return], as an expression when they are one [return], or
+    the loop of its self calls in [b]. [fix] pairs each function of the
+    mutually recursive group of [self], [self] included, with its typed
+    body. It is [[]] when [self] is in no group, or when the group holds a
+    member that the machine cannot take, one that is not a function or
+    that the backend does not define, and the loop then takes the self
+    calls of [self] alone.
 
     An eligible unary comparison is a helper factory applied to that
     original arrow, with its function type kept as the annotation.
@@ -264,6 +265,8 @@ val constant
   -> Ts_infer.expr
   -> Ts_print.expr
 
+(** The type for the certified recurrences of exact monomorphic unary
+    comparisons. *)
 type unary_order
 
 (** [unary_order env ~self e] is the certified recurrence of [e], the

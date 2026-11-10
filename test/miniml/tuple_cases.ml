@@ -69,7 +69,7 @@ let sign_decl =
     }
 ;;
 
-(* The declarations, each with the type a plugin would give it: the type of
+(* The declarations, each with the type a plugin would give it. The type of
    a tuple is unknown to MiniML, so a tuple result is Tunknown and
    reconstruction types it from the body. *)
 let decls =

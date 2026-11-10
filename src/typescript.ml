@@ -1478,9 +1478,9 @@ let rec bound_path = function
 
 let rec captures_type sigs ~body = function
   | Tglob (g, args) ->
-    bound_path (Table.modpath_of_r g)
-    || (ModPath.subpath body (Table.modpath_of_r g)
-        && not (List.is_empty (Ts_sig.implicit sigs g)))
+    let gp = Table.modpath_of_r g in
+    bound_path gp
+    || (ModPath.subpath body gp && not (List.is_empty (Ts_sig.implicit sigs g)))
     || List.exists args ~f:(captures_type sigs ~body)
   | Tarr (a, b) -> captures_type sigs ~body a || captures_type sigs ~body b
   | Tmeta { contents = Some t; _ } -> captures_type sigs ~body t
@@ -1747,14 +1747,11 @@ let generalised generics item =
 ;;
 
 let generic_arrow ~flat ~own typed ~result_ty inner =
-  let arrow tparams params =
-    let rec chain tparams = function
-      | [] -> CErrors.anomaly (Pp.str "Typescript.functor_: a functor has a parameter.")
-      | [ (x, t) ] -> P.Arrow (P.unbounded tparams, [ x, t ], Some result_ty, inner)
-      | (x, t) :: rest ->
-        P.Arrow (P.unbounded tparams, [ x, t ], None, P.Expr (chain [] rest))
-    in
-    chain tparams params
+  let rec arrow tparams = function
+    | [] -> CErrors.anomaly (Pp.str "Typescript.functor_: a functor has a parameter.")
+    | [ (x, t) ] -> P.Arrow (P.unbounded tparams, [ x, t ], Some result_ty, inner)
+    | (x, t) :: rest ->
+      P.Arrow (P.unbounded tparams, [ x, t ], None, P.Expr (arrow [] rest))
   in
   let value = { P.name = flat; ty = None; value = arrow (List.map own ~f:snd) typed } in
   let read_values, read_types = P.reads (P.Value value) in
@@ -1897,7 +1894,7 @@ let reads_body low stmts (v : P.value) =
 let aliased_object low target =
   let rec placed mp =
     match Hashtbl.find low.where.objects mp, mp with
-    | Some o, _ -> Some o
+    | (Some _ as o), _ -> o
     | None, ModPath.MPdot (parent, _) ->
       Option.map (placed parent) ~f:(fun (value, ty) ->
         let member = Ts_names.module_name low.names mp in
@@ -2013,8 +2010,7 @@ and lower_body low ~at sel =
 and lower_element low ~at ((types, stmts, fields), casts) (l, se) =
   let p = ModPath.MPdot (at, l) in
   let lowered items casts' =
-    let types, stmts, fields = fold_items low (types, stmts, fields) items in
-    (types, stmts, fields), casts + casts'
+    fold_items low (types, stmts, fields) items, casts + casts'
   in
   match se with
   | SEdecl (Dind ind as d)
@@ -2076,10 +2072,7 @@ and lower_element low ~at ((types, stmts, fields), casts) (l, se) =
       low.where.objects
       ~key:p
       ~data:(P.Var arrow.value.name, member_type arrow.member arrow.value);
-    let types, stmts, fields =
-      fold_items low (types @ bubbled, stmts, fields) [ Value arrow ]
-    in
-    (types, stmts, fields), casts + casts'
+    fold_items low (types @ bubbled, stmts, fields) [ Value arrow ], casts + casts'
   | SEmodtype mt ->
     lowered (signature ~outer:low.generics low.env low.names low.where p mt) 0
 

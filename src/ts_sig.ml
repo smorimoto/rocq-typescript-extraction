@@ -375,9 +375,8 @@ let rec canonical_in reached mp =
 ;;
 
 let reaches_in reached r =
-  let mp = Table.modpath_of_r r in
-  match List.find reached ~f:(fun (from, _) -> ModPath.subpath from mp) with
-  | Some (from, to_) -> Ts_alias.rebase (rebase_path ~from ~to_ mp) r
+  match step_in reached (Table.modpath_of_r r) with
+  | Some (mp', _) -> Ts_alias.rebase mp' r
   | None -> r
 ;;
 
@@ -491,9 +490,7 @@ let rec result_of w mt =
       w.returned <- ModPath.Set.add o w.returned;
       nested_results w (resolve_in w.declared ~at:o mt))
   | MTfunsig _ ->
-    (match signature_of w.declared mt with
-     | Some { result; _ } -> result_of w result
-     | None -> ())
+    Option.iter (signature_of w.declared mt) ~f:(fun { result; _ } -> result_of w result)
 
 and nested_results w members =
   List.iter members ~f:(fun (_, s) ->
@@ -682,12 +679,11 @@ let application_reaches ?(outer = []) w ~at me mt =
   let argument id params args = List.Assoc.find (pair params args) ~equal:MBId.equal id in
   let rec instantiated mp id =
     let here =
-      match ModPath.Map.find_opt mp w.bound_at with
-      | Some bs -> List.Assoc.find bs ~equal:MBId.equal id
-      | None -> None
+      Option.bind (ModPath.Map.find_opt mp w.bound_at) ~f:(fun bs ->
+        List.Assoc.find bs ~equal:MBId.equal id)
     in
     match here, mp with
-    | Some a, _ -> Some a
+    | Some _, _ -> here
     | None, MPdot (parent, _) -> instantiated parent id
     | None, (MPfile _ | MPbound _) -> None
   in
@@ -712,7 +708,7 @@ let application_reaches ?(outer = []) w ~at me mt =
       (match body with
        | Structure (mp, _) ->
          if not (List.is_empty outer) then left_through w ~outer ~at ~body:mp params me;
-         fixed_through w ~outer ~at ~body:mp (pair params (application_args me));
+         fixed_through w ~outer ~at ~body:mp (pair params args);
          w.reaching <- (at, mp) :: w.reaching
        | Applied (MEident (MPbound id)) ->
          Option.iter (reach_parameter params args id ~from:f) ~f:(fun a ->
@@ -737,14 +733,13 @@ let application_reaches ?(outer = []) w ~at me mt =
       | None -> ())
    | Some ((MPfile _ | MPdot _) as f) ->
      let body = canonical_in w.reaching f in
+     let moved = Option.some_if (not (ModPath.equal body f)) body in
      let target =
        match ModPath.Map.find_opt body w.defined with
        | Some { params; body = Applied (MEident (MPbound id)) } ->
-         (match reach_parameter params (application_args me) id ~from:f with
-          | Some a -> Some a
-          | None -> if ModPath.equal body f then None else Some body)
+         Option.first_some (reach_parameter params (application_args me) id ~from:f) moved
        | Some { body = Applied (MEident target); _ } -> Some target
-       | _ -> if ModPath.equal body f then None else Some body
+       | _ -> moved
      in
      Option.iter target ~f:(fun to_ -> w.reaching <- (at, to_) :: w.reaching)
    | None -> ());
@@ -763,9 +758,8 @@ let rec uses ?(outer = []) w ~parent sel =
     match se with
     | SEmodtype mt ->
       ignore (use ~outer w ~at mt : abstract list);
-      (match signature_of w.declared mt with
-       | Some { result; _ } -> result_of w (rebase_result ~at result)
-       | None -> ())
+      Option.iter (signature_of w.declared mt) ~f:(fun { result; _ } ->
+        result_of w (rebase_result ~at result))
     | SEmodule { ml_mod_expr = MEstruct (mp, sel); _ } -> uses ~outer w ~parent:mp sel
     | SEmodule { ml_mod_expr = MEfunctor _; ml_mod_type } ->
       functor_uses w ~outer ~at ml_mod_type

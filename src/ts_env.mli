@@ -48,7 +48,7 @@ type ctor =
         the [n] type parameters of the inductive, then [Var (n + 1)] and on
         for those of [lifted]. *)
   ; lifted : Ts_type.tparam list
-    (** The binders the constructor lifts, as {!Ts_kernel.ctor} gives
+    (** The binders the constructor lifts, as {!Ts_kernel.val-ctor} gives
         them. *)
   }
 
@@ -87,7 +87,7 @@ val ind : t -> Miniml.global -> ind
     @raise CErrors.Anomaly if [env] has no constructor [r]. *)
 val ctor : t -> Miniml.global -> ctor
 
-(** [signature env c] is the signature that {!Ts_kernel.ctor} reads for
+(** [signature env c] is the signature that {!Ts_kernel.val-ctor} reads for
     the constructor [c], before abbreviations are expanded. *)
 val signature : t -> Miniml.global -> Ts_kernel.ctor option
 

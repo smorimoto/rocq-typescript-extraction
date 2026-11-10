@@ -14,43 +14,6 @@ type member =
   ; accepts : I.ty list -> bool
   }
 
-let rec shift_from c n e =
-  let go = shift_from c n in
-  match e with
-  | I.Local (k, tys) -> if k > c then I.Local (k + n, tys) else e
-  | I.Global _ | I.Fail _ | I.Dummy | I.Uint _ | I.Float _ | I.String _ -> e
-  | I.Apply (f, args) ->
-    I.Apply (go f, List.map args ~f:(fun (a : I.arg) -> { a with expr = go a.expr }))
-  | I.Lambda (vs, bs, t, b) -> I.Lambda (vs, bs, t, shift_from (c + List.length bs) n b)
-  | I.Let (b, tp, e1, e2, t) -> I.Let (b, tp, go e1, shift_from (c + 1) n e2, t)
-  | I.Construct (r, tys, es) -> I.Construct (r, tys, List.map es ~f:go)
-  | I.Match m ->
-    I.Match
-      { m with
-        scrutinee = go m.scrutinee
-      ; branches =
-          List.map m.branches ~f:(fun (br : I.branch) ->
-            { br with body = shift_from (c + List.length br.binders) n br.body })
-      }
-  | I.Unpack u ->
-    I.Unpack
-      { u with
-        tuple = go u.tuple
-      ; body = shift_from (c + List.length u.binders) n u.body
-      }
-  | I.Fix (i, defs) ->
-    let k = Array.length defs in
-    I.Fix
-      ( i
-      , Array.map defs ~f:(fun (d : I.fixdef) ->
-          { d with body = shift_from (c + k) n d.body }) )
-  | I.Cast (e, a, b, k) -> I.Cast (go e, a, b, k)
-  | I.Parray (es, d) -> I.Parray (List.map es ~f:go, go d)
-  | I.Tuple es -> I.Tuple (List.map es ~f:go)
-;;
-
-let shift n e = if n = 0 then e else shift_from 0 n e
-
 let free e =
   let seen = ref [] in
   let rec go d = function
@@ -119,10 +82,11 @@ let delayed_branches env (m : I.match_) =
   | Ts_repr.Erased -> false
 ;;
 
-let steps_at env members d e =
+let exists_step env members d e ~f =
   let rec go d e =
     match call members d e with
-    | Some _ -> true
+    | Some (i, _, args) ->
+      f i d args || List.exists args ~f:(fun (a : I.arg) -> go d a.expr)
     | None ->
       (match e with
        | I.Local _
@@ -134,8 +98,8 @@ let steps_at env members d e =
        | I.String _
        | I.Lambda _
        | I.Fix _ -> false
-       | I.Apply (f, args) ->
-         go d f || List.exists args ~f:(fun (a : I.arg) -> go d a.expr)
+       | I.Apply (head, args) ->
+         go d head || List.exists args ~f:(fun (a : I.arg) -> go d a.expr)
        | I.Let (_, _, e1, e2, _) -> go d e1 || go (d + 1) e2
        | I.Construct (r, _, es) -> (not (lazy_ctor env r)) && List.exists es ~f:(go d)
        | I.Tuple es -> List.exists es ~f:(go d)
@@ -151,6 +115,7 @@ let steps_at env members d e =
   go d e
 ;;
 
+let steps_at env members d e = exists_step env members d e ~f:(fun _ _ _ -> true)
 let steps env members e = steps_at env members 0 e
 
 let tails_only env members e =
@@ -175,45 +140,11 @@ let tails_only env members e =
 
 let calls env members e =
   let found = ref [] in
-  let rec go d e =
-    match call members d e with
-    | Some (i, _, args) ->
-      found := (i, d, args) :: !found;
-      List.iter args ~f:(fun (a : I.arg) -> go d a.expr)
-    | None ->
-      (match e with
-       | I.Local _
-       | I.Global _
-       | I.Fail _
-       | I.Dummy
-       | I.Uint _
-       | I.Float _
-       | I.String _
-       | I.Lambda _
-       | I.Fix _ -> ()
-       | I.Apply (f, args) ->
-         go d f;
-         List.iter args ~f:(fun (a : I.arg) -> go d a.expr)
-       | I.Let (_, _, e1, e2, _) ->
-         go d e1;
-         go (d + 1) e2
-       | I.Construct (r, _, es) -> if not (lazy_ctor env r) then List.iter es ~f:(go d)
-       | I.Tuple es -> List.iter es ~f:(go d)
-       | I.Match m ->
-         go d m.scrutinee;
-         if not (delayed_branches env m)
-         then
-           List.iter m.branches ~f:(fun (br : I.branch) ->
-             go (d + List.length br.binders) br.body)
-       | I.Unpack u ->
-         go d u.tuple;
-         go (d + List.length u.binders) u.body
-       | I.Cast (e, _, _, _) -> go d e
-       | I.Parray (es, x) ->
-         List.iter es ~f:(go d);
-         go d x)
-  in
-  go 0 e;
+  ignore
+    (exists_step env members 0 e ~f:(fun i d args ->
+       found := (i, d, args) :: !found;
+       false)
+     : bool);
   List.rev !found
 ;;
 
@@ -285,6 +216,13 @@ let rewrite e ~local ~app =
 
 let no_app _ _ _ = None
 
+let shift_from c n e =
+  rewrite e ~app:no_app ~local:(fun d k tys ->
+    I.Local ((if k > c + d then k + n else k), tys))
+;;
+
+let shift n e = if n = 0 then e else shift_from 0 n e
+
 let occurrences r e =
   let n = ref 0 in
   ignore
@@ -355,13 +293,9 @@ let lift env members bs body =
     let member_body =
       match use with
       | `Apply args ->
-        let outer e =
-          rewrite
-            e
-            ~local:(fun d k tys -> I.Local ((if k - d > nb then k + 1 else k), tys))
-            ~app:no_app
-        in
-        call 0 (List.map args ~f:(fun (a : I.arg) -> { a with expr = outer a.expr }))
+        call
+          0
+          (List.map args ~f:(fun (a : I.arg) -> { a with expr = shift_from nb 1 a.expr }))
       | `Let e2 ->
         rewrite
           e2
@@ -378,11 +312,7 @@ let lift env members bs body =
             | _ -> None)
     in
     let self =
-      { head = Local 1
-      ; arity = nc + na
-      ; result = ares
-      ; accepts = (fun tys -> List.is_empty tys)
-      }
+      { head = Local 1; arity = nc + na; result = ares; accepts = List.is_empty }
     in
     let heads = shifted 1 members @ [ self ] in
     let last = List.length heads - 1 in

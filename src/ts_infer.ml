@@ -151,8 +151,7 @@ let generalised ctx e t =
         (Array.to_list (Array.map defs ~f:(fun (d : fixdef) -> d.ty)))
     in
     let tparams ms =
-      List.filter_map ms ~f:(fun m ->
-        List.find_map group ~f:(fun (m', i) -> if T.same m m' then Some i else None))
+      List.filter_map ms ~f:(fun m -> List.Assoc.find group ~equal:T.same m)
     in
     let defs =
       Array.mapi defs ~f:(fun j (d : fixdef) -> { d with tparams = tparams own.(j) })
@@ -172,9 +171,9 @@ let fits ctx ~expected t =
   T.unify expected t
   || (match T.resolve t, T.resolve expected with
       | T.Var v, _ ->
-        (match List.Assoc.find ctx.bounds ~equal:Int.equal v with
-         | Some b -> T.unify expected b
-         | None -> false)
+        Option.exists
+          (List.Assoc.find ctx.bounds ~equal:Int.equal v)
+          ~f:(T.unify expected)
       | T.Glob (c, []), T.Glob (ind, _) -> ctor_of_ind ctx.env c ind
       | _ -> false)
   || T.unify (reduce expected) (reduce t)
@@ -345,9 +344,9 @@ let rec join expected tys : ty =
   let joined =
     match List.map tys ~f:elements with
     | Some first :: _ as tuples
-      when List.for_all tuples ~f:(function
-             | Some ts -> List.length ts = List.length first
-             | None -> false) ->
+      when List.for_all
+             tuples
+             ~f:(Option.exists ~f:(fun ts -> List.length ts = List.length first)) ->
       let tuples = List.filter_opt tuples in
       T.Tuple (List.map (List.transpose_exn tuples) ~f:(join None))
     | _ ->
@@ -411,6 +410,8 @@ let pattern ids pat =
   | Ptuple _ -> unsupported "tuple patterns"
   | Prel _ | Pwild -> unsupported "this shape of pattern"
 ;;
+
+let arg a expr = { expr; atomic = Ts_env.atomic a }
 
 let position positions j =
   Option.map (List.findi positions ~f:(fun _ p -> Option.mem p j ~equal:Int.equal)) ~f:fst
@@ -559,14 +560,11 @@ and scrutinize ctx r s pv =
       | Default { binds_scrutinee = true } -> ind_ty
       | Default { binds_scrutinee = false } -> meta ()
       | Ctor (r, fields) ->
-        let args = (Ts_env.ctor ctx.env r).args in
+        let c = Ts_env.ctor ctx.env r in
         (match position fields (n - i) with
          | Some k ->
-           let bounds =
-             List.filter_map (Ts_env.ctor ctx.env r).lifted ~f:(fun (p : T.tparam) ->
-               p.bound)
-           in
-           T.subst (tyargs @ bounds) (List.nth_exn args k)
+           let bounds = List.filter_map c.lifted ~f:(fun (p : T.tparam) -> p.bound) in
+           T.subst (tyargs @ bounds) (List.nth_exn c.args k)
          | None -> meta ())
     in
     let tys = List.init n ~f:binder_ty in
@@ -673,7 +671,7 @@ and infer ctx a =
     let tys = List.map tparams ~f:(fun _ -> meta ()) in
     Local (n, tys), T.instantiate tparams tys ty
   (* Extraction casts a use of a let-bound local at a second type, as
-     OCaml's value restriction asks; a local that reconstruction
+     OCaml's value restriction asks. A local that reconstruction
      generalised needs no cast. *)
   | MLapp (MLmagic (MLrel n), args)
     when not (List.is_empty (List.nth_exn ctx.locals (n - 1)).tparams) ->
@@ -748,7 +746,6 @@ and apply_schema ctx ~cause r args =
   let tys = List.map s.tparams ~f:(fun _ -> meta ()) in
   let params, result = T.split (List.length args) s.ty in
   let used, rest = List.split_n args (List.length params) in
-  let arg a expr = { expr; atomic = Ts_env.atomic a } in
   let applied =
     List.map2_exn params used ~f:(fun p a ->
       match lifted_var s p with
@@ -779,16 +776,14 @@ and lifted_arg ctx ~m ~bound a =
       ignore (T.unify m bound : bool);
       fst (coerce ctx ~expected:bound (e, t)))
   in
-  { expr; atomic = Ts_env.atomic a }
+  arg a expr
 
 and apply ?(cause = Mismatch) ctx (f, tf) args =
-  let arg a expr = { expr; atomic = Ts_env.atomic a } in
   match f with
   | Dummy -> Apply (f, List.map args ~f:(fun a -> arg a (fst (infer ctx a)))), meta ()
   | _ -> apply_rest ctx ~cause f tf [] args
 
 and apply_rest ctx ~cause f tf applied args =
-  let arg a expr = { expr; atomic = Ts_env.atomic a } in
   let constrain_candidates candidates =
     List.iter candidates ~f:(fun (expected, actual) ->
       constrain_envelope ctx expected actual);

@@ -20,7 +20,7 @@
     with a character that cannot start one, such as a digit, keeps a
     leading underscore, so [_1] stays [_1]. No identifier contains [shape]
     in any case, which the no-shape-in-symbol-names rule of Ultracite's
-    anti-slop preset rejects and a suffix would keep: each occurrence
+    anti-slop preset rejects and a suffix would keep. Each occurrence
     becomes [form], capitalised as the word was, so [shape_area] becomes
     [formArea], the type [shape] [Form], and the library [Shapes] is
     imported as [$Forms]. A tag is a string, so it keeps the
@@ -79,7 +79,7 @@
     [FTResult], and the result's members named as a module's are. A
     functor is a value, named as a module
     is, with its types named by its path, as [FWrapped], and the interface
-    of its result [FResult]; its members are locals of its arrow, named
+    of its result [FResult]. Its members are locals of its arrow, named
     when the body is printed. An application is a value named as a module
     is, whose types are named by its path, as [BWrapped], those abstract
     in the module type it is sealed with included, and whose
@@ -94,18 +94,18 @@ type t
 
 (** [keywords] is the set of names that no generated name takes, as a
     value or as a type, so a Rocq name that would become one of them gets a
-    numeric suffix, as type [date] becomes [Date0]. It holds, in groups:
+    numeric suffix, as type [date] becomes [Date0]. It holds, in groups,
     the Keywords section of MDN's Lexical grammar page, which lists the
     reserved words, those reserved in strict mode, modules, or async
     bodies, the future reserved words of current and older standards, and
     the identifiers with special meanings; the names on MDN's Global
     Objects page; the TypeScript keywords and primitive type names; the
     TypeScript utility and global types; the helpers of the output;
-    [callback], [cb], and [next], whose calls
-    Oxlint's node/callback-return reads as callbacks that must be
-    returned; and [then], which unicorn's no-thenable forbids as the key
-    of an object and as an exported name.
-    Names are case-sensitive, so [Map] is reserved and [map] is not. *)
+    [callback], [cb], and [next], whose calls Oxlint's
+    node/callback-return reads as callbacks that must be returned; and
+    [then], which unicorn's no-thenable forbids as the key of an object
+    and as an exported name. Names are case-sensitive, so [Map] is
+    reserved and [map] is not. *)
 val keywords : Names.Id.Set.t
 
 (** [create state sigs struc] is the names of every global declared in
@@ -155,7 +155,7 @@ val custom_match : Miniml.ml_ind_packet -> string option
 
 (** [realisers p] is the code of [Extract Inductive] for packet [p]
     that is declared once, as a constant, rather than written out at every
-    use: the code of each constructor with arguments, then the match
+    use. It is the code of each constructor with arguments, then the match
     function, keeping only the code that is not {!Ts_print.is_atom}. Each
     comes with the global it realises, the constructor, or the inductive
     type for the match function. The code of a constant constructor is a
@@ -206,8 +206,9 @@ val match_function : t -> Miniml.global -> string -> Ts_print.expr
 val value_name : t -> Miniml.global -> string
 
 (** [group_members rv av] is the globals of [rv], the mutually recursive
-    group with bodies [av], that the output declares: those whose body is
-    not [MLexn "UNUSED"] and that [Extract Constant] does not realise. *)
+    group with bodies [av], that the output declares. They are those whose
+    body is not [MLexn "UNUSED"] and that [Extract Constant] does not
+    realise. *)
 val group_members : Miniml.global array -> Miniml.ml_ast array -> Miniml.global list
 
 (** [group_name names r] is the flat name of the object that declares the
@@ -273,16 +274,16 @@ val type_ref : t -> Miniml.global -> string
 val module_name : t -> Names.ModPath.t -> string
 
 (** [module_ref names mp] is how an expression refers to the object of
-    module [mp], which is not a file: its name for a top-level module of
-    the current file, through the properties of its parents' objects for a
-    nested one, as [N.Sub], and through the import of its file for a
-    module of another file, as [$Dep.N]. A functor or an application of
-    the current file is
-    referred to by its flat name, as [M$F], since its value is declared
-    before the object of the module around it, and a functor parameter by
-    its local name in the body of the functor. A reference to another file
-    records an import in [names]. The alias of a module refers to its
-    object this way. *)
+    module [mp], which is not a file. It is its name for a top-level
+    module of the current file, a path through the properties of its
+    parents' objects for a nested one, as [N.Sub], and a path through the
+    import of its file for a module of another file, as [$Dep.N]. A
+    functor or an application of the current file is referred to by its
+    flat name, as [M$F], since its value is declared before the object of
+    the module around it, and a functor parameter by its local name in
+    the body of the functor. A reference to another file records an
+    import in [names]. The alias of a module refers to its object this
+    way. *)
 val module_ref : t -> Names.ModPath.t -> Ts_print.expr
 
 (** [same_file names mp] is [true] if the module [mp] is declared in the
@@ -300,14 +301,15 @@ val same_file : t -> Names.ModPath.t -> bool
 val flat_name : t -> Names.ModPath.t -> string
 
 (** [top_name names mp] is the name of the top-level value through which a
-    consumer reaches the module [mp]: the object of the top-level module
-    around it, or its own name when it is top-level. *)
+    consumer reaches the module [mp]. It is the name of the object of the
+    top-level module around [mp], or the name of [mp] itself when it is
+    top-level. *)
 val top_name : t -> Names.ModPath.t -> string
 
 (** [signature_name names mp] is the name of the interface, or of the type
-    alias, that the module type [mp] declares: the names of the modules
-    around it followed by its own, in PascalCase, as [S] or [MS]. For a
-    functor [mp], it is the name of the interface of its result, as
+    alias, that the module type [mp] declares. It is the names of the
+    modules around it followed by its own, in PascalCase, as [S] or [MS].
+    For a functor [mp], it is the name of the interface of its result, as
     [FResult].
 
     @raise CErrors.Anomaly if [mp] is neither a module type nor a functor of [names]. *)
@@ -324,10 +326,13 @@ val result_name : t -> Names.ModPath.t -> string
 
 (** [signature_ref names mp] is how a type refers to what
     {!signature_name} names, through an import path as {!ty} does when
-    [mp] is in another file, and [result_ref names mp] how it refers to
-    what {!result_name} names. Either records an import in [names]. *)
+    [mp] is in another file. A reference to another file records an
+    import in [names]. *)
 val signature_ref : t -> Names.ModPath.t -> string
 
+(** [result_ref names mp] is how a type refers to what {!result_name}
+    names, through an import path as {!signature_ref} does. A reference
+    to another file records an import in [names]. *)
 val result_ref : t -> Names.ModPath.t -> string
 
 (** The type for the types an alias declares. *)
@@ -340,8 +345,8 @@ type aliased =
   }
 
 (** [alias_types names mp] is the types that the alias [mp] declares, in
-    structure order: one for each type of the module it stands for that
-    has a declaration, through nested modules and aliases.
+    structure order. There is one for each type of the module it stands
+    for that has a declaration, through nested modules and aliases.
 
     @raise CErrors.Anomaly if [mp] is not an alias of [names]. *)
 val alias_types : t -> Names.ModPath.t -> aliased list
@@ -351,8 +356,9 @@ val alias_types : t -> Names.ModPath.t -> aliased list
 (** The type for the names of the type variables in scope. *)
 type tvars
 
-(** [params names n] is the names of [Var i] for [i] in [1..n]. They are the first [n] of [A] to [Z], [T27], [T28], and so on
-    that no type in [names] is named. Declared types of terms use them. *)
+(** [params names n] is the names of [Var i] for [i] in [1..n]. They are
+    the first [n] of [A] to [Z], [T27], [T28], and so on that no type in
+    [names] is named. Declared types of terms use them. *)
 val params : t -> int -> tvars
 
 (** [named names ids] is the names of the parameters [ids] of an inductive
@@ -379,29 +385,36 @@ val type_params : t -> Ts_sig.abstract list -> (Miniml.global * string) list
 (** [in_scope names params] is [names] with each abstract type of
     [params] named by its type parameter, so that {!ty} writes the
     parameter for the type, and with the parameters among the type names
-    that {!params} and {!named} keep apart. An abstract type that takes
+    that {!val-params} and {!named} keep apart. An abstract type that takes
     parameters is a type lambda, so {!ty} writes its application to [A]
     as [Kind<T, A>], the helper of its arity, through the import of the
-    file of the module type that declares it. [is_abstract names r] is
-    [true] if [r] is one of them. *)
+    file of the module type that declares it. *)
 val in_scope : t -> (Miniml.global * string) list -> t
 
+(** [is_abstract names r] is [true] if [r] is an abstract type that
+    {!in_scope} named in [names]. *)
 val is_abstract : t -> Miniml.global -> bool
 
 (** [type_lambda] is [TypeLambda], the name of the helper type of the
     abstract types that take parameters, which a structure that has one
-    reserves, and whose properties are the slots [kind_slot i] of the
-    arguments, [Target], [Target1], and so on, and [type]. [kind_name n]
-    is [Kind] for [n = 1] and [Kind2], [Kind3], and so on for the arities
-    beyond. *)
+    reserves, and whose properties are the slots {!kind_slot} of the
+    arguments and [type]. *)
 val type_lambda : string
 
+(** [kind_name n] is the name of the helper type that applies an abstract
+    type of [n] parameters to its arguments. It is [Kind] for [n = 1] and
+    [Kind2], [Kind3], and so on for the arities beyond. *)
 val kind_name : int -> string
+
+(** [kind_slot i] is the property of {!type_lambda} that holds argument
+    [i], from [0]. It is [Target], then [Target1], [Target2], and so
+    on. *)
 val kind_slot : int -> string
 
 (** [kind_ref names r name] is how the current file refers to the helper
-    [name] of the abstract type [r]: through the import of the file of
-    the module type that declares [r] when that is another file. *)
+    [name] of the abstract type [r]. It goes through the import of the
+    file of the module type that declares [r] when that is another
+    file. *)
 val kind_ref : t -> Miniml.global -> string -> string
 
 (** [lambda_name names base] is [base], or [base] with a numeric suffix,
@@ -416,8 +429,8 @@ val implicit_params : t -> Miniml.global -> string list
 
 (** [implicit_args names r] is the type arguments that a reference to
     the type or constructor [r] passes for its {!implicit_params}, as
-    {!ty} writes each abstract type: its type parameter, or the type that
-    a constraint fixes it to under the path of [r]. *)
+    {!ty} writes each abstract type. Each is its type parameter, or the
+    type that a constraint fixes it to under the path of [r]. *)
 val implicit_args : t -> Miniml.global -> Ts_print.ty list
 
 (** [tparams tvars] is the list to print between [<] and [>]. It is empty
@@ -485,11 +498,11 @@ val ty : t -> tvars -> Ts_type.t -> Ts_print.ty
 (** [qualify_code names r ~params code] is the type code [code] of the
     mapped type [r] with each identifier that {!Ts_print.reads} counts as
     a reference, other than [params], and that names a generated type,
-    written as the current file refers to that type: as it is in the file
-    that declares the type, and through the import of that file, as
-    [$Shapes.Point], in another. The operand of [typeof] is written the
-    same way when it names a top-level generated value, as
-    [typeof $Shapes.origin]. It records the import in [names].
+    written as the current file refers to that type. The identifier stays
+    as it is in the file that declares the type, and goes through the
+    import of that file, as [$Shapes.Point], in another. The operand of
+    [typeof] is written the same way when it names a top-level generated
+    value, as [typeof $Shapes.origin]. It records the import in [names].
 
     @raise CErrors.UserError
       if an identifier names a type, or a [typeof] operand names a
@@ -499,7 +512,7 @@ val qualify_code : t -> Miniml.global -> params:string list -> string -> string
 
 (** [signature names tparams] is the names of the type parameters
     [tparams] of a signature, as {!tparams} gives them, and their
-    declarations. A parameter of ML is named by {!params}, and one with a
+    declarations. A parameter of ML is named by {!val-params}, and one with a
     hint, a lifted binder or a parameter of a [Dtype], after its hint in
     PascalCase, apart from the type names of [names] and the other
     parameters, so [b] gives [B] and [is_num] gives [IsNum]. A bound is
@@ -537,10 +550,10 @@ val avoid : t -> avoid
 
 (** [lift names x] records [x], the name of a private constant that the
     translation of a declaration lifts to the top level of the file,
-    before the declaration. {!avoid} and {!lifted} hold [x] from then on,
+    before the declaration. {!val-avoid} and {!lifted} hold [x] from then on,
     so that no local declared after the constant takes its name, since
     Oxlint's no-shadow rejects a local declared after a module-level
-    constant of that name. The caller chooses [x] apart from {!avoid}. *)
+    constant of that name. The caller chooses [x] apart from {!val-avoid}. *)
 val lift : t -> string -> unit
 
 (** [lifted names] is the names that {!lift} recorded in the file of
@@ -565,7 +578,7 @@ val restore : t -> avoid -> unit
     to a local by its name, to any other member of a parameter as a
     property of the parameter's object, and to a hoisted member by its
     top-level name, and {!value_name} and {!group_name} give the locals,
-    which {!avoid} holds, the top-level names of the hoisted members, or,
+    which {!val-avoid} holds, the top-level names of the hoisted members, or,
     for a member of the body that both miss, its short name, from which a
     local is chosen. The body of a functor declared in the body of
     another keeps the parameters and the locals of the body around it. *)
@@ -614,7 +627,7 @@ val key : avoid -> Names.Id.t -> string * avoid
     globals of other files go through imports. It reads [sels] for the
     globals that the output refers to and chooses the local name of every
     binding of {!bindings} then, and of {!methods_of}, as
-    {!bind_methods} does, before any local is named, so that {!avoid} has
+    {!bind_methods} does, before any local is named, so that {!val-avoid} has
     them. It is [names] itself in monolithic extraction. *)
 val in_file : t -> Names.ModPath.t -> Miniml.ml_module_structure -> t
 
@@ -665,7 +678,7 @@ val imports : t -> (string * string) list
     reference. Every top-level value of another file is bound. A value in
     a module of another file is bound only when its name is one that
     {!group_key} keeps off an object, such as [map] or [reduce], which a
-    call through the module object would trip; any other is referred to
+    call through the module object would trip. Any other is referred to
     through the alias, as [$Datatypes.M.x]. The local name is the value's
     own unless the current file already declares it, and then takes a
     suffix. *)
