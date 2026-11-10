@@ -160,11 +160,9 @@ and mgu_all ts ts' = List.length ts = List.length ts' && List.for_all2_exn ts ts
 
 let unify a b =
   let bound = unbound (unbound [] a) b in
-  match mgu a b with
-  | true -> true
-  | false ->
-    List.iter bound ~f:(fun m -> m.contents <- None);
-    false
+  let unified = mgu a b in
+  if not unified then List.iter bound ~f:(fun m -> m.contents <- None);
+  unified
 ;;
 
 let rec equal a b =

@@ -98,7 +98,7 @@ let declared struc =
   List.fold struc ~init:Refmap.empty ~f:(fun acc (_, sel) -> elements acc sel)
 ;;
 
-let resolver struc =
+let global struc =
   match aliases struc with
   | [] -> Fn.id
   | aliases ->
@@ -113,13 +113,11 @@ let resolver struc =
         Option.value (Refmap.find_opt r' declared) ~default:r')
 ;;
 
-let global struc = resolver struc
-
 let resolve struc =
   match aliases struc with
   | [] -> struc
   | aliases ->
-    let g = resolver struc in
+    let g = global struc in
     let rec ty = function
       | Tglob (r, l) -> Tglob (g r, List.map l ~f:ty)
       | Tarr (a, b) -> Tarr (ty a, ty b)

@@ -148,7 +148,7 @@ let literals r constructors =
     || (Ts_print.is_atom s
         && (Char.equal s.[0] '-' || (Char.( >= ) s.[0] '0' && Char.( <= ) s.[0] '9')))
   in
-  List.for_all constructors ~f:(fun c -> Table.is_custom c)
+  List.for_all constructors ~f:Table.is_custom
   && List.for_all codes ~f:literal
   &&
   let sorted = List.dedup_and_sort ~compare:String.compare in
@@ -805,10 +805,10 @@ let alias ~start ~vars (r : global) kn body =
   let start = { start with vars } in
   let sigma = start.sigma in
   let fixpoint, body =
-    match E.kind sigma (E.of_constr body) with
+    match E.kind sigma body with
     | Fix ((_, i), (_, _, bodies)) when Array.length bodies = 1 ->
       true, E.Vars.subst1 (E.mkConstU (kn, E.EInstance.empty)) bodies.(i)
-    | _ -> false, E.of_constr body
+    | _ -> false, body
   in
   let binders, def =
     if fixpoint
@@ -1030,10 +1030,7 @@ let create state struc =
       records
       []
   in
-  let projection kn =
-    List.find_map projections ~f:(fun (proj, ri) ->
-      if Constant.CanOrd.equal proj kn then Some ri else None)
-  in
+  let projection kn = List.Assoc.find projections ~equal:Constant.CanOrd.equal kn in
   let is_function r = Refmap.mem r functions in
   let opaque r = is_function r || Refmap.mem r records in
   let memo = Hashtbl.Poly.create ~size:8 () in
@@ -1045,12 +1042,8 @@ let create state struc =
       let a =
         match Refmap.find_opt r functions, r.glob with
         | Some (vars, env), GlobRef.ConstRef kn ->
-          (match (Environ.lookup_constant kn env).const_body with
-           | Declarations.Def body -> alias ~start:(start env) ~vars r kn body
-           | Declarations.Undef _
-           | Declarations.OpaqueDef _
-           | Declarations.Primitive _
-           | Declarations.Symbol _ -> None)
+          Option.bind (definition env r) ~f:(fun body ->
+            alias ~start:(start env) ~vars r kn body)
         | Some _, _ | None, _ -> None
       in
       Hashtbl.set memo ~key:r.glob ~data:a;
@@ -1124,12 +1117,8 @@ let create state struc =
       | _, (Dtype _ | Dterm _ | Dfix _) -> m)
   in
   let rec scope_of mp =
-    match
-      ( List.find_map scopes ~f:(fun (mp', env) ->
-          if ModPath.equal mp mp' then Some env else None)
-      , mp )
-    with
-    | Some env, _ -> Some env
+    match List.Assoc.find scopes ~equal:ModPath.equal mp, mp with
+    | (Some _ as env), _ -> env
     | None, ModPath.MPdot (mp, _) -> scope_of mp
     | None, ModPath.MPfile _ -> Some (Global.env ())
     | None, ModPath.MPbound _ -> None

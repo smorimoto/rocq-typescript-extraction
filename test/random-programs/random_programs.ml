@@ -91,10 +91,10 @@ let name () =
 ;;
 
 (* The realizers of ExtrTsBasic and ExtrTsNatBigInt, and two shaped like
-   the make and set of ExtrTsPArray, which span lines: an object literal
-   over several lines and a block body with a blank line. Their lines are
-   short, since the printer reflows no user code, so that they fit at any
-   depth the programs reach. *)
+   the make and set of ExtrTsPArray, which span lines. One is an object
+   literal over several lines and the other a block body with a blank
+   line. Their lines are short, since the printer reflows no user code, so
+   that they fit at any depth the programs reach. *)
 let realizers =
   [ "(<R>(t: () => R, f: () => R, b: boolean): R => (b ? t() : f()))"
   ; "(<R>(l: () => R, r: () => R, b: boolean): R => (b ? l() : r()))"
@@ -351,9 +351,10 @@ and fields d =
     let k = name () in
     k, if chance 0.3 then Var k else expr d)
 
-(* Statements cover the blank lines of anti-slop's require-readable-spacing:
-   one-line and broken consts, a switch in the middle of a list, and cases
-   that end in a nested switch or in an arrow with a block body. *)
+(* Statements cover the blank lines of anti-slop's require-readable-spacing.
+   They are one-line and broken consts, a switch in the middle of a list,
+   and cases that end in a nested switch or in an arrow with a block
+   body. *)
 and stmts d =
   let const () =
     if chance 0.3
@@ -590,7 +591,7 @@ let bind source =
     , Var source )
 ;;
 
-(* A functor: a generic arrow, curried per parameter, whose block body
+(* A functor as a generic arrow, curried per parameter, whose block body
    binds members of a parameter, declares the members, among them an
    application of a functor-typed parameter, the object of a module
    nested in the body, and a functor nested in the body, and returns their
@@ -738,7 +739,7 @@ let signature () =
     })
 ;;
 
-(* An application: a call with explicit type arguments, applied again to
+(* An application as a call with explicit type arguments, applied again to
    each further argument, of a functor and to modules of this file or of
    an imported one, or, when partial, a generic arrow over the parameters
    left whose body is that call, drawn last for the same reason. *)
@@ -872,7 +873,7 @@ let bounded names =
 ;;
 
 (* A declaration over bounded type parameters whose types are chains of
-   conditional types: an alias, an interface, a function, or a constant
+   conditional types, as an alias, an interface, a function, or a constant
    whose annotation and cast name one, drawn last for the same reason. *)
 let dependent () =
   let tparams = bounded (List.init (1 + Random.int 3) ~f:(fun _ -> tname ())) in
@@ -1118,9 +1119,9 @@ let check config decls =
   with_formatter config (fun format ->
     let source = render decls in
     let formatted = format source in
-    if String.equal source formatted
-    then true
-    else (
+    let stable = String.equal source formatted in
+    if not stable
+    then (
       let remaining = ref 256 in
       let rec reduce decls source formatted =
         let rec search candidates =
@@ -1151,8 +1152,8 @@ let check config decls =
         (List.length reduced)
         (256 - !remaining)
         source
-        formatted;
-      false))
+        formatted);
+    stable)
 ;;
 
 let () =

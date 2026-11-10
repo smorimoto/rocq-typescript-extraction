@@ -50,7 +50,7 @@ let rec structure_body env mp =
        | exception Stdlib.Not_found -> None)
   in
   match direct, mp with
-  | Some body, _ -> Some body
+  | Some _, _ -> direct
   | None, ModPath.MPdot (parent, l) ->
     let open Option.Let_syntax in
     let%bind body = structure_body env parent in
@@ -290,7 +290,7 @@ let constructors
           (List.map p.ip_vars ~f:(fun id -> { Ts_type.hint = Some id; bound = None })
            @ k.lifted)
       in
-      ( List.map cs.(j).params ~f:(fun v -> List.nth_exn decls (v - 1))
+      ( pick cs.(j).params decls
       , List.map k.args ~f:(Ts_names.ty names tvars)
       , k.lifted
       , tvars )

@@ -28,3 +28,10 @@ val rebase : Names.ModPath.t -> Miniml.global -> Miniml.global
     [struc], or [None] if no such structure exists. Applications,
     functors, and functor parameters have no structure. *)
 val find : Miniml.ml_structure -> Names.ModPath.t -> Miniml.ml_module_structure option
+
+(** [functor_body me] is the structure under the functor parameters of
+    [me], with its path, or [None] if a module name or an application is
+    under them. A structure is its own body. *)
+val functor_body
+  :  Miniml.ml_module_expr
+  -> (Names.ModPath.t * Miniml.ml_module_structure) option
