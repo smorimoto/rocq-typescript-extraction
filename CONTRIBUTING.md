@@ -70,6 +70,26 @@ jactionlint
 
 See the [benchmark guide](bench/README.md) for workloads, measurement boundaries, and commands to run all or selected suites.
 
+## Releases
+
+[Changesets](https://github.com/changesets/changesets) collects the changes for each release, and [opam-publish](https://github.com/ocaml-opam/opam-publish) submits the release to [opam-repository](https://github.com/ocaml/opam-repository). The release version is in the `VERSION` file. Read the version from that file and from nowhere else. Changesets can only bump `version` in `package.json`, so the Release workflow copies each new version from there into `VERSION`. opam-publish takes the opam version from the release tag, so `dune-project` and the opam file carry no version.
+
+When a pull request changes what users see, add a changeset to it:
+
+```sh
+bun changeset
+```
+
+The command asks for the bump (patch, minor, or major) and a summary, then writes a Markdown file in `.changeset/`. Commit that file with the change. The summary becomes the entry in `CHANGELOG.md`.
+
+On each push to `main`, the [Release workflow](.github/workflows/release.yml) gathers the changesets into a pull request titled `chore(release): version packages`. That pull request removes the changeset files, bumps `VERSION` and `version` in `package.json`, and writes `CHANGELOG.md`. Never edit those three by hand. The pull request comes from `github-actions`, so GitHub holds its CI runs until you select **Approve workflows to run** on the pull request.
+
+To release, merge that pull request. The workflow then tags `vX.Y.Z`, creates the GitHub release, and runs opam-publish, which opens a pull request on `ocaml/opam-repository`. Users can install the release with opam after the opam-repository maintainers merge that pull request.
+
+The workflow needs two things, which you set once. In the repository settings under **Actions**, then **General**, allow GitHub Actions to create and approve pull requests, so that the workflow can open the version pull request. Then add the repository secret `OPAM_PUBLISH_GH_TOKEN`, a classic personal access token with the `public_repo` and `workflow` scopes. opam-publish uses the token to push to the token owner's fork of opam-repository and to open the pull request on `ocaml/opam-repository`. The default `GITHUB_TOKEN` cannot write outside this repository.
+
+If the opam-repository job fails after the tag exists, select **Re-run failed jobs** on the workflow run. The rerun keeps the tag and runs only that job. opam-publish then opens the pull request, or updates the one that is already open.
+
 ## Third-party dependencies
 
 Stdlib, Fiat Crypto, and CompCert are test and benchmark dependencies. Their upstream sources and proofs remain unmodified, and generated programs stay in `_build`; they are not installed with the plugin.
