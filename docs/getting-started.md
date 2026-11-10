@@ -1,3 +1,5 @@
+<!-- Generated from getting-started.cpp.md; do not edit directly. -->
+
 # Getting started
 
 ## Install from source
@@ -14,8 +16,6 @@ This installs the plugin and its Rocq theories. Rocq 9.3 or later is required.
 ## Usage
 
 Save this as `Tree.v`:
-
-<!-- sample: Tree.v -->
 
 ```coq
 From TypeScriptExtraction Require Import Number.

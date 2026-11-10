@@ -15,11 +15,11 @@ opam exec -- dune build
 opam exec -- dune test
 ```
 
-`--with-test` adds Rocq Stdlib and `ppx_expect`. `--with-dev-setup` adds ocamlformat, ocaml-lsp-server, and ocaml-index. The submodules supply the pinned Fiat Crypto and CompCert sources used by integration tests and benchmarks. Builds do not fetch dependencies after this setup.
+`--with-test` adds Rocq Stdlib, `ppx_expect`, and cppo. `--with-dev-setup` adds ocamlformat, ocaml-lsp-server, and ocaml-index. The submodules supply the pinned Fiat Crypto and CompCert sources used by integration tests and benchmarks. Builds do not fetch dependencies after this setup.
 
 ## Tests
 
-`opam exec -- dune test` runs OCaml expect tests and Cram transcripts, checks extraction against golden files, typechecks the generated TypeScript and its consumers, checks lint and formatting, runs the remaining Bun tests, and verifies the marked documentation examples against their source or generated output.
+`opam exec -- dune test` runs OCaml expect tests and Cram transcripts, checks extraction against golden files, typechecks the generated TypeScript and its consumers, checks lint and formatting, runs the remaining Bun tests, and checks that the generated documentation matches the committed pages.
 
 Write OCaml unit and regression tests with [`ppx_expect`](https://github.com/janestreet/ppx_expect) in separate test libraries. Add `(inline_tests)` and `(preprocess (pps ppx_expect ppx_js_style -check-doc-comments))` to the library's Dune stanza. Use named `let%expect_test` scenarios that call the module's exposed API, and place `[%expect]` blocks beside the operations whose output they check. Keep output deterministic and small enough to review. Use `[%expect_exact]` when whitespace is part of the contract, as in the [printer test](test/printing/printing.ml). The [unification tests](test/type-unification/unification.ml) show multiple checkpoints within a scenario.
 
@@ -47,7 +47,7 @@ Keep Rocq extraction fixtures for behavior that crosses the Rocq boundary, such 
 
 For an intentional change to the remaining Bun inline snapshots, run `opam exec -- bun run test:update`. This updates those snapshots in the build directory and copies changed test sources back to `test/`. Review the diff; normal test runs reject missing or mismatched snapshots.
 
-When changing documentation examples, keep their `<!-- sample: name -->` markers and the corresponding rules in `test/docs/dune` in sync. Run `opam exec -- dune build @test/docs/runtest` to check them.
+Edit `docs/getting-started.cpp.md` and `docs/encoding.cpp.md` for documentation prose, and the files they `#include` for code examples. `test/docs/dune` runs `cppo -n` to embed the tested source or freshly extracted TypeScript and compares the generated pages with their committed `.md` files. Run `opam exec -- dune build @test/docs/runtest`, review the diff, then run `opam exec -- dune promote docs/getting-started.md docs/encoding.md` and rerun the check. Commit the templates and generated pages together. The `.md` files remain directly readable on GitHub and Docs7; normal test runs do not update them.
 
 See the [CompCert suite](test/compcert/README.md) for integration coverage and instructions for updating its source revision.
 

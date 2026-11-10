@@ -1,3 +1,5 @@
+<!-- Generated from encoding.cpp.md; do not edit directly. -->
+
 # TypeScript reference
 
 This page describes the API of generated modules. Examples use the `Number` preset. For commands and configuration, see the [extraction guide](extraction.md).
@@ -44,8 +46,6 @@ Constructor interfaces remain available when a consumer needs a narrower type. A
 Constructor fields use the Rocq binder names when they are all named, distinct, and retained by extraction. Otherwise they are `arg0`, `arg1`, and so on.
 
 Records become interfaces with `readonly` properties. For example, a record with two natural-number fields and a function swapping them produces:
-
-<!-- sample: point.ts -->
 
 ```ts
 export interface Point {

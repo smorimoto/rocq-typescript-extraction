@@ -15,6 +15,7 @@ depends: [
   "stdio" {>= "v0.17"}
   "ppx_jane" {>= "v0.17"}
   "base_quickcheck" {with-test & >= "v0.17"}
+  "cppo" {with-test}
   "ppx_js_style" {>= "v0.17"}
   "ppx_expect" {with-test & >= "v0.17"}
   "zarith"

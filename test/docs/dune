@@ -1,4 +1,4 @@
-; Compare marked documentation examples with their source or generated output.
+; Keep documentation generation here so release archives need no test fixtures.
 
 (rocq.extraction
  (prelude Tree)
@@ -31,24 +31,26 @@
   (diff loop.expected.ts loop.ts)))
 
 (rule
- (alias runtest)
+ (target getting-started.md)
+ (deps Tree.v)
  (action
-  (run
-   sh
-   %{dep:../sample_blocks.sh}
-   %{dep:../../docs/getting-started.md}
-   Tree.v
-   %{dep:Tree.v})))
+  (run cppo -n %{dep:../../docs/getting-started.cpp.md} -o %{target})))
 
 (rule
  (alias runtest)
  (action
-  (run
-   sh
-   %{dep:../sample_blocks.sh}
-   %{dep:../../docs/encoding.md}
-   point.ts
-   %{dep:point.ts})))
+  (diff ../../docs/getting-started.md getting-started.md)))
+
+(rule
+ (target encoding.md)
+ (deps point.ts)
+ (action
+  (run cppo -n %{dep:../../docs/encoding.cpp.md} -o %{target})))
+
+(rule
+ (alias runtest)
+ (action
+  (diff ../../docs/encoding.md encoding.md)))
 
 (rule
  (alias runtest)
