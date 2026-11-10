@@ -1,5 +1,3 @@
-<!-- Generated from encoding.cpp.md; do not edit directly. -->
-
 # TypeScript reference
 
 This page describes the API of generated modules. Examples use the `Number` preset. For commands and configuration, see the [extraction guide](extraction.md).

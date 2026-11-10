@@ -1,5 +1,3 @@
-<!-- Generated from getting-started.cpp.md; do not edit directly. -->
-
 # Getting started
 
 ## Install from source
