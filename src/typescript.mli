@@ -22,10 +22,10 @@
     declarations a module exports, writes without exporting, or leaves
     out.
 
-    A declaration is exported when the command asked for it: a global the
-    command names, the object of a top-level module that the command names
-    or that holds something it names, and a type declared in a module the
-    command names. Asking for an inductive type asks for its constructor
+    A declaration is exported when the command asked for it. The command
+    asks for a global it names, the object of a top-level module that it
+    names or that holds something it names, and a type declared in a
+    module it names. Asking for an inductive type asks for its constructor
     interfaces and its constructor functions, asking for an
     [Extract Inductive] type asks for its realisers, and asking for a
     constructor asks for its constructor function, or for its realiser. A global asked for

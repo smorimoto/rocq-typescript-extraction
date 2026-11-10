@@ -1,9 +1,11 @@
-(** The full module for TypeScript type, format, and runtime checks. *)
+(** [source ()] is the full module for the TypeScript type, format, and
+    runtime checks. *)
 val source : unit -> string
 
-(** The generated declaration named by a tuple fixture, using the full module
-    for type reconstruction. *)
+(** [declaration name] is the generated declaration of the tuple fixture
+    [name], with types reconstructed over the full module. *)
 val declaration : string -> string
 
-(** The tag type and constructors used by the conditional tuple fixture. *)
+(** [sign_declaration ()] is the generated declaration of the tag type and
+    the constructors that the conditional tuple fixture uses. *)
 val sign_declaration : unit -> string

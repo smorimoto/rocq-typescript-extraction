@@ -5,9 +5,9 @@
     module type defined as another, [Module Type SN := S], reach the
     members of [S] under their own paths, [<X>.f] and [SN.f], and an
     application [Module B := F A] reaches the members of the body of [F]
-    under [B]. This module resolves a module type to its members at the
-    path where they are used, and tells, for a global reached through such
-    a path, the global it stands for.
+    under [B]. {!resolve} gives the members of a module type at the path
+    where they are used, and {!canon} gives, for a global reached through
+    such a path, the global it stands for.
 
     An abstract type of a module type, [Parameter t : Type], becomes a type
     parameter of the TypeScript interface, of the functor that takes the
@@ -21,46 +21,47 @@ open Extraction_plugin
 (** The type for the module types of a structure. *)
 type t
 
-(** The type for an abstract type: its global, the identifier its type
-    parameter is named after, which joins the labels from the module type
-    down to the type, as [Inner_t] for the type [t] of a module [Inner] of
-    the module type, and the number of parameters it takes, as [1] for
-    [Parameter t : Type -> Type]. *)
+(** The type for abstract types. An abstract type is its global, the
+    identifier its type parameter is named after, which joins the labels
+    from the module type down to the type, as [Inner_t] for the type [t]
+    of a module [Inner] of the module type, and the number of parameters
+    it takes, as [1] for [Parameter t : Type -> Type]. *)
 type abstract =
   { global : Miniml.global
   ; id : Names.Id.t
   ; arity : int
   }
 
-(** The type for the body of a functor: a structure, at its path, or the
-    module expression a functor is defined as, an application or a module
-    name, as [Module G (Y : T) := F A Y]. *)
+(** The type for the bodies of functors. A body is a structure, at its
+    path, or the module expression a functor is defined as, an application
+    or a module name, as [Module G (Y : T) := F A Y]. *)
 type body =
   | Structure of Names.ModPath.t * Miniml.ml_module_structure
   | Applied of Miniml.ml_module_expr
 
-(** The type for a functor: its parameters, outermost first, each with the
-    module type it is declared with, and its body. *)
+(** The type for functors. A functor is its parameters, outermost first,
+    each with the module type it is declared with, and its body. *)
 type functor_ =
   { params : (Names.MBId.t * Miniml.ml_module_type) list
   ; body : body
   }
 
-(** The type for a functor signature, the module type of a functor: its
-    parameters, outermost first, each with the module type it is declared
-    with, and the module type of its result. *)
+(** The type for functor signatures, the module types of functors. A
+    functor signature is its parameters, outermost first, each with the
+    module type it is declared with, and the module type of its result. *)
 type signature_ =
   { parameters : (Names.MBId.t * Miniml.ml_module_type) list
   ; result : Miniml.ml_module_type
   }
 
-(** [create struc] is the module types of [struc]: every [SEmodtype] and
-    every [Smodtype] of a signature, by path, with the paths that reach
-    their members: those of the module types defined as another, of the
-    parameters and the bodies of the functors, of the parameters and the
-    results of the functor signatures, and of the applications, of a
-    functor, of a parameter declared with a functor signature, or of a
-    partial application of either. *)
+(** [create struc] is the module types of [struc], which are every
+    [SEmodtype] and every [Smodtype] of a signature, by path, with the
+    paths that reach their members. Those paths are those of the module
+    types defined as another, of the parameters and the bodies of the
+    functors, of the parameters and the results of the functor
+    signatures, and of the applications, of a functor, of a parameter
+    declared with a functor signature, or of a partial application of
+    either. *)
 val create : Miniml.ml_structure -> t
 
 (** [resolve t ~at mt] is the members of the module type [mt] under the
@@ -104,11 +105,12 @@ val abstracts : t -> at:Names.ModPath.t -> Miniml.ml_module_sig -> abstract list
 
 (** [arity t r] is the number of parameters of the abstract type [r] of a
     module type, as reached at any path that uses the module type, and [0]
-    for any other global. [kinds t mp] is the greatest arity of the
-    abstract types of the module types declared in the file [mp], and [0]
-    when it declares none that takes parameters. *)
+    for any other global. *)
 val arity : t -> Miniml.global -> int
 
+(** [kinds t mp] is the greatest arity of the abstract types of the module
+    types declared in the file [mp], and [0] when it declares none that
+    takes parameters. *)
 val kinds : t -> Names.ModPath.t -> int
 
 (** [home t r] is the file of the module type that the abstract type [r]
@@ -123,35 +125,35 @@ val home : t -> Miniml.global -> Names.ModPath.t option
     implementation picks from the abstract types of its parameters, so it
     takes all of them as parameters, before its own, and its type
     parameter is named [R]. A result that is itself a functor signature
-    contributes none.
-    [parameter_abstracts t ~at mt] is the abstract types that a functor
-    parameter declared with [mt] at [at] brings: those left in the result
-    for a functor signature, and those of {!abstracts} for any other
-    module type. *)
+    contributes none. *)
 val signature_abstracts
   :  t
   -> at:Names.ModPath.t
   -> signature_
   -> abstract list * abstract list
 
+(** [parameter_abstracts t ~at mt] is the abstract types that a functor
+    parameter declared with [mt] at [at] brings. They are those left in
+    the result for a functor signature, and those of {!abstracts} for any
+    other module type. *)
 val parameter_abstracts
   :  t
   -> at:Names.ModPath.t
   -> Miniml.ml_module_type
   -> abstract list
 
-(** [canon t r] is the global that [r] stands for: for a member of a
-    functor parameter, the member of the module type it is declared with;
-    for a member of an application, the member of the functor's body; for
-    a member of a module type defined as another, the member of that one;
-    and [r] itself otherwise. It follows the paths through nested modules
-    and through module types defined as others, and is where the names of
-    [r] come from. *)
+(** [canon t r] is the global that [r] stands for. For a member of a
+    functor parameter, it is the member of the module type the parameter
+    is declared with. For a member of an application, it is the member of
+    the functor's body. For a member of a module type defined as another,
+    it is the member of that one. Otherwise it is [r] itself. It follows
+    the paths through nested modules and through module types defined as
+    others, and is where the names of [r] come from. *)
 val canon : t -> Miniml.global -> Miniml.global
 
 (** [reaches t r] is the global that [r] stands for one step along the
-    paths that {!canon} follows: the member of the functor's body for a
-    member of an application, which may itself be a member of an
+    paths that {!canon} follows. It is the member of the functor's body
+    for a member of an application, which may itself be a member of an
     application in that body, and [r] itself when no path reaches
     another. *)
 val reaches : t -> Miniml.global -> Miniml.global
@@ -167,16 +169,17 @@ val pruned : t -> Names.ModPath.t -> bool
 
 (** [used t r] is [true] if a term of the structure reads the member [r]
     of a module type through a functor parameter, at any path along the
-    way from the parameter to the module type that declares [r], and
-    [used_under t mp] if it reads any member under the path [mp], or an
-    application applies a functor under [mp] through a parameter. *)
+    way from the parameter to the module type that declares [r]. *)
 val used : t -> Miniml.global -> bool
 
+(** [used_under t mp] is [true] if a term of the structure reads any
+    member under the path [mp], or an application applies a functor under
+    [mp] through a parameter. *)
 val used_under : t -> Names.ModPath.t -> bool
 
 (** [canon_path t mp] is the path that the members under [mp] are
-    declared at, as {!canon} resolves a global: [mp] itself when none
-    reaches another. *)
+    declared at, as {!canon} resolves a global. It is [mp] itself when
+    none reaches another. *)
 val canon_path : t -> Names.ModPath.t -> Names.ModPath.t
 
 (** [step t mp] is the path that [mp] reaches one step along the paths
@@ -189,7 +192,7 @@ val step
   -> (Names.ModPath.t * (Names.ModPath.t * Names.ModPath.t)) option
 
 (** [implicit t r] is the abstract types that the type or constructor [r],
-    declared in a module type or in a functor body, mentions: in its
+    declared in a module type or in a functor body, mentions, in its
     definition or its arguments, or through another type of the same
     module type or body, transitively. They are the type parameters that
     its TypeScript declaration takes beyond its own, in the order of
@@ -202,9 +205,10 @@ val implicit : t -> Miniml.global -> Miniml.global list
 
 (** [fixed t r] is the parameters and the definition of the abstract type
     [r] of a module type, as reached under a path where a constraint
-    defines it: the constraint's type for a [with Definition], and the
-    type of the same name in the module that a [with Module] gives, or
-    what {!sealed} gives. It is [None] for any other global. *)
+    defines it. The definition is the constraint's type for a
+    [with Definition], and the type of the same name in the module that a
+    [with Module] gives, or what {!sealed} gives. [fixed t r] is [None]
+    for any other global. *)
 val fixed : t -> Miniml.global -> (Names.Id.t list * Miniml.ml_type) option
 
 (** [sealed t r] is the parameters and the definition of the abstract type
@@ -225,9 +229,9 @@ val alias : t -> Names.ModPath.t -> Names.ModPath.t option
 val functor_ : t -> Names.ModPath.t -> functor_ option
 
 (** [qualified r] is the name of [r] as a message names a member of a
-    module type, which the name table does not know: its label under the
-    shortest name of the innermost module type or module on its path that
-    the table knows, as [FT.t]. *)
+    module type, which the name table does not know. It is its label
+    under the shortest name of the innermost module type or module on its
+    path that the table knows, as [FT.t]. *)
 val qualified : Miniml.global -> string
 
 (** [rebase ~from ~to_ r] is [r] with the prefix [from] of its module path

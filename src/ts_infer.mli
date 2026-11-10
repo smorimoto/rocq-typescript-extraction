@@ -4,7 +4,7 @@
     [tsc --strict] needs a type on every binder that has no contextual
     type. Reconstruction re-runs ML type inference over each declaration
     body with {!Ts_type.unify}, which is extraction's own unifier on the
-    ML fragment, and records the result in {!expr}. Every binder
+    ML fragment, and records the result in {!type-expr}. Every binder
     carries its type. Every reference to a global, and every constructor,
     carries the instantiation of its type parameters, which the printer
     writes as explicit type arguments where TypeScript could not infer
@@ -23,7 +23,7 @@
     A position of the declared type that MiniML lost and the kernel does
     not give is a {!Ts_type.lost} meta, which reconstruction solves from
     the body, as it types a tuple that a plugin's MiniML leaves
-    [Tunknown]; one that nothing solves has no TypeScript type, and
+    [Tunknown]. One that nothing solves has no TypeScript type, and
     {!Ts_type.zonk} raises {!Ts_type.Lost} on it. A match that nothing
     constrains infers each branch on its own, through the casts that
     extraction wrote in it, and gets the one type they share or their
@@ -84,7 +84,7 @@
     uses fix its type, [Tdummy] for an erased one.
 
     Reconstruction rejects deep patterns, which the standard extraction
-    does not produce, with a user error. They do not exist in {!expr}. *)
+    does not produce, with a user error. They do not exist in {!type-expr}. *)
 
 open Extraction_plugin
 
@@ -97,13 +97,12 @@ open Extraction_plugin
     functions of a declaration list the same [i].
 
     A [Union] is the type of a match whose branches reconstruction could
-    not give one type, as {!match_} says: the types of its branches, two
-    or more, none of which unifies with another. A
-    [Tuple] is the type of a tuple, the types of its elements. A meta
-    ranges over every type, these and a conditional included, so a
-    generic call over a dependent value, as [pair(dep(b), dep(b))] is,
-    instantiates its type parameters with the conditional and needs no
-    cast. *)
+    not give one type, as {!match_} says. It holds the types of its
+    branches, two or more, none of which unifies with another. A [Tuple]
+    is the type of a tuple, the types of its elements. A meta ranges over
+    every type, these and a conditional included, so a generic call over
+    a dependent value, as [pair(dep(b), dep(b))] is, instantiates its
+    type parameters with the conditional and needs no cast. *)
 type ty = Ts_type.t
 
 (** The type for binders and their types. *)
@@ -231,7 +230,7 @@ type stats = { reconstruction_casts : int }
 
 (** [declaration env r a] is the typed body [a] of the declaration [r],
     the type of that body, and the statistics of its reconstruction.
-    {!Ts_env.term} gives the signature of [r] and its arity, and the types
+    {!Ts_env.val-term} gives the signature of [r] and its arity, and the types
     of the globals that [a] refers to. The type parameters of the
     signature are rigid. The typed body is a [Lambda] with exactly as many
     binders as the arity when it is positive, and a body with fewer

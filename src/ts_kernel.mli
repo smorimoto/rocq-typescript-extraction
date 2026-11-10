@@ -3,10 +3,10 @@
     Extraction writes [Tunknown] where a type depends on a term, and keeps
     a type function over terms, [payload : bool -> Type], as a [Dtype]
     whose definition is [Tunknown] and whose references drop their term
-    arguments. The kernel keeps both. This module is the only one that
-    reads the kernel for types. It walks the kernel type of a declaration
-    together with its MiniML type and translates each lost position to a
-    {!Ts_type.t}, and copies every other position from MiniML.
+    arguments. The kernel keeps both. No other module reads the kernel for
+    types. A signature is read by walking the kernel type of a declaration
+    together with its MiniML type, translating each lost position to a
+    {!Ts_type.t} and copying every other position from MiniML.
 
     A binder whose type is an enumeration that TypeScript distributes a
     conditional over, and that a later lost position depends on, becomes
@@ -15,16 +15,15 @@
     terms an application of its alias to the parameter, to the literal
     type of a constructor, or to the bound. A [match] on any other term
     can become the union of its arms when an upper approximation is
-    required. Function domains reverse that direction; arbitrary type
+    required. Function domains reverse that direction. Arbitrary type
     constructors require exact arguments. Each leaf is extracted with
-    [Extraction.extract_with_type] in
-    the extraction's own state, so its type variables are those of the
-    declaration. A lifted binder that the translated signature does not
-    mention stays a plain parameter. A binder of a sort inside a type,
-    which MiniML keeps as an erased argument, as in
-    [h : forall A, A -> A], binds a type parameter of a {!Ts_type.Forall}
-    when the type after it is a function. A position that no rule
-    translates yet keeps its MiniML type.
+    [Extraction.extract_with_type] in the extraction's own state, so its
+    type variables are those of the declaration. A lifted binder that the
+    translated signature does not mention stays a plain parameter. A
+    binder of a sort inside a type, which MiniML keeps as an erased
+    argument, as in [h : forall A, A -> A], binds a type parameter of a
+    {!Ts_type.Forall} when the type after it is a function. A position
+    that no rule translates yet keeps its MiniML type.
 
     A type family defined by a fold can become a recursive alias when
     its captured types and nonstructural arguments remain fixed. For
@@ -47,23 +46,24 @@ open Extraction_plugin
 (** The type for what the kernel gives the declarations of a structure. *)
 type t
 
-(** The type for the signatures of constructors: the binders a constructor
-    lifts, which its interface and its function are generic over, and the
-    types of its arguments, over the type parameters of its inductive,
-    then those. *)
+(** The type for the signatures of constructors. A signature is the
+    binders a constructor lifts, which its interface and its function are
+    generic over, and the types of its arguments, over the type parameters
+    of its inductive, then those. *)
 type ctor =
   { lifted : Ts_type.tparam list
   ; args : Ts_type.t list
   }
 
-(** [create state struc] reads from the kernel the signature of every
-    term and every constructor of [struc] whose MiniML type is lossy, and
-    the definition of every type function over terms, in the extraction
-    state [state]. Each is read in the environment that extraction types
-    it in: a member of a functor body in that of the functor's parameters
-    and the body's own fields, and a member of a module in that of its
-    fields. A declaration that its environment does not hold, as one of a
-    synthetic structure, gets none.
+(** [create state struc] is what the kernel gives the declarations of
+    [struc], read in the extraction state [state]. It holds the signature
+    of every term and every constructor of [struc] whose MiniML type is
+    lossy, and the definition of every type function over terms. Each is
+    read in the environment that extraction types it in. A member of a
+    functor body is read in that of the functor's parameters and the
+    body's own fields, and a member of a module in that of its fields. A
+    declaration that its environment does not hold, as one of a synthetic
+    structure, gets none.
 
     @raise CErrors.UserError
       for a function whose result is a record with a field of sort Type
@@ -72,10 +72,10 @@ type ctor =
       none that is known before it runs, since TypeScript has no type for
       them without [unknown].
     @raise CErrors.Anomaly
-      if a signature does not erase to the MiniML type of its term: each
-      lifted parameter to its bound, a conditional or a union to
-      [Tunknown], and an application of a type function over terms to its
-      arguments of ML. *)
+      if a signature does not erase to the MiniML type of its term.
+      Erasure takes each lifted parameter to its bound, a conditional or a
+      union to [Tunknown], and an application of a type function over
+      terms to its arguments of ML. *)
 val create : Common.State.t -> Miniml.ml_structure -> t
 
 (** [term kernel r] is the signature of the term [r], over the type
@@ -106,7 +106,7 @@ val ctor : t -> Miniml.global -> ctor option
     in the parameters of a signature gets fresh ones, a projection of
     such a binder is its parameter, and the type of a constant reads them
     off the one value its body gives each field. The result of a function
-    reads them off its body: a record binder gives its parameters, a
+    reads them off its body. A record binder gives its parameters, a
     construction the type of each field, and a match on a lifted binder
     a conditional over the records of its branches. *)
 val fields : t -> Miniml.global -> Ts_type.tparam list
