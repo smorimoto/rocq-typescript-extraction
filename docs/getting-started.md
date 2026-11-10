@@ -15,8 +15,6 @@ This installs the plugin and its Rocq theories. Rocq 9.3 or later is required.
 
 Save this as `Tree.v`:
 
-<!-- sample: Tree.v -->
-
 ```coq
 From TypeScriptExtraction Require Import Number.
 

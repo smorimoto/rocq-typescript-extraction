@@ -1,7 +1,7 @@
 # Documentation Samples
 
-Checks that the examples in `docs/` are real. Each `.v` here is the source of a marked sample, and its output is diffed against the Markdown block.
+Builds the examples in `docs/` and embeds them in the published Markdown with cppo.
 
-- `../sample_blocks.sh` takes a Markdown file, a marker name, and a file, and diffs the fenced block after `<!-- sample: name -->` against that file. `Tree.v` must equal the block in `docs/getting-started.md` verbatim, and `point.ts` must equal the block in `docs/encoding.md`.
-- Editing a documented example means editing the `.v` here, the Markdown block, the `.expected.ts` golden, and the `.cases.ts` and `.t` or `.test.ts` beside it, in one change. Run `opam exec -- dune build @test/docs/runtest`.
-- A new sample needs a `rocq.extraction` stanza, a golden diff rule, a `sample_blocks.sh` rule, and its file added to the `no_assertions.sh`, `oxlint`, and `oxfmt` rules in `dune`.
+- `../../docs/getting-started.cpp.md` includes `Tree.v`; `../../docs/encoding.cpp.md` includes the freshly extracted `point.ts`, not its golden. Dune runs `cppo -n` to generate both pages here and diffs them against the committed pages in `docs/`.
+- Edit prose in the `.cpp.md` templates and code in the included files. Update the corresponding `.cases.ts` and `.t` or `.test.ts` when behaviour changes. Run `opam exec -- dune build @test/docs/runtest`, review the Markdown and golden diffs, then promote the intended files with `opam exec -- dune promote`. A normal test run never updates them.
+- A new sample needs a `rocq.extraction` stanza, a golden diff rule, and its file added to the `no_assertions.sh`, `oxlint`, and `oxfmt` rules in `dune`. Add its `#include` to the template and declare the included file in the cppo rule's `deps` so Dune rebuilds the page when it changes and makes it available in the sandbox.

@@ -45,8 +45,6 @@ Constructor fields use the Rocq binder names when they are all named, distinct, 
 
 Records become interfaces with `readonly` properties. For example, a record with two natural-number fields and a function swapping them produces:
 
-<!-- sample: point.ts -->
-
 ```ts
 export interface Point {
   readonly px: number;
