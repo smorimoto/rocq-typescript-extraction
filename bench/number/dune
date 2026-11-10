@@ -25,8 +25,7 @@
  (action
   (progn
    (run
-    bunx
-    --no-install
+    bun
     oxlint
     --config
     %{dep:../../oxlint.config.ts}
@@ -38,8 +37,7 @@
     %{dep:even-odd.ts}
     %{dep:integers.ts})
    (run
-    bunx
-    --no-install
+    bun
     oxfmt
     --config
     %{dep:../../oxfmt.config.ts}

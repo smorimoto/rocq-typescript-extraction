@@ -39,16 +39,14 @@
  (action
   (progn
    (run
-    bunx
-    --no-install
+    bun
     oxlint
     --config
     %{dep:../../oxlint.config.ts}
     --deny-warnings
     %{dep:single.ts})
    (run
-    bunx
-    --no-install
+    bun
     oxfmt
     --config
     %{dep:../../oxfmt.config.ts}

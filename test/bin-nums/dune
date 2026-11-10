@@ -50,8 +50,7 @@
  (action
   (progn
    (run
-    bunx
-    --no-install
+    bun
     oxlint
     --config
     %{dep:../../oxlint.config.ts}
@@ -62,8 +61,7 @@
     %{dep:nat-as-big-int.ts}
     %{dep:bin-nums-as-big-int.ts})
    (run
-    bunx
-    --no-install
+    bun
     oxfmt
     --config
     %{dep:../../oxfmt.config.ts}

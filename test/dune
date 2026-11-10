@@ -105,7 +105,7 @@
   (glob_files separate-unary/*.ts)
   (glob_files single/*.ts))
  (action
-  (run bunx --no-install tsc -p %{dep:../tsconfig.json})))
+  (run bun tsc -p %{dep:../tsconfig.json})))
 
 (alias
  (name runtime)

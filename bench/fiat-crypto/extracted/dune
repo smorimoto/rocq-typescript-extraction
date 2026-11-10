@@ -9,16 +9,14 @@
   (progn
    (run sh %{dep:../../../test/no_assertions.sh} %{dep:fields.ts})
    (run
-    bunx
-    --no-install
+    bun
     oxlint
     --config
     %{dep:../../../oxlint.config.ts}
     --deny-warnings
     %{dep:fields.ts})
    (run
-    bunx
-    --no-install
+    bun
     oxfmt
     --config
     %{dep:../../../oxfmt.config.ts}
