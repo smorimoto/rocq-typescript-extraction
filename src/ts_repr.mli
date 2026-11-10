@@ -80,11 +80,11 @@ type t =
     or functor parameter. It defaults to supplying none, and the global
     environment is then read.
 
-    @raise CErrors.UserError
-      if a [TypeScript Extract Match] directive is given for the type
-      without an [Extract Inductive], if a selector of the directive does
-      not give one expression per argument that extraction keeps, or if
-      the code of a selector is not {!Ts_print.balanced}. *)
+    Raises [CErrors.UserError]
+    if a [TypeScript Extract Match] directive is given for the type
+    without an [Extract Inductive], if a selector of the directive does
+    not give one expression per argument that extraction keeps, or if
+    the code of a selector is not {!Ts_print.balanced}. *)
 val decide
   :  ?kernel:(Miniml.global -> Miniml.global)
   -> ?signature:(Miniml.global -> Ts_kernel.ctor option)
@@ -170,7 +170,7 @@ val declare
     folding stops at the safe-integer bound so that runtime rounding is
     preserved.
 
-    @raise CErrors.Anomaly if [repr] is [Erased]. *)
+    Raises [CErrors.Anomaly] if [repr] is [Erased]. *)
 val construct
   :  Ts_names.t
   -> t
@@ -202,19 +202,19 @@ val forced : t -> Ts_print.expr -> Ts_print.expr option
     is [s.tag] when [repr] is [Tagged] or [Lazy], and [s] itself for a
     [Custom] without a match function.
 
-    @raise CErrors.Anomaly if [repr] is [Record] or [Erased]. *)
+    Raises [CErrors.Anomaly] if [repr] is [Record] or [Erased]. *)
 val discriminant : t -> Ts_print.expr -> Ts_print.expr
 
 (** [label names repr ctor ~index] is what the discriminant is compared
     with for constructor [ctor], number [index]. It is the tag that
     [names] gives [ctor], or the code of a constant custom constructor.
 
-    @raise CErrors.Anomaly if [repr] is [Record] or [Erased]. *)
+    Raises [CErrors.Anomaly] if [repr] is [Record] or [Erased]. *)
 val label : Ts_names.t -> t -> Miniml.global -> index:int -> Ts_print.expr
 
 (** [field repr ~index s k] is the read of argument [k] of constructor
     number [index] in [s], such as [s.l], [s.arg0], or [s.px] for a
     record.
 
-    @raise CErrors.Anomaly if [repr] is [Erased] or [Custom]. *)
+    Raises [CErrors.Anomaly] if [repr] is [Erased] or [Custom]. *)
 val field : t -> index:int -> Ts_print.expr -> int -> Ts_print.expr

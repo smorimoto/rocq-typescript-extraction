@@ -29,10 +29,10 @@ type selector =
 (** [extract_match q selectors] registers the directive for the inductive
     type [q].
 
-    @raise CErrors.UserError
-      if [q] is not an inductive type, if [selectors] has not one selector
-      per constructor, if the selector of a lone constructor is not
-      written with [_], or if one of several is. *)
+    Raises [CErrors.UserError]
+    if [q] is not an inductive type, if [selectors] has not one selector
+    per constructor, if the selector of a lone constructor is not
+    written with [_], or if one of several is. *)
 val extract_match : Libnames.qualid -> selector list -> unit
 
 (** [find r] is the selectors of the directive for the inductive type
