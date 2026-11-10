@@ -34,6 +34,7 @@ opam exec -- bun run bench   # all suites; pass suite names to select
 - These files are generated and diffed by the tests; regenerate them instead of editing: `rocq-typescript-extraction.opam` (from `dune-project`), `test/tests.dune` (from `test/gen_dune.sh`), `submodules/*.dune` (from the two `gen-dune.ts` scripts), and Bun snapshots in `test/*.test.ts` (from `bun run test:update`).
 - `Extract` directives share Rocq's tables with the OCaml backend. TypeScript directive text belongs only in files required where TypeScript is extracted (`theories/`, test and benchmark preludes), never in a shared proof library.
 - Upstream sources under `submodules/` and Rocq Stdlib are never modified. Generated programs from them stay under `_build`.
+- opam builds the package from the release archive, and `.gitattributes` keeps `bench/`, `submodules/`, and `test/` out of that archive. `src/` and `theories/` must build without those three directories.
 - The default branch is `main`. Recent commits use `type(scope): summary` subjects, as in `test(loading): cover the default backtrace state when the plugin loads`.
 
 ## OCaml style
