@@ -72,17 +72,17 @@ See the [benchmark guide](bench/README.md) for workloads, measurement boundaries
 
 ## Releases
 
-[Changesets](https://github.com/changesets/changesets) collects the changes for each release, and [opam-publish](https://github.com/ocaml-opam/opam-publish) submits the release to [opam-repository](https://github.com/ocaml/opam-repository). The release version is the `version` field in `package.json`. opam-publish takes the opam version from the release tag, so `dune-project` and the opam file carry no version.
+[Changesets](https://github.com/changesets/changesets) collects the changes for each release, and [opam-publish](https://github.com/ocaml-opam/opam-publish) submits the release to the `released` repository of the [Rocq opam archive](https://github.com/rocq-prover/opam). The release version is the `version` field in `package.json`. opam-publish takes the opam version from the release tag, so `dune-project` and the opam file carry no version.
 
 Follow the [Changesets guide](https://github.com/changesets/changesets/blob/main/docs/intro-to-using-changesets.md).
 
 On each push to `main`, the [Release workflow](.github/workflows/release.yml) gathers the changesets into a pull request titled `chore(release): version packages`. That pull request removes the changeset files, bumps `version` in `package.json`, and writes `CHANGELOG.md`. Do not edit the release version or changelog by hand. The pull request comes from `github-actions`, so GitHub holds its CI runs until you select **Approve workflows to run** on the pull request.
 
-To release, merge that pull request. The workflow then tags `vX.Y.Z`, creates the GitHub release, and runs opam-publish, which opens a pull request on `ocaml/opam-repository`. Users can install the release with opam after the opam-repository maintainers merge that pull request.
+To release, merge that pull request. The workflow then tags `vX.Y.Z`, creates the GitHub release, and runs opam-publish, which opens a pull request on `rocq-prover/opam` that adds `released/packages/rocq-typescript-extraction/rocq-typescript-extraction.X.Y.Z/opam`. After the maintainers of that repository merge the pull request, users can install the release with opam from the `released` repository, which they add with `opam repo add rocq-released https://rocq-prover.org/opam/released`.
 
-The workflow needs two things, which you set once. In the repository settings under **Actions**, then **General**, allow GitHub Actions to create and approve pull requests, so that the workflow can open the version pull request. Then add the repository secret `OPAM_PUBLISH_GH_TOKEN`, a classic personal access token with the `public_repo` and `workflow` scopes. opam-publish uses the token to push to the token owner's fork of opam-repository and to open the pull request on `ocaml/opam-repository`. The default `GITHUB_TOKEN` cannot write outside this repository.
+The workflow needs two things, which you set once. In the repository settings under **Actions**, then **General**, allow GitHub Actions to create and approve pull requests, so that the workflow can open the version pull request. Then add the repository secret `OPAM_PUBLISH_GH_TOKEN`, a classic personal access token with the `public_repo` and `workflow` scopes. opam-publish uses the token to push to the token owner's fork of `rocq-prover/opam`, whatever its name, creating the fork when the owner has none, and to open the pull request on `rocq-prover/opam`. The default `GITHUB_TOKEN` cannot write outside this repository.
 
-If the opam-repository job fails after the tag exists, select **Re-run failed jobs** on the workflow run. The rerun keeps the tag and runs only that job. opam-publish then opens the pull request, or updates the one that is already open.
+If the job that submits to `rocq-prover/opam` fails after the tag exists, select **Re-run failed jobs** on the workflow run. The rerun keeps the tag and runs only that job. opam-publish then opens the pull request, or updates the one that is already open.
 
 ## Third-party dependencies
 

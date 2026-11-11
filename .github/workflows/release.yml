@@ -11,7 +11,7 @@ defaults:
     shell: bash
 
 # No cancel-in-progress: the next push must not cancel a run that is tagging
-# a release or submitting it to opam-repository.
+# a release or submitting it to rocq-prover/opam.
 concurrency:
   group: ${{ github.workflow }}
 
@@ -51,7 +51,7 @@ jobs:
           publish-script: bun changeset publish
 
   opam:
-    name: Submit to opam-repository
+    name: Submit to rocq-prover/opam
     needs: changesets
     if: ${{ needs.changesets.outputs.published == 'true' }}
     runs-on: ubuntu-26.04
@@ -70,10 +70,22 @@ jobs:
         with:
           ocaml-compiler: 5
 
+      # Before 3.0.0, opam-publish pushes to a repository of the token owner
+      # named after the upstream one. A fork of rocq-prover/opam has another
+      # name when the owner already has a repository named opam.
       - name: Install opam-publish
-        run: opam install opam-publish
+        run: opam install "opam-publish>=3.0.0"
 
-      - name: Open the opam-repository pull request
+      # The Rocq archive keeps released packages under released/packages, not
+      # under the packages directory that opam-publish assumes.
+      - name: Open the rocq-prover/opam pull request
         env:
           OPAM_PUBLISH_GH_TOKEN: ${{ secrets.OPAM_PUBLISH_GH_TOKEN }}
-        run: opam exec -- opam-publish --no-browser --no-confirmation --tag "v$(jq --raw-output .version package.json)" .
+        run: |
+          opam exec -- opam-publish \
+            --repo rocq-prover/opam \
+            --packages-directory released/packages \
+            --no-browser \
+            --no-confirmation \
+            --tag "v$(jq --raw-output .version package.json)" \
+            .
